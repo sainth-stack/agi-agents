@@ -1,17 +1,10 @@
 import React from "react";
-//import { Link } from 'react-router-dom';
-
-import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
-import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
-import AddToPhotosOutlinedIcon from '@mui/icons-material/AddToPhotosOutlined';
-import PersonAddOutlinedIcon from '@mui/icons-material/PersonAddOutlined';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 
 import {
   AppBar,
   Box,
-  IconButton,
   Toolbar,
   Menu,
   MenuItem,
