@@ -173,19 +173,24 @@ label {
 }
 
 input,
-select {
+select,
+textarea {
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 5px;
     width: 350px;
 }
 
-.back-button-text{
-    width: 50%;
-    height: 48px;
-    padding: 9px;
-    border-radius: 27.28px;
-    border-width: 1.5px;
+.textareaclass {
+   outline: none;
+}
+
+.back-button-text {
+    width: 50% !important;
+    height: 48px !important;
+    padding: 9px !important;
+    border-radius: 27.28px !important;
+    border-width: 1.5px !important;
     background-color: grey;
     border-color: rgb(33, 79, 65);
     display: flex;
@@ -194,21 +199,21 @@ select {
     color: white;
 }
 
-.next-button-text{
-    width: 50%;
-    height: 48px;
-    color: white;
-    padding: 9px;
-    border-radius: 27.28px;
-    border-width: 1.5px;
-    background-color: rgb(72, 136, 200);
-    border-color: rgb(72, 136, 200);
+.next-button-text {
+    width: 50% !important;
+    height: 48px !important;
+    color: white !important;
+    padding: 9px !important;
+    border-radius: 27.28px !important;
+    border-width: 1.5px !important;
+    background-color: rgb(72, 136, 200) !important;
+    border-color: rgb(72, 136, 200) !important;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.step-text{
+.step-text {
     font-size: 24px;
     color: rgb(81, 96, 115);
     font-weight: 700;

@@ -19,7 +19,7 @@ const PaymentCard = ({ openPayment }) => {
             var formData = new FormData();
             formData.append('amount', openPayment?.price);
             const response = await axios.post(
-                `http://3.132.248.171:4500/paymentinfo`,
+                `https://maya.otamat.com/api/paymentinfo`,
                 formData,
                 {
                     headers: {
@@ -81,5 +81,4 @@ const PaymentCard = ({ openPayment }) => {
         </div>
     );
 };
-
 export default PaymentCard;

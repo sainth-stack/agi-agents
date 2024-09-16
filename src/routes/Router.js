@@ -54,7 +54,7 @@ const ThemeRoutes = [
     ],
   },
   {
-    path: "/auth",
+    path: "/",
     element: <Layout />,
     children: [
       { path: "login", element: <Login /> },

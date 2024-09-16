@@ -1,0 +1,1 @@
+export const baseURL='https://maya.otamat.com/api'
