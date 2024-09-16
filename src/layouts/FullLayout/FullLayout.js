@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   experimentalStyled,
   useMediaQuery,
   Container,
   Box,
 } from "@mui/material";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import Header from "./Header/Header";
 import Sidebar from "./Sidebar/Sidebar";
 import Footer from "./Footer/Footer";
@@ -33,6 +33,18 @@ const PageWrapper = experimentalStyled("div")(({ theme }) => ({
 
 const FullLayout = () => {
   //
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Check if username or email is missing in localStorage
+    const username = localStorage.getItem("username");
+    const email = localStorage.getItem("email");
+
+    if (!username || !email) {
+      // If missing, navigate to the login page
+      navigate("/login");
+    }
+  }, [navigate]);
   const [isSidebarOpen, setSidebarOpen] = useState(true);
   const [isMobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up("lg"));

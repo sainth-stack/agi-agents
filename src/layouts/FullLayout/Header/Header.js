@@ -36,7 +36,8 @@ const Header = (props) => {
 
   const handleClose4 = () => {
     setAnchorEl4(null);
-    navigate('/auth/login')
+    navigate('/login')
+    localStorage.clear()
   };
 
   const [currentTab, setCurrentTab] = React.useState(0);
