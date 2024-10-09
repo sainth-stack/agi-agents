@@ -10,6 +10,10 @@ import Pricing from "../views/pricing/index.js";
 import BillingSection from "../views/billingSection/index.js";
 import GraphView from "../views/design/genAi/GraphView.js";
 import Layout from "../layouts/layout/index.js";
+import Home from "../views/dashboards/Home.js";
+import ConfigureLLM from "../views/AgentStudio/ConfigureLLM.js";
+import ConfigureTools from "../views/Tools/ConfigureTools.js";
+import AgentApps from "../views/AgentApps/AgentApps.js";
 
 /****Layouts*****/
 const FullLayout = lazy(() => import("../layouts/FullLayout/FullLayout.js"));
@@ -41,11 +45,18 @@ const ThemeRoutes = [
     element: <FullLayout />,
     children: [
       { path: "/", element: <Navigate to="dashboards/dashboard1" /> },
-      { path: "dashboards/dashboard1", exact: true, element: <Dashboard1 /> },
+      { path: "dashboards/dashboard1", exact: true, element: <Home /> },
+
       { path: "/support", element: <Support /> },
       { path: "/affliate", element: <Affliate /> },
       { path: "/new-request", element: <NewRequest /> },
       { path: "/start-design", element: <Design /> },
+      { path: "/configure-llm", element: <ConfigureLLM /> },
+      { path: "/configure-tools", element: <ConfigureTools /> },
+      { path: "/create-agent", element: <AgentApps /> },
+
+
+
       // { path: "/login", element: <Login /> },
       { path: "/pricing", element: <Pricing /> },
       // { path: "/register", element: <Register /> },
@@ -55,11 +66,11 @@ const ThemeRoutes = [
   },
   {
     path: "/",
-    element: <Layout />,
-    children: [
+    //element: <Layout />,
+    /* children: [
       { path: "login", element: <Login /> },
       { path: "register", element: <Register /> },
-    ],
+    ], */
   }
 ];
 

@@ -18,6 +18,9 @@ const Menuitems = [
       // }
     ]
   },
+
+
+
   {
     title: "Agents",
     list: [
@@ -27,6 +30,26 @@ const Menuitems = [
         href: "/start-design",
       }
     ]
+  },
+  {
+    title: "Agent Studio",
+    list: [
+      {
+        title: "Configure LLM Design",
+        icon: PostAddIcon,
+        href: "/configure-llm",
+      },
+      {
+        title: "Configure Tools",
+        icon: PostAddIcon,
+        href: "/configure-tools",
+      }, {
+        title: "Create Agent ",
+        icon: PostAddIcon,
+        href: "/create-agent",
+      }
+
+    ],
   },
   {
     title: "MISC",

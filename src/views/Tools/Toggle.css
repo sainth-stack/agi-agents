@@ -1,0 +1,16 @@
+.toggle-bg {
+    background-color: #e5e7eb; /* Tailwind gray-300 */
+    position: relative;
+}
+
+input:checked + .toggle-bg {
+    background-color: #080808; /* Tailwind blue-500 */
+}
+
+input:checked + .toggle-bg .toggle-dot {
+    transform: translateX(100%);
+}
+
+.toggle-dot {
+    transition: transform 0.3s ease;
+}

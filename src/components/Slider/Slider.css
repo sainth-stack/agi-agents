@@ -1,0 +1,69 @@
+/* SliderInput.css */
+
+/* General slider styles */
+.slider {
+    -webkit-appearance: none; /* Remove default styling */
+    appearance: none; /* Remove default styling */
+}
+
+/* Track styles for WebKit browsers (Chrome, Safari) */
+.slider::-webkit-slider-runnable-track {
+    height: 8px; /* Track height */
+    background: #747981; /* Slate-like background color (Tailwind slate-600) */
+    border-radius: 4px; /* Rounded corners */
+}
+
+.slider::-moz-range-track {
+    height: 8px; /* Track height */
+    background: #4a5568; /* Slate-like background color (Tailwind slate-600) */
+    border-radius: 4px; /* Rounded corners */
+}
+
+/* Thumb styles for WebKit browsers */
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Remove default styling */
+    appearance: none; /* Remove default styling */
+    width: 15px; /* Thumb width */
+    height: 15px; /* Thumb height */
+    background: #fcffff; /* Tailwind gray-50 */
+    border: 2px solid #000; 
+    box-shadow: 1px 2px 3px gray;/* Black border for the thumb */
+    border-radius: 50%;
+    margin-top: -3px; 
+    cursor: pointer; /* Pointer cursor */
+}
+
+.slider::-moz-range-thumb {
+    width: 20px; /* Thumb width */
+    height: 20px; /* Thumb height */
+    background: #f9fafb; /* Tailwind gray-50 */
+    border: 2px solid #000; /* Black border for the thumb */
+    border-radius: 50%; /* Rounded thumb */
+}
+
+/* For Internet Explorer */
+.slider::-ms-track {
+    height: 8px; /* Track height */
+    background: #000; /* Transparent background */
+    border-color: transparent; /* No border */
+    color: transparent; /* No color */
+}
+
+.slider::-ms-fill-lower {
+    background: #000 !important; /* Black progress color */
+    border-radius: 4px; /* Rounded corners */
+}
+
+.slider::-ms-fill-upper {
+    background: #0047c1 !important; /* Slate-like background color (Tailwind slate-600) */
+    border-radius: 4px; /* Rounded corners */
+}
+
+.slider::-ms-thumb {
+    width: 20px; /* Thumb width */
+    height: 20px; /* Thumb height */
+    background:#0047c1 !important; /* Tailwind gray-50 */
+    border: 2px solid #000; /* Black border for the thumb */
+    border-radius: 50%; /* Rounded thumb */
+    cursor: pointer; /* Pointer cursor */
+}

@@ -42,7 +42,7 @@ const FullLayout = () => {
 
     if (!username || !email) {
       // If missing, navigate to the login page
-      navigate("/login");
+      //navigate("/login");
     }
   }, [navigate]);
   const [isSidebarOpen, setSidebarOpen] = useState(true);
