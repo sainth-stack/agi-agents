@@ -39,22 +39,11 @@ const AgentApps = () => {
                                         <div className="text-3xl mr-2 flex">
                                             {card.icon} {/* Render the icon */}
                                         </div>
-                                        <div className="relative flex items-center justify-center text-sm font-semibold px-2 text-center bg-orange-50 border-2 border-orange-200 rounded-lg">
-                                            {voteCounts[index]} Votes {/* Render the vote count */}
-                                        </div>
+
                                     </div>
                                 }
-                                configureButton={
-                                    <button
-                                        onClick={() => handleUpvote(index)}
-                                        className="mt-4 text-black border-2 rounded-lg p-1 hover:bg-slate-100"
-                                    >
-                                        Upvote
-                                    </button>
-                                }
+
                                 specificType={card.type} // Pass specific type
-                                author="Vishnu" // Default author
-                                Createdby={"Created by"}
                             />
                         </div>
                     ))}
