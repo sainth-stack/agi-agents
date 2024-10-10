@@ -55,7 +55,7 @@ const AgentStudio = () => {
         <div className="flex bg-white  justify-center items-center  ">
             <div className="w-full p-1">
                 <div className="border-2 w-full bg-slate-50 shadow-md  rounded-lg px-3">
-                    <h6 className="text-3xl font-bold my-2">Agent Studio</h6>
+                    <h6 className="text-3xl font-bold my-2">Agentic AI studio</h6>
                     <form>
                         <h2 className="text-xl font-bold ">Configure your Agent:</h2>
 

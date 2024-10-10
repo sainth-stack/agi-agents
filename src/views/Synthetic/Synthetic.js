@@ -101,21 +101,21 @@ const SyntheticDataGenerator = () => {
   };
 
   return (
-    <div className="container">
+    <div className="container  p-3 bg-slate-50 shadow-md">
       <h1>Synthetic Data Generator</h1>
       <form onSubmit={handleSubmit}>
         {/* API Key Input */}
-        <div className="input-group">
-          <label>Enter your OpenAI API key:</label>
+        <div className="input-group group">
+          <label className="fw-semibold text-lg">Enter your OpenAI API key:</label>
           <div className="form-group">
-            <div style={{ position: "relative" }}>
+            <div style={{ position: "relative" }} className="">
               <input
                 type={showPassword ? "text" : "password"}
                 value={apiKey}
                 onChange={(e) => setApiKey(e.target.value)} // Update API key state
                 required
                 placeholder="API Key"
-                className="input"
+                className=" -p-3  h-10 mx-3  shadow-sm bg-white"
               />
               <span
                 onClick={togglePasswordVisibility} // Toggle password visibility
@@ -143,10 +143,10 @@ const SyntheticDataGenerator = () => {
             id="file-upload"
             style={{ display: "none" }} // Hide default input
           />
-          <label htmlFor="file-upload" className="file-upload-label">
+          <label htmlFor="file-upload " className="file-upload-label fw-semibold ">
             Drag and drop file here
             <br />
-            <span style={{ padding: "30px", paddingTop: "20px" }}>
+            <span style={{ padding: "30px", paddingTop: "20px" }} className="fw-semibold ">
               Limit 200MB per file • XLSX
             </span>
           </label>
@@ -155,18 +155,19 @@ const SyntheticDataGenerator = () => {
 
         {/* Row Count Control */}
         <div className="input-group">
-          <label>Number of rows to generate:</label>
+          <label className="text-lg fw-semibold ">Number of rows to generate:</label>
           <div className="row-control">
             <input
               type="number"
               value={rows}
               onChange={(e) => setRows(Number(e.target.value))} // Update row count
-              className="row-input"
+              className=" -p-3  h-10 mx-3 text-balance  shadow-md outline-none border-collapse bg-white rounded-md "
+
               min={1} // Prevent invalid input
               max={1000} // Prevent exceeding max
             />
-            <button type="button" onClick={() => handleRowsChange(false)}>-</button>
-            <button type="button" onClick={() => handleRowsChange(true)}>+</button>
+            <button type="button" onClick={() => handleRowsChange(false)} className="bg-black font-medium p-2 -m-1 shadow-md">-</button>
+            <button type="button" onClick={() => handleRowsChange(true)} className="bg-black font-medium p-2 -m-1 shadow-md">+</button>
           </div>
         </div>
 

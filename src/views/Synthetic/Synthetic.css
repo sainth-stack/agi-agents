@@ -1,6 +1,8 @@
 .container {
   max-width: 600px;
   margin: 0 auto;
+  position: absolute;
+  top: 2%;
   padding: 20px;
   background-color:white;
   border-radius: 8px;
