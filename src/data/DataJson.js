@@ -33,19 +33,24 @@ export const cardData = [
         href: "/start-design"
     },
     {
-        title: 'Perplexity Tool',
+        title: 'Synthetic Generator',
         heading: 'Provides ability to search the internet',
-        icon: <FaGlobe />,  // Render as JSX element
+        icon: <FaGlobe />,
+        href: "/synthetic-generator"
+        // Render as JSX element
     },
     {
-        title: 'LinkedIn Tool',
+        title: 'Blog Manager',
         heading: 'Provides ability to post on LinkedIn',
-        icon: <FaLinkedin />,  // Render as JSX element
+        icon: <FaLinkedin />,
+        href: "/blog-manager"
+        // Render as JSX element
     },
 
     {
-        title: 'Mail Tool',
+        title: 'LinkedIn Post',
         heading: 'Provides ability to send an email ...',
-        icon: <FaEnvelope />,  // Render as JSX element
+        icon: <FaEnvelope />,
+        href: "/linkedin-manager"// Render as JSX element
     }
 ];
