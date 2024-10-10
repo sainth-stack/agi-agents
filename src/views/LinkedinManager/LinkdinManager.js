@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import '@fortawesome/fontawesome-free/css/all.min.css';
+//import '@fortawesome/fontawesome-free/css/all.min.css';
 
 import axios from "axios";
 import "./Linkdin.css";
@@ -18,7 +18,7 @@ const LinkdinManager = () => {
     e.preventDefault();
 
     // Validate input fields
-    if (!apiKey || !websiteUrl ) {
+    if (!apiKey || !websiteUrl) {
       alert("Please fill out all fields.");
       return;
     }
@@ -96,7 +96,7 @@ const LinkdinManager = () => {
         <div className="form-group">
           <label>Select One:</label>
           <select value={option} onChange={(e) => setOption(e.target.value)} required>
-            
+
             <option value="website-blog">Website</option>
             <option value="youtube-blog">YouTube</option>
             <option value="video-audio-blog">Video/Audio</option>
@@ -104,7 +104,7 @@ const LinkdinManager = () => {
           </select>
         </div>
 
-       {/* <div className="form-group">
+        {/* <div className="form-group">
           <label>Enter A Topic:</label>
           <input
             style={{ width: "95%" }}
@@ -114,7 +114,7 @@ const LinkdinManager = () => {
             required
           />
         </div> */}
-         
+
         <div className="form-group">
           <label>Enter a Website URL:</label>
           <input
