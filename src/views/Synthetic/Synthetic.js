@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./Synthetic.css"; // Ensure this stylesheet is correctly linked.
+import "./SyntheticPanel.css"; // Ensure this stylesheet is correctly linked.
 //import "@fortawesome/fontawesome-free/css/all.min.css"; // Font Awesome for icons
 import * as XLSX from "xlsx";
 import axios from "axios";

@@ -56,9 +56,9 @@ const BlogManager = () => {
   return (
 
     <>
-      <div className="flex justify-center -my-8">
-        <div className="blog-manager-container ">
-          <h1 className="title">Blog Manager</h1>
+      <div className="flex justify-center items-center h-[100vh] bg-gray-50">
+        <div className="blog-manager-container  bg-slate-50 shadow-md">
+          <h1 className="text-center p-2  mx-3">Blog Manager</h1>
           <form onSubmit={handleSubmit} className="blog-form">
             <div className="form-group">
               <label>Enter OpenAI API Key:</label>

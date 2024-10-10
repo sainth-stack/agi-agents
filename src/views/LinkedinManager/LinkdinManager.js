@@ -56,9 +56,9 @@ const LinkdinManager = () => {
 
   return (
     <>
-      <div className="flex justify-center -my-8">
-        <div className="blog-manager-container ">
-          <h1 className="title2">Linkedin Manager</h1>
+      <div className="flex justify-center  bg-gray-50 p-3">
+        <div className="blog-manager-container shadow-md bg-slate-50 ">
+          <h1 className="p-3 ">Linkedin Manager</h1>
           <form onSubmit={handleSubmit} className="blog-form">
             <div className="form-group">
               <label>Enter OpenAI API Key:</label>
