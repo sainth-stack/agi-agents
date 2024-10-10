@@ -39,11 +39,12 @@ const ConfigureTools = () => {
                             <Card
                                 key={index}
                                 title={card.title}
+                                href={card.href}
                                 heading={
                                     <span className='font-semibold w-40 flex flex-wrap mt-2'>
 
                                         {card.heading}</span>}
-                                icon={<div style={{ fontSize: '24px', color: '#333', marginRight: '10px' }} className='bg-slate-100 p-2 rounded-md '>{card.icon}</div>}
+                                icon={card.icon}
                                 toggle={<Toggle />}
                                 configureButton={
                                     <button

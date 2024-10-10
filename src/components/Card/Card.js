@@ -1,9 +1,12 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-const Card = ({ title, Createdby, icon, heading, count, toggle, configureButton, specificType, author }) => {
+const Card = ({ title, Createdby, href, icon, heading, count, toggle, configureButton, specificType, author }) => {
     return (
+
         <div className='flex flex-col '>
-            <div className="rounded-xl shadow-md border text-card-foreground cursor-pointer p-4">
+            <div className="rounded-xl shadow-md border text-card-foreground cursor-pointer p-2">
+                <Link to={href}></Link>
                 <div className="flex justify-between items-center mb-2">
                     {/* Icon */}
                     <div className="text-3xl">

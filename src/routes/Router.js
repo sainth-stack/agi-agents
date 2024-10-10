@@ -11,9 +11,11 @@ import BillingSection from "../views/billingSection/index.js";
 import GraphView from "../views/design/genAi/GraphView.js";
 import Layout from "../layouts/layout/index.js";
 import Home from "../views/dashboards/Home.js";
-import ConfigureLLM from "../views/AgentStudio/ConfigureLLM.js";
+import ConfigureLLM from "../views/LLM/ConfigureLLM.js";
 import ConfigureTools from "../views/Tools/ConfigureTools.js";
 import AgentApps from "../views/AgentApps/AgentApps.js";
+import AgentStudio from './../views/AgentStudio/AgentStudio';
+
 
 /****Layouts*****/
 const FullLayout = lazy(() => import("../layouts/FullLayout/FullLayout.js"));
@@ -53,7 +55,10 @@ const ThemeRoutes = [
       { path: "/start-design", element: <Design /> },
       { path: "/configure-llm", element: <ConfigureLLM /> },
       { path: "/configure-tools", element: <ConfigureTools /> },
-      { path: "/create-agent", element: <AgentApps /> },
+      { path: "/create-agent", element: <AgentStudio /> },
+      { path: "/market-place", element: <AgentApps /> },
+
+
 
 
 

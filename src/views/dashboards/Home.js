@@ -8,7 +8,7 @@ const Home = () => {
         <div className="bg-white w-full h-[100vh]  ">
             {/* Home Title */}
             <div className="flex">
-                <h1 className="text-3xl font-bold relative top-[1.5rem]">Home</h1>
+                <h1 className="text-3xl font-bold relative top-[1.5rem]">Dashboard</h1>
             </div>
 
             {/* Dashboard Cards */}
@@ -25,6 +25,7 @@ const Home = () => {
                     title="Credits Used"
                     icon={<FiCpu size={24} />}
                     count={"2/100"}
+                    style={{ backgroundColor: 'red' }}
                 />
                 <Card
                     title="Agents"

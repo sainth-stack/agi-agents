@@ -20,8 +20,8 @@ const Menuitems = [
   },
 
 
-
-  {
+  //agents commented
+  /* {
     title: "Agents",
     list: [
       {
@@ -30,7 +30,7 @@ const Menuitems = [
         href: "/start-design",
       }
     ]
-  },
+  }, */
   {
     title: "Agent Studio",
     list: [
@@ -50,6 +50,18 @@ const Menuitems = [
       }
 
     ],
+  },
+
+  {
+    title: "Market ",
+    list: [
+
+      {
+        title: "Market Place",
+        icon: PostAddIcon,
+        href: "/market-place",
+      }
+    ]
   },
   {
     title: "MISC",
