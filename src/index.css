@@ -2,11 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;700&display=swap');
 
 body {
   margin: 0 !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-    font-family: 'DM Sans', sans-serif;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.submit-button {
+  background-color: blue;
+  padding: 6px 12px;
+  color: white;
+  margin-bottom: 12px;
+  border-radius: 6px;
+}
+
+
+.font-custom {
+    font-family: "Schibsted Grotesk", sans-serif !important;
 }

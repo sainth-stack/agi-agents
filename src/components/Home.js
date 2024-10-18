@@ -21,25 +21,27 @@ const Home = () => {
                         </div>
                     </div>
                 </div>
-                <Card 
-                    title="Credits Used" 
-                    icon={<FiCpu size={24} />} 
-                    count={"2/100"} 
+                <Card
+                    title="Credits Used"
+                    icon={<FiCpu size={24} />}
+                    count={"2/100"}
                 />
-                <Card 
-                    title="Agents" 
-                    icon={<FiUsers size={24} />} 
-                    count={1} 
+                <Card
+                    title="Agents"
+                    icon={<FiUsers size={24} />}
+                    count={1}
                 />
-                <Card 
-                    title="Inference Requests" 
-                    icon={<FiActivity size={24} />} 
-                    count={2} 
+                <Card
+                    title="Inference Requests"
+                    icon={<FiActivity size={24} />}
+                    count={2}
                 />
             </div>
 
             {/* API Details Section */}
-            <div className="relative top-16 max-w-[60%] m-4 shadow-md bg-white">
+            <div
+                className="relative top-16 max-w-[60%] m-4 bg-white"
+            >
                 <CustomCard
                     title="Your API Key"
                     heading="Here is your API key for Agent API, passed as x-api-key header:"
@@ -47,6 +49,7 @@ const Home = () => {
                     apiEndpoint="https://agent.api.lyzr.app"  // Placeholder for endpoint
                 />
             </div>
+
         </div>
     );
 };

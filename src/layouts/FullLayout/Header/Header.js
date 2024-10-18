@@ -1,6 +1,7 @@
 import React from "react";
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
+import Avatar from '@mui/material/Avatar';
 
 import {
   AppBar,
@@ -9,7 +10,6 @@ import {
   Menu,
   MenuItem,
   Button,
-  Avatar,
   Divider,
   ListItemIcon,
   Grid,
@@ -17,7 +17,7 @@ import {
   Tabs,
 } from "@mui/material";
 
-import userimg from "../../../assets/images/users/user.jpg";
+// import userimg from "../../../assets/images/users/user.jpg";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const Header = (props) => {
@@ -54,9 +54,9 @@ const Header = (props) => {
   console.log(location)
 
   return (
-    <AppBar sx={{...props.sx,borderBottom:'1px solid rgb(0 0 0 / 5%)'}} elevation={0} className={props.customClass}>
+    <AppBar sx={{ ...props.sx, borderBottom: '1px solid rgb(0 0 0 / 5%)' }} elevation={0} className={props.customClass}>
       <Toolbar>
-       {(location.pathname =='/start-design' || location.pathname =="/graph-view" ) &&<Tabs
+        {(location.pathname == '/start-design' || location.pathname == "/graph-view") && <Tabs
           value={currentTab}
           onChange={handleTabChange}
           sx={{
@@ -96,14 +96,14 @@ const Header = (props) => {
 
 
         <Grid
-          onClick={()=>navigate('/start-design')}
+          onClick={() => navigate('/start-design')}
           style={{ fontSize: '18px', marginRight: '10px', cursor: 'pointer', color: 'black' }}
         >
           Start Design
         </Grid>
 
         <Grid
-          onClick={()=>navigate('/pricing')}
+          onClick={() => navigate('/pricing')}
           style={{ fontSize: '18px', cursor: 'pointer', color: 'black', marginRight: '10px' }}
         >
           Pricing
@@ -136,8 +136,6 @@ const Header = (props) => {
             }}
           >
             <Avatar
-              src={userimg}
-              alt={userimg}
               sx={{
                 width: "30px",
                 height: "30px",
@@ -188,7 +186,7 @@ const Header = (props) => {
               sx={{
                 ml: 1.5,
               }}
-              onClick={()=>navigate("/billing")}
+              onClick={() => navigate("/billing")}
             >
               Account & Billing
             </Box>

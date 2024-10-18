@@ -12,12 +12,13 @@ import GraphView from "../views/design/genAi/GraphView.js";
 import Layout from "../layouts/layout/index.js";
 import Home from "../views/dashboards/Home.js";
 import ConfigureLLM from "../views/LLM/ConfigureLLM.js";
-import ConfigureTools from "../views/Tools/ConfigureTools.js";
 import AgentApps from "../views/AgentApps/AgentApps.js";
 import AgentStudio from './../views/AgentStudio/AgentStudio';
 import BlogManager from "../views/BlogManager/BlogManager.js";
 import SyntheticDataGenerator from "../views/Synthetic/Synthetic.js";
 import LinkdinManager from "../views/LinkedinManager/LinkdinManager.js";
+import AiEnvironment from "../views/AgentApps/ai-environment/index.js";
+import { ConfigureTools } from "../views/Tools/ConfigureTools.js";
 
 
 /****Layouts*****/
@@ -51,7 +52,6 @@ const ThemeRoutes = [
     children: [
       { path: "/", element: <Navigate to="dashboards/dashboard1" /> },
       { path: "dashboards/dashboard1", exact: true, element: <Home /> },
-
       { path: "/support", element: <Support /> },
       { path: "/affliate", element: <Affliate /> },
       { path: "/new-request", element: <NewRequest /> },
@@ -63,15 +63,6 @@ const ThemeRoutes = [
       { path: "/blog-manager", element: <BlogManager /> },
       { path: "/synthetic-generator", element: <SyntheticDataGenerator /> },
       { path: "/linkedin-manager", element: <LinkdinManager /> },
-
-
-
-
-
-
-
-
-
       // { path: "/login", element: <Login /> },
       { path: "/pricing", element: <Pricing /> },
       // { path: "/register", element: <Register /> },
@@ -81,11 +72,12 @@ const ThemeRoutes = [
   },
   {
     path: "/",
-    //element: <Layout />,
-    /* children: [
+    // element: <Layout />,
+    children: [
+      { path: "/ai-environment/:id", element: <AiEnvironment /> },
       { path: "login", element: <Login /> },
       { path: "register", element: <Register /> },
-    ], */
+    ],
   }
 ];
 

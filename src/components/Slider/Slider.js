@@ -12,7 +12,8 @@ const SliderInput = ({ label, value, onChange, min = 0, max = 1, step = 0.1 }) =
                 step={step}
                 value={value}
                 onChange={onChange}
-                className="w-full bg-black text-red-500 slider"
+                className="w-full bg-black text-red-500 slider-old"
+                style={{position:'relative'}}
             />
         </div>
     );

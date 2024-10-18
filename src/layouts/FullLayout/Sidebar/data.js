@@ -32,10 +32,10 @@ const Menuitems = [
     ]
   }, */
   {
-    title: "Agent Studio",
+    title: "Agentic AI Studio",
     list: [
       {
-        title: "Configure LLM Design",
+        title: "LLM planner",
         icon: PostAddIcon,
         href: "/configure-llm",
       },

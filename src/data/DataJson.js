@@ -1,5 +1,5 @@
 
-import { FaGlobe, FaLinkedin, FaEnvelope } from 'react-icons/fa'; // Importing icons from react-icons
+import { FaGlobe, FaLinkedin, FaEnvelope, FaMailchimp, FaDatabase, FaCode, FaBlog } from 'react-icons/fa'; // Importing icons from react-icons
 import PostAddIcon from '@mui/icons-material/PostAdd';
 
 
@@ -13,7 +13,6 @@ export const modelVendorOptions = [
 export const modelOptions = [
     { label: 'GPT-4', value: 'gpt-4' },
     { label: 'GPT-4o-Mini', value: 'gpt-4o-mini' },
-    { label: 'GPT-3', value: 'gpt-3' },
 ];
 
 
@@ -52,5 +51,32 @@ export const cardData = [
         heading: 'Provides ability to send an email ...',
         icon: <FaEnvelope />,
         href: "/linkedin-manager"// Render as JSX element
+    }
+];
+
+export const Tools = [
+    {
+        title: 'Blog Post',
+        heading: 'Ability to post blogs',
+        icon: <FaBlog />,
+        href: "/blog-manager"
+    },
+    {
+        title: 'LinkedIn Post',
+        heading: 'Post on LinkedIn',
+        icon: <FaLinkedin />,
+        href: "/linkedin-manager"
+    },
+    {
+        title: 'Synthetic Data',
+        heading: 'Generate synthetic data',
+        icon: <FaDatabase />,
+        href: "/synthetic-data"
+    },
+    {
+        title: 'Text to SQL',
+        heading: 'Convert text to SQL',
+        icon: <FaCode />,
+        href: "/text-to-sql"
     }
 ];

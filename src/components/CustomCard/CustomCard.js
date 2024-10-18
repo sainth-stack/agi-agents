@@ -31,7 +31,7 @@ const CustomCard = ({ title, heading, apiKey, apiEndpoint, setApiKey }) => {
     );
 
     return (
-        <div className="p-2 w-full h-[600px]   m-2 mx-auto shadow-sm rounded-lg border-2 card">
+        <div className="p-2 w-full h-[600px]   m-2 mx-auto rounded-lg card">
             <h2 className="text-xl font-bold  p-4">{title}</h2>
             <p className="mb-2" dangerouslySetInnerHTML={{ __html: formattedHeading }} />
 
