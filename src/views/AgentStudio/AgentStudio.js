@@ -54,7 +54,7 @@ const AgentStudio = () => {
         e.preventDefault();
         console.log(Object.keys(tools).map((item) =>
             item.includes(' ') ? item.split(' ').join('_').toLowerCase() : item.toLowerCase()
-          )
+        )
         )
 
         // Basic validation
@@ -64,7 +64,9 @@ const AgentStudio = () => {
         }
 
         setLoading(true);
-        const toolsData = Object.keys(tools)?.map((item) => item.join(' ', '_'))
+        const toolsData = Object.keys(tools).map((item) =>
+            item.includes(' ') ? item.split(' ').join('_').toLowerCase() : item.toLowerCase()
+        )
         const requestBody = {
             ...formData,
             tools: toolsData.join(', '),
