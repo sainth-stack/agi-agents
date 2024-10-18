@@ -101,7 +101,7 @@ const AiEnvironment = () => {
             updatedResponses[updatedResponses.length - 1] = {
                 input: payload.prompt,
                 loading: false,
-                output: data?.content,
+                output: data?.content || data?.result?.content,
             };
 
             setResponses(updatedResponses); // Update responses
