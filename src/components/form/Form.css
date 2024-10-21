@@ -1,0 +1,129 @@
+.card {
+  width: 60%;
+  margin: 0 auto; /* Centers the card horizontally */
+  padding: 20px;
+}
+.Submit {
+  text-align: center;
+  color: rgb(20, 141, 201);
+  border-radius: 10px;
+  padding: 15px;
+}
+.total-card {
+  border-radius: 20px;
+  background-color: #f2f8fb60;
+}
+
+.hi {
+  font-weight: bold;
+}
+
+.input-container,
+.input-container2 {
+  display: flex !important;
+  gap: 60px;
+  margin-top: 50px;
+}
+
+.check-box1 {
+  display: flex;
+  gap: 177px;
+  margin-top: 25px;
+}
+
+.check-box2,
+.check-box3 {
+  display: flex;
+  gap: 90px;
+  margin-top: 35px;
+}
+
+.tagline {
+  margin-top: 10px;
+  padding: 10px;
+}
+
+.Onclick {
+  background-color: aquamarine;
+  border-radius: 10px;
+  padding: 10px;
+  margin-top: 20px;
+  border: none; /* Replaces border-style: hidden; for better clarity */
+}
+
+textarea {
+  width: 100% !important;
+  padding: 10px;
+  font-size: 16px;
+  line-height: 1.5;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+  /* background-color: #f9f9f9; */
+  box-shadow: inset 0 1px 3px rgba(196, 43, 43, 0.1);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+textarea:focus {
+  outline: none;
+  border-color: #0874ef;
+  box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
+  background-color: #fff;
+}
+
+.ai-agent-input-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px; /* Space between the fields */
+  width: 100%; /* Full width of the container */
+  margin-bottom: 20px;
+}
+
+.ai-agent-input-group {
+  display: flex;
+  flex-direction: column;
+  width: 48%; /* Each input group takes up 48% of the available width */
+}
+
+.ai-agent-label {
+  margin-bottom: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+.ai-agent-input {
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: border-color 0.3s;
+}
+
+.ai-agent-input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+  .ai-agent-input-container {
+    flex-direction: column; /* Stack inputs vertically on smaller screens */
+  }
+
+  .ai-agent-input-group {
+    width: 100%; /* Full width for each input group */
+  }
+}
+.star {
+  color: rgb(252, 178, 178);
+}
+.wordCount {
+  /* //margin-left: 330px; */
+
+  color: rgb(241, 103, 103);
+}
+.wordCount1 {
+  /* margin-left: 790px; */
+  color: rgb(241, 103, 103);
+}

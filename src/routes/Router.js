@@ -13,13 +13,16 @@ import Layout from "../layouts/layout/index.js";
 import Home from "../views/dashboards/Home.js";
 import ConfigureLLM from "../views/LLM/ConfigureLLM.js";
 import AgentApps from "../views/AgentApps/AgentApps.js";
-import AgentStudio from './../views/AgentStudio/AgentStudio';
+import AgentStudio from "./../views/AgentStudio/AgentStudio";
 import BlogManager from "../views/BlogManager/BlogManager.js";
 import SyntheticDataGenerator from "../views/Synthetic/Synthetic.js";
 import LinkdinManager from "../views/LinkedinManager/LinkdinManager.js";
 import AiEnvironment from "../views/AgentApps/ai-environment/index.js";
 import { ConfigureTools } from "../views/Tools/ConfigureTools.js";
-
+import AgentHubHome from "../views/agiAgents/home/index.js";
+import SubmitPage from "../components/form/Form.js";
+import DetailPage from "../components/details/index.js";
+import UpdatePage from "../components/update/Form.js";
 
 /****Layouts*****/
 const FullLayout = lazy(() => import("../layouts/FullLayout/FullLayout.js"));
@@ -60,6 +63,11 @@ const ThemeRoutes = [
       { path: "/configure-tools", element: <ConfigureTools /> },
       { path: "/create-agent", element: <AgentStudio /> },
       { path: "/market-place", element: <AgentApps /> },
+      { path: "/agnets-hub", element: <AgentHubHome /> },
+      { path: "/agnets-hub/submit", element: <SubmitPage /> },
+      { path: "/agnets-hub/details", element: <DetailPage /> },
+      { path: "/agnets-hub/update", element: <UpdatePage /> },
+
       { path: "/blog-manager", element: <BlogManager /> },
       { path: "/synthetic-generator", element: <SyntheticDataGenerator /> },
       { path: "/linkedin-manager", element: <LinkdinManager /> },
@@ -78,7 +86,7 @@ const ThemeRoutes = [
       { path: "login", element: <Login /> },
       { path: "register", element: <Register /> },
     ],
-  }
+  },
 ];
 
 export default ThemeRoutes;

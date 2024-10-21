@@ -1,7 +1,7 @@
-import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
-import PostAddIcon from '@mui/icons-material/PostAdd';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
+import PostAddIcon from "@mui/icons-material/PostAdd";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 const Menuitems = [
   {
     title: "USER",
@@ -16,9 +16,8 @@ const Menuitems = [
       //   icon: AddToPhotosOutlinedIcon,
       //   href: "/form-elements/autocomplete",
       // }
-    ]
+    ],
   },
-
 
   //agents commented
   /* {
@@ -43,25 +42,29 @@ const Menuitems = [
         title: "Configure Tools",
         icon: PostAddIcon,
         href: "/configure-tools",
-      }, {
+      },
+      {
         title: "Create Agent ",
         icon: PostAddIcon,
         href: "/create-agent",
-      }
-
+      },
     ],
   },
 
   {
     title: "Market ",
     list: [
-
       {
         title: "Market Place",
         icon: PostAddIcon,
         href: "/market-place",
-      }
-    ]
+      },
+      {
+        title: "Agi Agents Hub",
+        icon: PostAddIcon,
+        href: "/agnets-hub",
+      },
+    ],
   },
   {
     title: "MISC",
@@ -75,9 +78,9 @@ const Menuitems = [
         title: "Support",
         icon: HelpOutlineIcon,
         href: "/support",
-      }
-    ]
-  }
+      },
+    ],
+  },
 ];
 
 export default Menuitems;
