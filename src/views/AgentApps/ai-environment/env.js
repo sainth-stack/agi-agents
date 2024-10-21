@@ -33,7 +33,7 @@ const ENVT = ({
                         </Typography>
 
                         {/* Input Form */}
-                        <form onSubmit={handleSubmit} className="flex flex-col gap-4 relative">
+                        <form onSubmit={handleSubmit} className="flex flex-col gap-4 relative font-custom">
                             <TextField
                                 value={prompt}
                                 onChange={handlePromptChange}
@@ -44,17 +44,23 @@ const ENVT = ({
                                 required
                                 fullWidth
                                 inputProps={{ style: { padding: '4px' } }}
-                                className="font-custom"
+                                className="font-custom text-gray-600"
                                 sx={{
+                                    fontFamily: "Schibsted Grotesk !important",
                                     "& .MuiOutlinedInput-root": {
+                                        fontFamily: "Schibsted Grotesk !important",
+                                        color: '#4B5563',
                                         "& fieldset": {
                                             borderColor: "lightgrey", // Default border color
+                                            fontFamily: "Schibsted Grotesk !important",
+                                            color: '#4B5563',
                                         },
                                         "&:hover fieldset": {
                                             borderColor: "lightgrey", // Disable hover border color change
                                         },
                                         "&.Mui-focused fieldset": {
                                             border: "1px solid lightgrey", // Disable focus border color change
+                                            fontFamily: "Schibsted Grotesk !important",
                                         },
                                     },
                                 }}
@@ -134,7 +140,7 @@ const ENVT = ({
                                             //     Expected Output:
                                             // </Typography>
                                         )} */}
-                                        <pre className="whitespace-pre-wrap font-custom">{response.output}</pre>
+                                        <pre className="whitespace-pre-wrap font-custom text-gray-600" style={{fontSize:'16px'}} >{response.output}</pre>
                                     </>
                                 )}
                             </Paper>

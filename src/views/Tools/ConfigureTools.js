@@ -92,14 +92,14 @@ export const ConfigureTools = () => {
                             className="bg-red-500 text-white py-2 px-4 rounded mr-4"
                             style={{ height: '40px' }}
                         >
-                            Reset All
+                            Reset
                         </button>
                         <button
                             onClick={saveAllConfigurations}
                             className="bg-blue-500 text-white py-2 px-4 rounded"
                             style={{ height: '40px' }}
                         >
-                            Save All
+                            Save
                         </button>
                     </div>
                 </div>

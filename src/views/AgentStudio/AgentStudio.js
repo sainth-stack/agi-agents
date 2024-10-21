@@ -52,21 +52,19 @@ const AgentStudio = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(Object.keys(tools).map((item) =>
-            item.includes(' ') ? item.split(' ').join('_').toLowerCase() : item.toLowerCase()
-        )
-        )
 
-        // Basic validation
         if (!formData.name || !formData.agent_description) {
             showToast('Please fill in all required fields', 'error');
             return;
         }
 
         setLoading(true);
-        const toolsData = Object.keys(tools).map((item) =>
-            item.includes(' ') ? item.split(' ').join('_').toLowerCase() : item.toLowerCase()
-        )
+        const toolsData = tools.length
+            ? tools.map((item) =>
+                  item.includes(' ') ? item.split(' ').join('_').toLowerCase() : item.toLowerCase()
+              )
+            : [];
+
         const requestBody = {
             ...formData,
             tools: toolsData.join(', '),
@@ -83,8 +81,6 @@ const AgentStudio = () => {
             if (!response.ok) throw new Error('Failed to create agent');
             const result = await response.json();
             showToast('Agent created successfully', 'success');
-            console.log('Agent created:', result);
-            // Reset form
             setFormData({ name: '', agent_description: '', modelAgent: '', system_prompt: '' });
             setUploadExcel(false);
             setReadWebsite(false);
@@ -130,13 +126,16 @@ const AgentStudio = () => {
                     <SwitchInput
                         label={label}
                         checked={key === 'uploadExcel' ? uploadExcel : readWebsite}
-                        onChange={() => key === 'uploadExcel' ? setUploadExcel(!uploadExcel) : setReadWebsite(!readWebsite)}
+                        onChange={() =>
+                            key === 'uploadExcel' ? setUploadExcel(!uploadExcel) : setReadWebsite(!readWebsite)
+                        }
                     />
                 );
             default:
                 return null;
         }
     };
+
     return (
         <div className="flex bg-gray-100 font-sans font-custom">
             <div className="w-full md:w-1/2 p-6">
@@ -149,9 +148,15 @@ const AgentStudio = () => {
                         {renderInput('textarea', 'system_prompt', 'System Prompt', 'Enter Text, URL, Video, Audio')}
                         <ChipsInput label="Tools" chip={tools} />
 
+                        {!tools.length && (
+                            <p className="text-sm text-gray-500 mt-2">No tools selected</p>
+                        )}
+
                         <button
                             type="submit"
-                            className={`mt-6 w-full py-2 px-4 text-white font-semibold rounded-lg bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-opacity-75 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                            className={`mt-6 w-full py-2 px-4 text-white font-semibold rounded-lg bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-opacity-75 ${
+                                loading ? 'opacity-50 cursor-not-allowed' : ''
+                            }`}
                             disabled={loading}
                         >
                             {loading ? 'Loading...' : 'Submit'}
@@ -164,7 +169,7 @@ const AgentStudio = () => {
                 <div className="border-2 bg-white rounded-lg shadow-lg p-6 w-full">
                     <h3 className="text-lg font-bold mb-4 text-gray-600">Form Data JSON</h3>
                     <pre className="bg-gray-100 p-4 rounded text-sm overflow-auto">
-                        {JSON.stringify({ ...formData, uploadExcel, readWebsite }, null, 2)}
+                        {JSON.stringify({ ...formData, tools }, null, 2)}
                     </pre>
                 </div>
             </div>

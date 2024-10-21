@@ -3,13 +3,12 @@ import axios from 'axios';
 import SelectInput from './../../components/Select/SelectInput';
 import TextInput from '../../components/Inputs/TextInput';
 import SliderInput from './../../components/Slider/Slider';
-import { modelOptions, modelVendorOptions } from './../../data/DataJson';
+import { modelOptions } from './../../data/DataJson';
 import SwitchInput from '../../components/switch';
 import { baseURL } from '../../const';
 import Toast from '../../components/toast';
 
 const ConfigureLLM = () => {
-    const [modelVendor, setModelVendor] = useState('openai');
     const [apiKey, setApiKey] = useState('');
     const [model, setModel] = useState('gpt-4o-mini');
     const [temperature, setTemperature] = useState(0.5);
@@ -26,7 +25,6 @@ const ConfigureLLM = () => {
 
         const postData = {
             name: environmentName || 'My Environment',
-            model_vendor: modelVendor,
             api_key: apiKey || 'your-api-key-here',
             model: model,
             temperature: temperature,
@@ -55,11 +53,8 @@ const ConfigureLLM = () => {
                 <SelectInput
                     label={label}
                     options={options}
-                    value={key === 'modelVendor' ? modelVendor : model}
-                    onChange={(e) => {
-                        if (key === 'modelVendor') setModelVendor(e.target.value);
-                        else setModel(e.target.value);
-                    }}
+                    value={model}
+                    onChange={(e) => setModel(e.target.value)}
                 />
             );
         } else if (type === 'text') {
@@ -112,9 +107,8 @@ const ConfigureLLM = () => {
                     <form onSubmit={handleSubmit}>
                         <h2 className="text-2xl font-bold mb-6 text-gray-700">Plan your LLM</h2>
                         {renderInput('text', 'Model Name', 'environmentName')}
-                        {renderInput('select', 'Model Vendor', 'modelVendor', modelVendorOptions)}
-                        {renderInput('text', 'LLM API Key', 'apiKey')}
                         {renderInput('select', 'Model', 'model', modelOptions)}
+                        {renderInput('text', 'LLM API Key', 'apiKey')}
                         <div className="mt-4">
                             {renderInput('slider', 'Temperature', 'temperature')}
                         </div>
@@ -135,7 +129,6 @@ const ConfigureLLM = () => {
                     <pre className="bg-gray-100 p-4 rounded text-sm overflow-auto">
                         {JSON.stringify({
                             name: environmentName || 'My Model',
-                            model_vendor: modelVendor,
                             api_key: apiKey || 'your-api-key-here',
                             model: model,
                             temperature: temperature,

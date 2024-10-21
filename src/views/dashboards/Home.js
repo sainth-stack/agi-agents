@@ -16,7 +16,7 @@ const Home = () => {
                 <div className="rounded-xl shadow-md border text-card-foreground bg-slate-100 cursor-pointer">
                     <div className="w-full p-6 pt-0 h-24 mt-6 flex flex-col items-center justify-center">
                         <div className="text-opacity-50 text-2xl font-bold">
-                            Studio <br />
+                            Agentic AI Studio <br />
                             <p className="text-xs font-extralight">Start building</p>
                         </div>
                     </div>
@@ -30,17 +30,17 @@ const Home = () => {
                 <Card
                     title="Agents"
                     icon={<FiUsers size={24} />}
-                    count={1}
+                    count={4}
                 />
                 <Card
-                    title="Inference Requests"
+                    title="Tools"
                     icon={<FiActivity size={24} />}
-                    count={2}
+                    count={3}
                 />
             </div>
 
             {/* API Details Section */}
-            <div className="relative top-16 max-w-[60%] bg-white" style={{
+            {/* <div className="relative top-16 max-w-[60%] bg-white" style={{
                 boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1)'
             }}>
                 <CustomCard
@@ -49,7 +49,7 @@ const Home = () => {
                     apiKey="****************"  // Placeholder for actual key
                     apiEndpoint="https://agent.api.lyzr.app"  // Placeholder for endpoint
                 />
-            </div>
+            </div> */}
         </div>
     );
 };
