@@ -72,8 +72,14 @@ const FullLayout = () => {
         <Container
           maxWidth={false}
           sx={{
+            width: "100vw",
             paddingTop: "20px",
-            paddingLeft: isSidebarOpen && lgUp ? "280px!important" : "",
+            paddingLeft:
+              location && location.pathname == "/agnets-hub"
+                ? "150px!important"
+                : isSidebarOpen && lgUp
+                ? "265px!important"
+                : "",
           }}
         >
           <Box sx={{ minHeight: "calc(100vh - 170px)" }}>
