@@ -2,6 +2,7 @@ import { Typography, Button, TextField, IconButton, Paper, CircularProgress, Div
 import MicIcon from '@mui/icons-material/Mic';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import wayg from '../../../assets/images/poser.jpg'
+import jsPDF from 'jspdf';
 const ENVT = ({
     agentDetails,
     handleSubmit,
@@ -134,16 +135,72 @@ const ENVT = ({
                                         <CircularProgress size={24} />
                                     </div>
                                 ) : (
+
                                     <>
-                                        {/* {response.output && (
-                                            // <Typography variant="subtitle1" className="font-bold mt-4 mb-2 text-gray-800 font-custom">
-                                            //     Expected Output:
-                                            // </Typography>
-                                        )} */}
-                                        <pre className="whitespace-pre-wrap font-custom text-gray-600" style={{ fontSize: '16px' }} >{response.output}</pre>
-                                        <img src={`data:image/jpeg;base64,${response?.image}`}
-                                            width={700} height={500} alt='' />
+                                        <button
+                                            onClick={() => {
+                                                const doc = new jsPDF();
+
+                                                // Add the text content to the PDF
+                                                let textContent = response.output || ''; // Ensure there's text content
+                                                if (typeof textContent === 'string') {
+                                                    // Split text into multiple lines to fit the width of the page
+                                                    const splitText = doc.splitTextToSize(textContent, 180);
+                                                    doc.setFontSize(12);
+
+                                                    // Variables for pagination and keeping track of where to add content
+                                                    let pageHeight = doc.internal.pageSize.height;
+                                                    let cursorY = 10; // Starting point on each page
+
+                                                    // Iterate over lines, adding text to the PDF
+                                                    splitText.forEach((line) => {
+                                                        if (cursorY + 10 > pageHeight - 10) {
+                                                            doc.addPage(); // Add a new page if we're out of space
+                                                            cursorY = 10; // Reset cursor to the top for the new page
+                                                        }
+                                                        doc.text(line, 10, cursorY);
+                                                        cursorY += 10; // Move cursor down for the next line
+                                                    });
+
+                                                    // Add a line break before the image
+                                                    cursorY += 10; // Adding some space before the image
+
+                                                    // Add the image to the PDF if it exists
+                                                    const imgData = `data:image/jpeg;base64,${response?.image}`;
+                                                    if (response?.image) {
+                                                        doc.addImage(imgData, 'JPEG', 10, cursorY, 180, 100); // Adjust the position and size as needed
+                                                    } else {
+                                                        // Fallback if there is no image
+                                                        doc.text("No image available to include.", 10, cursorY);
+                                                    }
+                                                } else {
+                                                    // Fallback in case textContent is not a string (ensure it's printable)
+                                                    doc.text("No valid output to download.", 10, 10);
+                                                }
+
+                                                // Download the PDF with a user reference ID or custom filename
+                                                const userId = response?.userId || 'user_ref_id'; // Example user ID or fallback
+                                                doc.save(`${userId}_output.pdf`);
+                                            }}
+                                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2 flex justify-end"
+                                        >
+                                            Download as PDF
+                                        </button>
+
+                                        <pre className="whitespace-pre-wrap font-custom text-gray-600" style={{ fontSize: '16px' }}>
+                                            {response.output}
+                                        </pre>
+
+                                        <img
+                                            src={`data:image/jpeg;base64,${response?.image}`}
+                                            width={700}
+                                            height={500}
+                                            alt=''
+                                        />
                                     </>
+
+
+
                                 )}
                             </Paper>
                         ))
