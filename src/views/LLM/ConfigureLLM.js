@@ -28,9 +28,10 @@ const ConfigureLLM = () => {
             api_key: apiKey || 'your-api-key-here',
             model: model,
             temperature: temperature,
-            top_p: topP,
-            upload_excel: uploadExcel,
-            read_website: readWebsite
+            model_vendor:'openai'
+            // top_p: topP,
+            // upload_excel: uploadExcel,
+            // read_website: readWebsite
         };
 
         axios.post(`${baseURL}/environment/create`, postData)

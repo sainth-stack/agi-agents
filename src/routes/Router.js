@@ -66,7 +66,7 @@ const ThemeRoutes = [
       { path: "/agnets-hub", element: <AgentHubHome /> },
       { path: "/agnets-hub/submit", element: <SubmitPage /> },
       { path: "/agnets-hub/details", element: <DetailPage /> },
-      { path: "/agnets-hub/update", element: <UpdatePage /> },
+      { path: "/agnets-hub/update/:id", element: <UpdatePage /> },
 
       { path: "/blog-manager", element: <BlogManager /> },
       { path: "/synthetic-generator", element: <SyntheticDataGenerator /> },

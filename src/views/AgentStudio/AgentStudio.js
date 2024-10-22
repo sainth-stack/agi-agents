@@ -68,22 +68,20 @@ const AgentStudio = () => {
         setToast({ message, type, visible: true });
         setTimeout(() => setToast({ ...toast, visible: false }), 3000);
     };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!formData.name || !formData.agent_description) {
-            showToast('Please fill in all required fields', 'error');
-            return;
-        }
+        // if (!formData.name || !formData.agent_description) {
+        //     showToast('Please fill in all required fields', 'error');
+        //     return;
+        // }
 
         setLoading(true);
-        const toolsData = tools.length
-            ? tools.map((item) =>
+        const toolsData = Object.keys(tools).length > 0
+            ? Object?.keys(tools)?.map((item) =>
                 item.includes(' ') ? item.split(' ').join('_').toLowerCase() : item.toLowerCase()
             )
             : [];
-
         // Handle system prompt concatenation based on switches
         let systemPrompt = formData.system_prompt;
         if (uploadFileEnabled && file) {
@@ -95,11 +93,9 @@ const AgentStudio = () => {
 
         const requestBody = {
             ...formData,
-            system_prompt: systemPrompt, // Concatenated system prompt
             tools: toolsData.join(', '),
             env_id: formData.modelAgent,
-            uploadFileEnabled,
-            readUrlEnabled
+            upload_attachment: uploadFileEnabled,
         };
 
         try {
@@ -196,7 +192,7 @@ const AgentStudio = () => {
                         {renderInput('textarea', 'system_prompt', 'System Prompt', `Enter prompt ${readUrlEnabled ? "or give URL details" : ''} ${uploadFileEnabled ? "or attach a file" : ''}`)}
                         <ChipsInput label="Tools" chip={tools} />
 
-                        {tools.length ==0 && (
+                        {tools.length == 0 && (
                             <p className="text-sm text-gray-500 mt-2">No tools selected</p>
                         )}
 
