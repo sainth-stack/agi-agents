@@ -190,135 +190,142 @@ export default function AgentHubHome() {
   );
 
   return (
-    <div className="container-data">
-      <Navbar />
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          flexDirection: "column",
-          alignItems: "center",
-          marginTop: "10px",
-        }}
-      >
-        <h1 className="explore">Explore the World of AI Agents</h1>
+    <div className="container  " style={{ width: "100vw", padding: "0" }}>
+      <div className=" bg-slate-50  shadow-md rounded-lg  ">
+        {/* // <Navbar /> */}
+        <div
+          className="text-black"
+          style={{
+            color: "black",
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            flexDirection: "column",
+            alignItems: "center",
+            marginTop: "10px",
+          }}
+        >
+          <h1 className="explore text-black p-2 ">
+            Explore the World of AI Agents
+          </h1>
 
-        <p className="list">
-          Enter To World Of Collected List Of 100+ AI Agents{" "}
-        </p>
-        <input
-          placeholder="Search for AI Agent here..."
-          className="input mb-5"
-          style={{ width: "40%" }}
-          value={search}
-          onChange={handleSearchChange}
-        />
-      </div>
-      <div className="filter-container">
-        <div className="filter-section">
-          <h3>Refine Search</h3>
-          <div className="categories">
-            <h4>Categories</h4>
-            <input
-              type="text"
-              placeholder="Search categories"
-              className="filter-search"
-              value={categorySearch}
-              onChange={handleCategorySearchChange}
-            />
-            {/* <div>
+          <p className="list text-black">
+            Enter To World Of Collected List Of 100+ AI Agents{" "}
+          </p>
+          <input
+            placeholder="Search for AI Agent here..."
+            className="input mb-5 shadow-md rounded-lg p-2 ml-1"
+            style={{ width: "40%" }}
+            value={search}
+            onChange={handleSearchChange}
+          />
+        </div>
+        <div className="filter-container bg-slate-100 border-1 border-gray-50">
+          <div className="filter-section shadow-md outline-none rounded-lg">
+            <h3>Refine Search</h3>
+            <div className="categories">
+              <h4>Categories</h4>
+              <input
+                type="text"
+                placeholder="Search categories"
+                className="filter-search"
+                value={categorySearch}
+                onChange={handleCategorySearchChange}
+              />
+              {/* <div>
               <input type="checkBox" />
               <label className="All">ALL</label>
             </div> */}
 
-            <div
-              className="checkbox-group"
-              style={{ height: "200px", overflow: "auto" }}
-            >
-              {filteredCategories.map((category, index) => (
-                <label key={index} style={{ display: "flex", gap: "7px" }}>
-                  <input
-                    type="checkBox"
-                    checked={selectedCategories.includes(category)}
-                    onChange={() => handleCategoryCheckboxChange(category)}
-                  />
-                  {category}
-                  {/* ({Math.floor(Math.random() * 50) + 1}) */}
-                </label>
-              ))}
+              <div
+                className="checkbox-group"
+                style={{ height: "200px", overflow: "auto" }}
+              >
+                {filteredCategories.map((category, index) => (
+                  <label key={index} style={{ display: "flex", gap: "7px" }}>
+                    <input
+                      type="checkBox"
+                      checked={selectedCategories.includes(category)}
+                      onChange={() => handleCategoryCheckboxChange(category)}
+                    />
+                    {category}
+                    {/* ({Math.floor(Math.random() * 50) + 1}) */}
+                  </label>
+                ))}
+              </div>
             </div>
-          </div>
-          <div className="industries">
-            <h4>Industries</h4>
-            <input
-              type="text"
-              placeholder="Search industries"
-              className="filter-search"
-              value={industrySearch}
-              onChange={handleIndustrySearchChange}
-            />
-            {/* <div>
+            <div className="industries">
+              <h4>Industries</h4>
+              <input
+                type="text"
+                placeholder="Search industries"
+                className="filter-search"
+                value={industrySearch}
+                onChange={handleIndustrySearchChange}
+              />
+              {/* <div>
               <input type="checkbox"/>
               <label className="All">ALL</label>
             </div> */}
-            <div
-              className="checkbox-group"
-              style={{ height: "200px", overflow: "auto" }}
-            >
-              {filteredIndustries.map((industry, index) => (
-                <label key={index} style={{ display: "flex", gap: "7px" }}>
-                  <input
-                    type="checkBox"
-                    //className="w-5"
-                    checked={selectedIndustries.includes(industry)}
-                    onChange={() => handleIndustryCheckboxChange(industry)}
-                  />
-                  {industry}
-                  {/* ({Math.floor(Math.random() * 50) + 1}) */}
-                </label>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <div className="agents-section">
-          <div className="agents-header">
-            <div className="view-switch">
-              {/* <button className="view-button active">Grid</button>
-                            <button className="view-button">List</button> */}
-            </div>
-            <div className="sort-dropdown">
-              <select
-                className="sort-select"
-                value={sort}
-                onChange={handleSortChange}
+              <div
+                className="checkbox-group"
+                style={{ height: "200px", overflow: "auto" }}
               >
-                <option value="newest">Newest</option>
-                <option value="oldest">Oldest</option>
-                {/* <option value="popular">Popular</option> */}
-              </select>
+                {filteredIndustries.map((industry, index) => (
+                  <label key={index} style={{ display: "flex", gap: "7px" }}>
+                    <input
+                      type="checkBox"
+                      //className="w-5"
+                      checked={selectedIndustries.includes(industry)}
+                      onChange={() => handleIndustryCheckboxChange(industry)}
+                    />
+                    {industry}
+                    {/* ({Math.floor(Math.random() * 50) + 1}) */}
+                  </label>
+                ))}
+              </div>
             </div>
           </div>
-          {loading ? (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <PrepLoader />
+
+          <div className="agents-section">
+            <div className="agents-header">
+              <div className="view-switch">
+                {/* <button className="view-button active">Grid</button>
+                            <button className="view-button">List</button> */}
+              </div>
+              <div className="sort-dropdown">
+                <select
+                  className="sort-select"
+                  value={sort}
+                  onChange={handleSortChange}
+                >
+                  <option value="newest">Newest</option>
+                  <option value="oldest">Oldest</option>
+                  {/* <option value="popular">Popular</option> */}
+                </select>
+              </div>
             </div>
-          ) : (
-            <div className="agents-list">
-              {agents.map((agent) => {
-                return <ChildCard agent={agent} navigate={navigate} />;
-              })}
-            </div>
-          )}
+            {loading ? (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <PrepLoader />
+              </div>
+            ) : (
+              <div className="agents-list">
+                {agents.map((agent) => {
+                  return <ChildCard agent={agent} navigate={navigate} />;
+                })}
+              </div>
+            )}
+          </div>
         </div>
+        <Footer />
       </div>
-      <Footer />
     </div>
   );
 }

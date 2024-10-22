@@ -1,8 +1,7 @@
 import React from "react";
-import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
-import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
-import Avatar from '@mui/material/Avatar';
-
+import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
+import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
+import Avatar from "@mui/material/Avatar";
 import {
   AppBar,
   Box,
@@ -21,9 +20,11 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 
 const Header = (props) => {
+  const location = useLocation();
+
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const location = useLocation()
-  const navigate = useNavigate()
+
+  const navigate = useNavigate();
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -36,8 +37,8 @@ const Header = (props) => {
 
   const handleClose4 = () => {
     setAnchorEl4(null);
-    navigate('/login')
-    localStorage.clear()
+    navigate("/login");
+    localStorage.clear();
   };
 
   const [currentTab, setCurrentTab] = React.useState(0);
@@ -45,66 +46,97 @@ const Header = (props) => {
   const handleTabChange = (event, newValue) => {
     setCurrentTab(newValue);
     if (newValue === 0) {
-      navigate('/start-design');
+      navigate("/start-design");
     } else {
-      navigate('/graph-view');
+      navigate("/graph-view");
     }
   };
 
-  console.log(location)
+  console.log(location);
 
   return (
-    <AppBar sx={{ ...props.sx, borderBottom: '1px solid rgb(0 0 0 / 5%)' }} elevation={0} className={props.customClass}>
+    <AppBar
+      sx={{ ...props.sx, borderBottom: "1px solid rgb(0 0 0 / 5%)" }}
+      elevation={0}
+      className={props.customClass}
+    >
       <Toolbar>
-        {(location.pathname == '/start-design' || location.pathname == "/graph-view") && <Tabs
-          value={currentTab}
-          onChange={handleTabChange}
-          sx={{
-            marginTop: '10px',
-            marginBottom: '10px',
-            '& .MuiTabs-flexContainer': {
-              display: 'flex',
-              flexDirection: 'row',
-            },
-            '& .MuiTab-root': {
-              textTransform: 'none',
-              fontSize: '16px',
-              fontWeight: '400',
-              lineHeight: '24px',
-              // fontFamily: 'Poppins',
-              color: '#242424',
-              margin: '4px',
-              padding: '4px 10px',
-              ':hover': {
-                background: '#E6EDF5'
-              }
-            },
-            '& .Mui-selected': {
-              fontWeight: 700,
-            },
-            svg: {
-              width: 16,
-              height: 16,
-            },
-          }}
-        >
-          <Tab label="Text View" />
-          <Tab label="Graphical View" />
-        </Tabs>}
+        {(location.pathname == "/start-design" ||
+          location.pathname == "/graph-view") && (
+          <Tabs
+            value={currentTab}
+            onChange={handleTabChange}
+            sx={{
+              marginTop: "10px",
+              marginBottom: "10px",
+              "& .MuiTabs-flexContainer": {
+                display: "flex",
+                flexDirection: "row",
+              },
+              "& .MuiTab-root": {
+                textTransform: "none",
+                fontSize: "16px",
+                fontWeight: "400",
+                lineHeight: "24px",
+                // fontFamily: 'Poppins',
+                color: "#242424",
+                margin: "4px",
+                padding: "4px 10px",
+                ":hover": {
+                  background: "#E6EDF5",
+                },
+              },
+              "& .Mui-selected": {
+                fontWeight: 700,
+              },
+              svg: {
+                width: 16,
+                height: 16,
+              },
+            }}
+          >
+            <Tab label="Text View" />
+            <Tab label="Graphical View" />
+          </Tabs>
+        )}
 
         <Box flexGrow={1} />
 
-
         <Grid
-          onClick={() => navigate('/start-design')}
-          style={{ fontSize: '18px', marginRight: '10px', cursor: 'pointer', color: 'black' }}
+          onClick={() => navigate("/start-design")}
+          style={{
+            fontSize: "18px",
+            marginRight: "10px",
+            cursor: "pointer",
+            color: "black",
+          }}
         >
           Start Design
         </Grid>
 
+        {location.pathname == "/agnets-hub" && (
+          <Grid
+            onClick={() => navigate("/agnets-hub/submit")}
+            style={{
+              fontSize: "18px",
+              marginRight: "10px",
+              cursor: "pointer",
+              color: "black",
+            }}
+            className=""
+          >
+            Submit Ai Agent
+          </Grid>
+        )}
+
         <Grid
-          onClick={() => navigate('/pricing')}
-          style={{ fontSize: '18px', cursor: 'pointer', color: 'black', marginRight: '10px' }}
+          onClick={() => navigate("/pricing")}
+          style={{
+            fontSize: "18px",
+            cursor: "pointer",
+            color: "black",
+            marginRight: "10px",
+          }}
         >
           Pricing
         </Grid>

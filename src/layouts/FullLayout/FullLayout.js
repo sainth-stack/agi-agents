@@ -5,7 +5,7 @@ import {
   Container,
   Box,
 } from "@mui/material";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Header from "./Header/Header";
 import Sidebar from "./Sidebar/Sidebar";
 import Footer from "./Footer/Footer";
@@ -15,7 +15,7 @@ const MainWrapper = experimentalStyled("div")(({ theme }) => ({
   display: "flex",
   minHeight: "100vh",
   overflow: "hidden",
-  width: "100%",
+  width: "100% !important",
 }));
 const PageWrapper = experimentalStyled("div")(({ theme }) => ({
   display: "flex",
@@ -48,6 +48,9 @@ const FullLayout = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
   const [isMobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up("lg"));
+
+  const location = useLocation();
+
   return (
     <MainWrapper>
       <Header
