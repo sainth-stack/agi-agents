@@ -78,7 +78,7 @@ const AiEnvironment = () => {
         const loadingResponse = { input: payload.prompt, loading: true, output: '' };
         const updateRes = [loadingResponse];
         setResponses(() => updateRes);
-
+        console.log(loadingResponse, 'dada')
         try {
             const formData = new FormData(); // Use FormData to handle file uploads
 
@@ -98,12 +98,13 @@ const AiEnvironment = () => {
 
             const data = await response.json();
             const updatedResponses = [...updateRes]; // Create a copy of the current responses
+            console.log(data?.image_base64 , data?.result?.image_base64)
             updatedResponses[updatedResponses.length - 1] = {
                 input: payload.prompt,
+                image:data?.result?.image_base64 || data?.image_base64,
                 loading: false,
                 output: data?.content || data?.result?.content,
             };
-
             setResponses(updatedResponses); // Update responses
         } catch (error) {
             console.error('Error during API call:', error);

@@ -73,12 +73,7 @@ const FullLayout = () => {
           maxWidth={false}
           sx={{
             paddingTop: "20px",
-            marginRight:
-              location && location.pathname == "/agnets-hub"
-                ? "-40px!important"
-                : isSidebarOpen && lgUp
-                ? "265px!important"
-                : "",
+            marginLeft:'265px !important'
           }}
         >
           <Box sx={{ minHeight: "calc(100vh - 170px)" }}>

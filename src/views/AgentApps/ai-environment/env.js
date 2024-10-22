@@ -22,8 +22,8 @@ const ENVT = ({
             <div className='border-gray-300 w-1/2 p-3' style={{ height: '100vh' }}>
                 <div className=" p-8 border bg-white rounded-lg shadow-xs" style={{ height: 'fit-content' }}>
                     <div>
-                        <Typography variant="body2" className="text-gray-500 font-custom mb-1" style={{ fontWeight: 600, fontSize: 18, color: 'black' }}>
-                            Powered by <a href="#" className="text-blue-500" >Agentic AI </a> by WAYG
+                        <Typography variant="body2" className="text-gray-500 font-custom mb-1" style={{ fontWeight: 600, fontSize: 18, color: 'black', display: 'flex', gap: '5px' }}>
+                            Powered by <a href="#" className="text-blue-500" >Agentic AI </a> by WYGE
                         </Typography>
                         <Typography variant="h4" className="font-bold mb-2 text-gray-800 font-custom mb-3" style={{ fontSize: '36px', fontWeight: 600 }}>
                             {agentDetails.name}
@@ -140,7 +140,9 @@ const ENVT = ({
                                             //     Expected Output:
                                             // </Typography>
                                         )} */}
-                                        <pre className="whitespace-pre-wrap font-custom text-gray-600" style={{fontSize:'16px'}} >{response.output}</pre>
+                                        <pre className="whitespace-pre-wrap font-custom text-gray-600" style={{ fontSize: '16px' }} >{response.output}</pre>
+                                        <img src={`data:image/jpeg;base64,${response?.image}`}
+                                            width={700} height={500} alt='' />
                                     </>
                                 )}
                             </Paper>

@@ -193,10 +193,10 @@ export default function AgentHubHome() {
 
   return (
     <>
-      <div className="w-12/12 bg-gray-100 ">
+      <div className="w-12/12 bg-gray-100">
         <div
           className={`bg-slate-50 shadow-md rounded-lg  ${
-            location.pathname == "/agnets-hub" ? "w-12/12" : ""
+            location.pathname == "/agnets-hub" ? "" : ""
           }`}
         >
           {/* // <Navbar /> */}

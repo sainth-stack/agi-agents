@@ -8,18 +8,37 @@ import Toast from '../../components/toast';
 import { baseURL } from '../../const';
 
 const AgentStudio = () => {
-    const [formData, setFormData] = useState({
-        name: '',
-        agent_description: '',
-        modelAgent: '',
-        system_prompt: ''
-    });
     const [uploadExcel, setUploadExcel] = useState(false);
     const [readWebsite, setReadWebsite] = useState(false);
     const [environmentOptions, setEnvironmentOptions] = useState([]);
     const [loading, setLoading] = useState(false);
     const [toast, setToast] = useState({ message: '', type: '', visible: false });
     const [tools, setTools] = useState([]);
+    const [uploadFileEnabled, setUploadFileEnabled] = useState(false);
+    const [readUrlEnabled, setReadUrlEnabled] = useState(false);
+    const [file, setFile] = useState(null); // State for file upload
+    const [url, setUrl] = useState(''); // State for URL input
+    const [formData, setFormData] = useState({
+        name: '',
+        agent_description: '',
+        modelAgent: '',
+        system_prompt: ''
+    });
+
+    // Update the system_prompt dynamically based on switches
+    useEffect(() => {
+        let prompt = 'Enter prompt';
+        if (readUrlEnabled) {
+            prompt += ' or give URL details';
+        }
+        if (uploadFileEnabled) {
+            prompt += ' or attach a file';
+        }
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            system_prompt: prompt
+        }));
+    }, [uploadFileEnabled, readUrlEnabled]);
 
     const handleChange = (key, value) => {
         setFormData({ ...formData, [key]: value });
@@ -61,14 +80,26 @@ const AgentStudio = () => {
         setLoading(true);
         const toolsData = tools.length
             ? tools.map((item) =>
-                  item.includes(' ') ? item.split(' ').join('_').toLowerCase() : item.toLowerCase()
-              )
+                item.includes(' ') ? item.split(' ').join('_').toLowerCase() : item.toLowerCase()
+            )
             : [];
+
+        // Handle system prompt concatenation based on switches
+        let systemPrompt = formData.system_prompt;
+        if (uploadFileEnabled && file) {
+            systemPrompt += ` File: ${file.name}`;
+        }
+        if (readUrlEnabled && url) {
+            systemPrompt += ` URL: ${url}`;
+        }
 
         const requestBody = {
             ...formData,
+            system_prompt: systemPrompt, // Concatenated system prompt
             tools: toolsData.join(', '),
-            env_id: formData.modelAgent
+            env_id: formData.modelAgent,
+            uploadFileEnabled,
+            readUrlEnabled
         };
 
         try {
@@ -84,6 +115,8 @@ const AgentStudio = () => {
             setFormData({ name: '', agent_description: '', modelAgent: '', system_prompt: '' });
             setUploadExcel(false);
             setReadWebsite(false);
+            setFile(null); // Clear file input
+            setUrl(''); // Clear URL input
         } catch (error) {
             showToast('Failed to create agent: ' + error.message, 'error');
             console.error('Error creating agent:', error);
@@ -145,18 +178,32 @@ const AgentStudio = () => {
                         {renderInput('text', 'name', 'Agent Name', 'Enter Agent Name')}
                         {renderInput('textarea', 'agent_description', 'Agent Description', 'Enter Agent Description')}
                         {renderInput('select', 'modelAgent', 'Model Agent Planner', '', environmentOptions)}
-                        {renderInput('textarea', 'system_prompt', 'System Prompt', 'Enter Text, URL, Video, Audio')}
+
+                        {/* Switches for Upload File and Read URL */}
+                        <div className="mb-3 d-flex gap-3">
+                            <SwitchInput
+                                label="Upload File"
+                                checked={uploadFileEnabled}
+                                onChange={() => setUploadFileEnabled(!uploadFileEnabled)}
+                            />
+                            <SwitchInput
+                                label="Read URL"
+                                checked={readUrlEnabled}
+                                onChange={() => setReadUrlEnabled(!readUrlEnabled)}
+                            />
+                        </div>
+
+                        {renderInput('textarea', 'system_prompt', 'System Prompt', `Enter prompt ${readUrlEnabled ? "or give URL details" : ''} ${uploadFileEnabled ? "or attach a file" : ''}`)}
                         <ChipsInput label="Tools" chip={tools} />
 
-                        {!tools.length && (
+                        {tools.length ==0 && (
                             <p className="text-sm text-gray-500 mt-2">No tools selected</p>
                         )}
 
                         <button
                             type="submit"
-                            className={`mt-6 w-full py-2 px-4 text-white font-semibold rounded-lg bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-opacity-75 ${
-                                loading ? 'opacity-50 cursor-not-allowed' : ''
-                            }`}
+                            className={`mt-6 w-full py-2 px-4 text-white font-semibold rounded-lg bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-opacity-75 ${loading ? 'opacity-50 cursor-not-allowed' : ''
+                                }`}
                             disabled={loading}
                         >
                             {loading ? 'Loading...' : 'Submit'}
@@ -169,7 +216,7 @@ const AgentStudio = () => {
                 <div className="border-2 bg-white rounded-lg shadow-lg p-6 w-full">
                     <h3 className="text-lg font-bold mb-4 text-gray-600">Form Data JSON</h3>
                     <pre className="bg-gray-100 p-4 rounded text-sm overflow-auto">
-                        {JSON.stringify({ ...formData, tools }, null, 2)}
+                        {JSON.stringify({ ...formData, tools, uploadFileEnabled, readUrlEnabled }, null, 2)}
                     </pre>
                 </div>
             </div>
