@@ -72,11 +72,10 @@ const FullLayout = () => {
         <Container
           maxWidth={false}
           sx={{
-            width: "100vw",
             paddingTop: "20px",
-            paddingLeft:
+            marginRight:
               location && location.pathname == "/agnets-hub"
-                ? "150px!important"
+                ? "-40px!important"
                 : isSidebarOpen && lgUp
                 ? "265px!important"
                 : "",
