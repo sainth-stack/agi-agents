@@ -82,6 +82,8 @@ const AgentStudio = () => {
                 item.includes(' ') ? item.split(' ').join('_').toLowerCase() : item.toLowerCase()
             )
             : [];
+        const filterData = toolsData.filter((item) => item !== "synthetic_data")
+        console.log(filterData)
         // Handle system prompt concatenation based on switches
         let systemPrompt = formData.system_prompt;
         if (uploadFileEnabled && file) {
@@ -93,7 +95,7 @@ const AgentStudio = () => {
 
         const requestBody = {
             ...formData,
-            tools: toolsData.join(', '),
+            tools: filterData.join(', '),
             env_id: formData.modelAgent,
             upload_attachment: uploadFileEnabled,
         };
