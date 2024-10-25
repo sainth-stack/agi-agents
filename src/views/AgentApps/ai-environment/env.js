@@ -135,7 +135,6 @@ const ENVT = ({
                                         <CircularProgress size={24} />
                                     </div>
                                 ) : (
-
                                     <>
                                         <button
                                             onClick={() => {
@@ -190,17 +189,14 @@ const ENVT = ({
                                         <pre className="whitespace-pre-wrap font-custom text-gray-600" style={{ fontSize: '16px' }}>
                                             {response.output}
                                         </pre>
-
-                                        <img
-                                            src={`data:image/jpeg;base64,${response?.image}`}
-                                            width={700}
-                                            height={500}
-                                            alt=''
-                                        />
+                                        {response?.image &&
+                                            <img
+                                                src={`data:image/jpeg;base64,${response?.image}`}
+                                                width={700}
+                                                height={500}
+                                                alt=''
+                                            />}
                                     </>
-
-
-
                                 )}
                             </Paper>
                         ))

@@ -6,8 +6,8 @@ const ChipsInput = ({ chip = {}, label }) => {
     // Extract keys with `true` values when component mounts or `chipsObject` changes
     useEffect(() => {
         const extractedChips = Object.keys(chip).filter(key => chip[key]);
-        console.log(extractedChips)
-        setChips(extractedChips);
+        const data=extractedChips?.filter((item)=>item !=='Synthetic Data')
+        setChips(data);
     }, [chip]);
 
     const handleDeleteChip = (chipToDelete) => {

@@ -9,7 +9,10 @@ export const ConfigureTools = () => {
     const [selectedCard, setSelectedCard] = useState(null);
     const [apiKey, setApiKey] = useState('');
     const [enabledTools, setEnabledTools] = useState({});
-    const [toast, setToast] = useState({ message: '', type: '' }); // Toast state
+    const [toast, setToast] = useState({ message: '', type: '' });
+
+    const [showSyntheticOptions, setShowSyntheticOptions] = useState(false);
+    const [selectedSyntheticOption, setSelectedSyntheticOption] = useState('');
 
     useEffect(() => {
         const storedTools = JSON.parse(localStorage.getItem('enabledTools')) || {};
@@ -17,36 +20,47 @@ export const ConfigureTools = () => {
     }, []);
 
     const handleToggleChange = (title) => {
-        if (title === "LinkedIn Post") {
+        if (title === "Synthetic Data" && !enabledTools[title]) {
             setSelectedCard(title);
-            setShowModal(true);
+            setShowSyntheticOptions(true);
+            setShowModal(true); // Open modal for Synthetic Data options
+        } else if (title === "LinkedIn Post" && !enabledTools[title]) {
+            setSelectedCard(title);
+            setShowModal(true); // Open modal for LinkedIn Post
         } else {
-            const newEnabledTools = { ...enabledTools, [title]: !enabledTools[title] };
+            const newEnabledTools = Object.keys(enabledTools).reduce((acc, tool) => {
+                acc[tool] = false;
+                return acc;
+            }, {});
+
+            newEnabledTools[title] = !enabledTools[title];
             setEnabledTools(newEnabledTools);
             localStorage.setItem('enabledTools', JSON.stringify(newEnabledTools));
             console.log(`${title} is now ${newEnabledTools[title] ? 'enabled' : 'disabled'}`);
         }
     };
 
+    const handleSyntheticOptionChange = (option) => {
+        setSelectedSyntheticOption(option);
+    };
+
     const closeModal = () => {
         setShowModal(false);
         setSelectedCard(null);
         setApiKey('');
+        setShowSyntheticOptions(false);
     };
 
-    const saveConfiguration = () => {
+    const saveConfiguration = (name) => {
+
         console.log(`Saved API Key for ${selectedCard}: ${apiKey}`);
         const apiKeys = JSON.parse(localStorage.getItem('apiKeys')) || {};
         apiKeys[selectedCard] = apiKey;
         localStorage.setItem('apiKeys', JSON.stringify(apiKeys));
-
-        const newEnabledTools = { ...enabledTools, [selectedCard]: true };
+        const newEnabledTools = { ...enabledTools, [name ? selectedSyntheticOption : null]: true, [selectedCard]: true };
         setEnabledTools(newEnabledTools);
         localStorage.setItem('enabledTools', JSON.stringify(newEnabledTools));
-
-        // Set toast message for saving configuration
         setToast({ message: `Saved configuration for ${selectedCard}`, type: 'success' });
-
         closeModal();
     };
 
@@ -54,14 +68,12 @@ export const ConfigureTools = () => {
         setEnabledTools({});
         localStorage.removeItem('enabledTools');
         console.log('All tools have been reset');
-        // Set toast message for resetting configuration
         setToast({ message: 'All tools have been reset', type: 'error' });
     };
 
     const saveAllConfigurations = () => {
         console.log('All configurations saved');
         localStorage.setItem('enabledTools', JSON.stringify(enabledTools));
-        // Set toast message for saving all configurations
         setToast({ message: 'All configurations saved', type: 'success' });
     };
 
@@ -86,6 +98,7 @@ export const ConfigureTools = () => {
                             />
                         ))}
                     </div>
+
                     <div className="flex justify-end m-3">
                         <button
                             onClick={resetConfiguration}
@@ -108,18 +121,82 @@ export const ConfigureTools = () => {
             {showModal && (
                 <div className="fixed inset-0 flex w-full items-center justify-center z-50 bg-black bg-opacity-50">
                     <div className="bg-white w-[40%] p-6 rounded-lg shadow-lg">
-                        <h2 className="text-xl font-bold mb-4">Token for {selectedCard}</h2>
-                        <input
-                            type="text"
-                            className="border border-gray-300 p-2 w-full mb-4"
-                            placeholder="Enter API Key"
-                            value={apiKey}
-                            onChange={(e) => setApiKey(e.target.value)}
-                        />
-                        <div className="flex justify-between mt-4">
-                            <button onClick={closeModal} className="bg-gray-300 py-2 px-4 rounded">Close</button>
-                            <button onClick={saveConfiguration} className="bg-black text-white py-2 px-4 rounded">Save</button>
-                        </div>
+                        {selectedCard === "Synthetic Data" ? (
+                            <>
+                                <h2 className="text-2xl font-extrabold mb-6 text-center text-gray-800">
+                                    Choose Synthetic Data Option
+                                </h2>
+
+                                <div className="space-y-3">
+                                    <label className="flex items-center gap-1">
+                                        <input
+                                            type="radio"
+                                            name="syntheticOption"
+                                            value="Synthetic_data_extended_data"
+                                            checked={selectedSyntheticOption === 'Synthetic_data_extended_data'}
+                                            onChange={() => handleSyntheticOptionChange('Synthetic_data_extended_data')}
+                                            className="w-4 h-4"
+                                        />
+                                        <span className="text-gray-700 text-lg">Extend Data</span>
+                                    </label>
+
+                                    <label className="flex items-center gap-1">
+                                        <input
+                                            type="radio"
+                                            name="syntheticOption"
+                                            value="Synthetic_data_new_data"
+                                            checked={selectedSyntheticOption === 'Synthetic_data_new_data'}
+                                            onChange={() => handleSyntheticOptionChange('Synthetic_data_new_data')}
+                                            className="w-4 h-4"
+                                        />
+                                        <span className="text-gray-700 text-lg">Generate New Data</span>
+                                    </label>
+
+                                    <label className="flex items-center gap-1">
+                                        <input
+                                            type="radio"
+                                            name="syntheticOption"
+                                            value="Synthetic_data_missing_data"
+                                            checked={selectedSyntheticOption === 'Synthetic_data_missing_data'}
+                                            onChange={() => handleSyntheticOptionChange('Synthetic_data_missing_data')}
+                                            className="w-4 h-4"
+                                        />
+                                        <span className="text-gray-700 text-lg">Add Missing Data</span>
+                                    </label>
+                                </div>
+
+                                <div className="flex justify-between mt-6">
+                                    <button
+                                        onClick={closeModal}
+                                        className="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-5 rounded-md transition duration-300"
+                                    >
+                                        Close
+                                    </button>
+                                    <button
+                                        onClick={() => saveConfiguration('syn')}
+                                        className="bg-black hover:bg-gray-800 text-white py-2 px-5 rounded-md transition duration-300"
+                                    >
+                                        Save
+                                    </button>
+                                </div>
+                            </>
+
+                        ) : (
+                            <>
+                                <h2 className="text-xl font-bold mb-4">Token for {selectedCard}</h2>
+                                <input
+                                    type="text"
+                                    className="border border-gray-300 p-2 w-full mb-4"
+                                    placeholder="Enter API Key"
+                                    value={apiKey}
+                                    onChange={(e) => setApiKey(e.target.value)}
+                                />
+                                <div className="flex justify-between mt-4">
+                                    <button onClick={closeModal} className="bg-gray-300 py-2 px-4 rounded">Close</button>
+                                    <button onClick={saveConfiguration} className="bg-black text-white py-2 px-4 rounded">Save</button>
+                                </div>
+                            </>
+                        )}
                     </div>
                 </div>
             )}
