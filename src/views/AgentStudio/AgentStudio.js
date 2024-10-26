@@ -23,7 +23,6 @@ const EmployeeStudio = () => {
         system_prompt: ''
     });
 
-    // Update the system_prompt dynamically based on switches
     useEffect(() => {
         const prompt = [
             'Enter prompt',
@@ -38,8 +37,9 @@ const EmployeeStudio = () => {
     };
 
     useEffect(() => {
-        const storedTools = JSON.parse(localStorage.getItem('enabledEmployees')) || [];
+        const storedTools = JSON.parse(localStorage.getItem('enabledAgents')) || [];
         setTools(storedTools); // Assume tools is an array of objects { id, name }
+        console.log(storedTools)
     }, []);
 
     useEffect(() => {
@@ -139,7 +139,7 @@ const EmployeeStudio = () => {
                     <SwitchInput
                         label={label}
                         checked={key === 'uploadFileEnabled' ? uploadFileEnabled : readUrlEnabled}
-                        onChange={() => 
+                        onChange={() =>
                             key === 'uploadFileEnabled' ? setUploadFileEnabled(!uploadFileEnabled) : setReadUrlEnabled(!readUrlEnabled)
                         }
                     />
@@ -159,7 +159,6 @@ const EmployeeStudio = () => {
                         {renderInput('textarea', 'employee_description', 'Employee Description', 'Enter Employee Description')}
                         {renderInput('select', 'modelEmployee', 'Model Employee Planner', '', environmentOptions)}
 
-                        {/* Switches for Upload File and Read URL */}
                         <div className="mb-3 d-flex gap-3">
                             {renderInput('switch', 'uploadFileEnabled', 'Upload File')}
                             {renderInput('switch', 'readUrlEnabled', 'Read URL')}
