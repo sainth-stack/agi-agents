@@ -158,13 +158,13 @@ const EmployeeStudio = () => {
                         {renderInput('text', 'name', 'Employee Name', 'Enter Employee Name')}
                         {renderInput('textarea', 'employee_description', 'Employee Description', 'Enter Employee Description')}
                         {renderInput('select', 'modelEmployee', 'Model Employee Planner', '', environmentOptions)}
-
+{/* 
                         <div className="mb-3 d-flex gap-3">
                             {renderInput('switch', 'uploadFileEnabled', 'Upload File')}
                             {renderInput('switch', 'readUrlEnabled', 'Read URL')}
-                        </div>
+                        </div> */}
 
-                        {renderInput('textarea', 'system_prompt', 'System Prompt')}
+                        {/* {renderInput('textarea', 'system_prompt', 'System Prompt')} */}
                         <ChipsInput label="Tools" chip={tools} />
 
                         <button

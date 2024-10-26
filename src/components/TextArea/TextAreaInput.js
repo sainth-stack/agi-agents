@@ -12,7 +12,7 @@ const TextAreaInput = ({ label, placeholder, value, onChange }) => {
     };
 
     return (
-        <div className="mb-2">
+        <div className="mb-2 px-2">
             <label className="block text-gray-700 font-semibold">{label}</label>
             <textarea
                 ref={textAreaRef}

@@ -15,7 +15,7 @@ const ChipsInput = ({ chip = [], label }) => {
     };
 
     return (
-        <div className="flex flex-col mb-4">
+        <div className="flex flex-col mb-4 px-2">
             <label className="font-bold mb-2">{label}</label>
             <div className="flex flex-wrap border border-gray-300 rounded-md p-2">
                 {chips.map((chip, index) => (
