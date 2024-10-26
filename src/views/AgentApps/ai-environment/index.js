@@ -51,6 +51,25 @@ const AiEnvironment = () => {
         recognition.start();
     };
 
+    const downloadCSV = (csvData) => {
+        // Convert the CSV data into a blob
+        const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+    
+        // Create a temporary link element
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        link.href = url;
+        link.setAttribute('download', 'data.csv'); // Set the file name
+    
+        // Append the link to the body and trigger the download
+        document.body.appendChild(link);
+        link.click();
+    
+        // Clean up by removing the link element
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -97,15 +116,19 @@ const AiEnvironment = () => {
             if (response.status !== 200) throw new Error('API call failed');
 
             const data = await response.json();
-            const updatedResponses = [...updateRes]; // Create a copy of the current responses
-            console.log(data?.image_base64 , data?.result?.image_base64)
-            updatedResponses[updatedResponses.length - 1] = {
-                input: payload.prompt,
-                image:data?.result?.image_base64 || data?.image_base64,
-                loading: false,
-                output: data?.content || data?.result?.content,
-            };
-            setResponses(updatedResponses); // Update responses
+            if (data?.csv_file) {
+                downloadCSV(data?.csv_file?.data)
+            }
+            else {
+                const updatedResponses = [...updateRes]; // Create a copy of the current responses
+                updatedResponses[updatedResponses.length - 1] = {
+                    input: payload.prompt,
+                    image: data?.result?.image_base64 || data?.image_base64,
+                    loading: false,
+                    output: data?.content || data?.result?.content,
+                };
+                setResponses(updatedResponses);
+            }
         } catch (error) {
             console.error('Error during API call:', error);
             const updatedResponses = [...updateRes]; // Create a copy of the current responses
