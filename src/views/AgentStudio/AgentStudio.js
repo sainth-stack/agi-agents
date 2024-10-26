@@ -84,7 +84,7 @@ const EmployeeStudio = () => {
         };
 
         try {
-            const response = await fetch(`${baseURL}/employee/create`, {
+            const response = await fetch(`${baseURL}/agent/create`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(requestBody)
