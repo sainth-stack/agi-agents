@@ -54,17 +54,17 @@ const AiEnvironment = () => {
     const downloadCSV = (csvData) => {
         // Convert the CSV data into a blob
         const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
-    
+
         // Create a temporary link element
         const link = document.createElement('a');
         const url = URL.createObjectURL(blob);
         link.href = url;
-        link.setAttribute('download', 'data.csv'); // Set the file name
-    
+        link.setAttribute('download', 'synthetic_data.csv'); // Set the file name
+
         // Append the link to the body and trigger the download
         document.body.appendChild(link);
         link.click();
-    
+
         // Clean up by removing the link element
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
@@ -117,6 +117,13 @@ const AiEnvironment = () => {
 
             const data = await response.json();
             if (data?.csv_file) {
+                const updatedResponses = [...updateRes]; // Create a copy of the current responses
+                updatedResponses[updatedResponses.length-1] = {
+                    input: '',
+                    loading: false,
+                    output: 'Downloaded',
+                };
+                setResponses(updatedResponses);
                 downloadCSV(data?.csv_file?.data)
             }
             else {
