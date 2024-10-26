@@ -7,37 +7,30 @@ import ChipsInput from '../../components/chip';
 import Toast from '../../components/toast';
 import { baseURL } from '../../const';
 
-const AgentStudio = () => {
-    const [uploadExcel, setUploadExcel] = useState(false);
-    const [readWebsite, setReadWebsite] = useState(false);
+const EmployeeStudio = () => {
+    const [uploadFileEnabled, setUploadFileEnabled] = useState(false);
+    const [readUrlEnabled, setReadUrlEnabled] = useState(false);
     const [environmentOptions, setEnvironmentOptions] = useState([]);
     const [loading, setLoading] = useState(false);
     const [toast, setToast] = useState({ message: '', type: '', visible: false });
     const [tools, setTools] = useState([]);
-    const [uploadFileEnabled, setUploadFileEnabled] = useState(false);
-    const [readUrlEnabled, setReadUrlEnabled] = useState(false);
-    const [file, setFile] = useState(null); // State for file upload
-    const [url, setUrl] = useState(''); // State for URL input
+    const [file, setFile] = useState(null);
+    const [url, setUrl] = useState('');
     const [formData, setFormData] = useState({
         name: '',
-        agent_description: '',
-        modelAgent: '',
+        employee_description: '',
+        modelEmployee: '',
         system_prompt: ''
     });
 
     // Update the system_prompt dynamically based on switches
     useEffect(() => {
-        let prompt = 'Enter prompt';
-        if (readUrlEnabled) {
-            prompt += ' or give URL details';
-        }
-        if (uploadFileEnabled) {
-            prompt += ' or attach a file';
-        }
-        setFormData((prevFormData) => ({
-            ...prevFormData,
-            system_prompt: prompt
-        }));
+        const prompt = [
+            'Enter prompt',
+            readUrlEnabled ? 'or give URL details' : '',
+            uploadFileEnabled ? 'or attach a file' : ''
+        ].join(' ').trim();
+        setFormData((prevFormData) => ({ ...prevFormData, system_prompt: prompt }));
     }, [uploadFileEnabled, readUrlEnabled]);
 
     const handleChange = (key, value) => {
@@ -45,8 +38,8 @@ const AgentStudio = () => {
     };
 
     useEffect(() => {
-        const storedTools = JSON.parse(localStorage.getItem('enabledTools')) || [];
-        setTools(storedTools);
+        const storedTools = JSON.parse(localStorage.getItem('enabledEmployees')) || [];
+        setTools(storedTools); // Assume tools is an array of objects { id, name }
     }, []);
 
     useEffect(() => {
@@ -68,23 +61,13 @@ const AgentStudio = () => {
         setToast({ message, type, visible: true });
         setTimeout(() => setToast({ ...toast, visible: false }), 3000);
     };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // if (!formData.name || !formData.agent_description) {
-        //     showToast('Please fill in all required fields', 'error');
-        //     return;
-        // }
-
         setLoading(true);
-        const toolsData = Object.keys(tools).length > 0
-            ? Object?.keys(tools)?.map((item) =>
-                item.includes(' ') ? item.split(' ').join('_').toLowerCase() : item.toLowerCase()
-            )
-            : [];
-        const filterData = toolsData.filter((item) => item !== "synthetic_data")
-        console.log(filterData)
-        // Handle system prompt concatenation based on switches
+        const filteredTools = tools.map(tool => tool.id).filter(id => id !== 'Synthetic Data');
+
         let systemPrompt = formData.system_prompt;
         if (uploadFileEnabled && file) {
             systemPrompt += ` File: ${file.name}`;
@@ -95,29 +78,28 @@ const AgentStudio = () => {
 
         const requestBody = {
             ...formData,
-            tools: filterData.join(', '),
-            env_id: formData.modelAgent,
+            tools: filteredTools.join(', '),
+            env_id: formData.modelEmployee,
             upload_attachment: uploadFileEnabled,
         };
 
         try {
-            const response = await fetch(`${baseURL}/agent/create`, {
+            const response = await fetch(`${baseURL}/employee/create`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(requestBody)
             });
 
-            if (!response.ok) throw new Error('Failed to create agent');
-            const result = await response.json();
-            showToast('Agent created successfully', 'success');
-            setFormData({ name: '', agent_description: '', modelAgent: '', system_prompt: '' });
-            setUploadExcel(false);
-            setReadWebsite(false);
-            setFile(null); // Clear file input
-            setUrl(''); // Clear URL input
+            if (!response.ok) throw new Error('Failed to create employee');
+            showToast('Employee created successfully', 'success');
+            setFormData({ name: '', employee_description: '', modelEmployee: '', system_prompt: '' });
+            setUploadFileEnabled(false);
+            setReadUrlEnabled(false);
+            setFile(null);
+            setUrl('');
         } catch (error) {
-            showToast('Failed to create agent: ' + error.message, 'error');
-            console.error('Error creating agent:', error);
+            showToast('Failed to create employee: ' + error.message, 'error');
+            console.error('Error creating employee:', error);
         } finally {
             setLoading(false);
         }
@@ -156,9 +138,9 @@ const AgentStudio = () => {
                 return (
                     <SwitchInput
                         label={label}
-                        checked={key === 'uploadExcel' ? uploadExcel : readWebsite}
-                        onChange={() =>
-                            key === 'uploadExcel' ? setUploadExcel(!uploadExcel) : setReadWebsite(!readWebsite)
+                        checked={key === 'uploadFileEnabled' ? uploadFileEnabled : readUrlEnabled}
+                        onChange={() => 
+                            key === 'uploadFileEnabled' ? setUploadFileEnabled(!uploadFileEnabled) : setReadUrlEnabled(!readUrlEnabled)
                         }
                     />
                 );
@@ -172,36 +154,23 @@ const AgentStudio = () => {
             <div className="w-full md:w-1/2 p-6">
                 <div className="border-2 bg-white rounded-lg shadow-lg p-8">
                     <form onSubmit={handleSubmit}>
-                        <h2 className="text-2xl font-bold mb-6 text-gray-700">Configure your Agent</h2>
-                        {renderInput('text', 'name', 'Agent Name', 'Enter Agent Name')}
-                        {renderInput('textarea', 'agent_description', 'Agent Description', 'Enter Agent Description')}
-                        {renderInput('select', 'modelAgent', 'Model Agent Planner', '', environmentOptions)}
+                        <h2 className="text-2xl font-bold mb-6 text-gray-700">Configure your Employee</h2>
+                        {renderInput('text', 'name', 'Employee Name', 'Enter Employee Name')}
+                        {renderInput('textarea', 'employee_description', 'Employee Description', 'Enter Employee Description')}
+                        {renderInput('select', 'modelEmployee', 'Model Employee Planner', '', environmentOptions)}
 
                         {/* Switches for Upload File and Read URL */}
                         <div className="mb-3 d-flex gap-3">
-                            <SwitchInput
-                                label="Upload File"
-                                checked={uploadFileEnabled}
-                                onChange={() => setUploadFileEnabled(!uploadFileEnabled)}
-                            />
-                            <SwitchInput
-                                label="Read URL"
-                                checked={readUrlEnabled}
-                                onChange={() => setReadUrlEnabled(!readUrlEnabled)}
-                            />
+                            {renderInput('switch', 'uploadFileEnabled', 'Upload File')}
+                            {renderInput('switch', 'readUrlEnabled', 'Read URL')}
                         </div>
 
-                        {renderInput('textarea', 'system_prompt', 'System Prompt', `Enter prompt ${readUrlEnabled ? "or give URL details" : ''} ${uploadFileEnabled ? "or attach a file" : ''}`)}
+                        {renderInput('textarea', 'system_prompt', 'System Prompt')}
                         <ChipsInput label="Tools" chip={tools} />
-
-                        {tools.length == 0 && (
-                            <p className="text-sm text-gray-500 mt-2">No tools selected</p>
-                        )}
 
                         <button
                             type="submit"
-                            className={`mt-6 w-full py-2 px-4 text-white font-semibold rounded-lg bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-opacity-75 ${loading ? 'opacity-50 cursor-not-allowed' : ''
-                                }`}
+                            className={`mt-6 w-full py-2 px-4 text-white font-semibold rounded-lg bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-opacity-75 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
                             disabled={loading}
                         >
                             {loading ? 'Loading...' : 'Submit'}
@@ -226,4 +195,4 @@ const AgentStudio = () => {
     );
 };
 
-export default AgentStudio;
+export default EmployeeStudio;

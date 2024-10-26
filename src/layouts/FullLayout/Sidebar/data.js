@@ -1,7 +1,11 @@
 import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
-import PostAddIcon from "@mui/icons-material/PostAdd";
+import AssistantIcon from "@mui/icons-material/Assistant"; // For AI Employee
+import BuildIcon from "@mui/icons-material/Build"; // For LLM Planner and Agents
+import StorefrontIcon from "@mui/icons-material/Storefront"; // For Market Place
+import HubIcon from "@mui/icons-material/Hub"; // For Agi Agents Hub
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+
 const Menuitems = [
   {
     title: "USER",
@@ -11,58 +15,40 @@ const Menuitems = [
         icon: DashboardOutlinedIcon,
         href: "/dashboards/dashboard1",
       },
-      // {
-      //   title: "Autocomplete",
-      //   icon: AddToPhotosOutlinedIcon,
-      //   href: "/form-elements/autocomplete",
-      // }
     ],
   },
-
-  //agents commented
-  /* {
-    title: "Agents",
-    list: [
-      {
-        title: "Interior Design",
-        icon: PostAddIcon,
-        href: "/start-design",
-      }
-    ]
-  }, */
   {
     title: "Agentic AI Studio",
     list: [
       {
-        title: "LLM planner",
-        icon: PostAddIcon,
+        title: "LLM Planner",
+        icon: BuildIcon, // Updated icon for LLM Planner
         href: "/configure-llm",
       },
       {
-        title: "Configure Tools",
-        icon: PostAddIcon,
+        title: "Agents",
+        icon: AssistantIcon, // Updated icon for Agents
         href: "/configure-tools",
       },
       {
-        title: "Create Agent ",
-        icon: PostAddIcon,
+        title: "AI Employee",
+        icon: AssistantIcon, // Updated icon for AI Employee
         href: "/create-agent",
       },
     ],
   },
-
   {
-    title: "Market ",
+    title: "Market",
     list: [
       {
         title: "Market Place",
-        icon: PostAddIcon,
+        icon: StorefrontIcon, // Updated icon for Market Place
         href: "/market-place",
       },
       {
-        title: "Agi Agents Hub",
-        icon: PostAddIcon,
-        href: "/agnets-hub",
+        title: "Agi Agents Hub",
+        icon: HubIcon, // Updated icon for Agi Agents Hub
+        href: "/agents-hub",
       },
     ],
   },
@@ -72,7 +58,7 @@ const Menuitems = [
       {
         title: "Partner Network",
         icon: AttachMoneyIcon,
-        href: "/affliate",
+        href: "/affiliate",
       },
       {
         title: "Support",

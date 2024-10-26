@@ -1,205 +1,101 @@
 import React, { useState, useEffect } from 'react';
-import "./Toggle.css";
 import Card from '../../components/Card/Card';
 import { Tools } from '../../data/DataJson';
 import Toast from '../../components/toast';
 
-export const ConfigureTools = () => {
-    const [showModal, setShowModal] = useState(false);
-    const [selectedCard, setSelectedCard] = useState(null);
-    const [apiKey, setApiKey] = useState('');
-    const [enabledTools, setEnabledTools] = useState({});
+export const ConfigureAgents = () => {
+    const [enabledAgents, setEnabledAgents] = useState([]);
     const [toast, setToast] = useState({ message: '', type: '' });
-
-    const [showSyntheticOptions, setShowSyntheticOptions] = useState(false);
-    const [selectedSyntheticOption, setSelectedSyntheticOption] = useState('');
+    const [searchQuery, setSearchQuery] = useState('');
+    const [filteredAgents, setFilteredAgents] = useState(Tools);
 
     useEffect(() => {
-        const storedTools = JSON.parse(localStorage.getItem('enabledTools')) || {};
-        setEnabledTools(storedTools);
+        const storedAgents = JSON.parse(localStorage.getItem('enabledAgents')) || [];
+        setEnabledAgents(storedAgents);
     }, []);
 
-    const handleToggleChange = (title) => {
-        if (title === "Synthetic Data" && !enabledTools[title]) {
-            setSelectedCard(title);
-            setShowSyntheticOptions(true);
-            setShowModal(true); // Open modal for Synthetic Data options
-        } else if (title === "LinkedIn Post" && !enabledTools[title]) {
-            setSelectedCard(title);
-            setShowModal(true); // Open modal for LinkedIn Post
+    useEffect(() => {
+        const results = Tools.filter(agent =>
+            agent.title.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+        setFilteredAgents(results);
+    }, [searchQuery]);
+
+    const handleToggleChange = (agent) => {
+        let updatedAgents;
+        if (enabledAgents.some(enabledAgent => enabledAgent.id === agent.id)) {
+            updatedAgents = enabledAgents.filter(enabledAgent => enabledAgent.id !== agent.id);
         } else {
-            const newEnabledTools = Object.keys(enabledTools).reduce((acc, tool) => {
-                acc[tool] = false;
-                return acc;
-            }, {});
-
-            newEnabledTools[title] = !enabledTools[title];
-            setEnabledTools(newEnabledTools);
-            localStorage.setItem('enabledTools', JSON.stringify(newEnabledTools));
-            console.log(`${title} is now ${newEnabledTools[title] ? 'enabled' : 'disabled'}`);
+            updatedAgents = [...enabledAgents, { id: agent.id, name: agent.title }];
         }
-    };
 
-    const handleSyntheticOptionChange = (option) => {
-        setSelectedSyntheticOption(option);
-    };
-
-    const closeModal = () => {
-        setShowModal(false);
-        setSelectedCard(null);
-        setApiKey('');
-        setShowSyntheticOptions(false);
-    };
-
-    const saveConfiguration = (name) => {
-
-        console.log(`Saved API Key for ${selectedCard}: ${apiKey}`);
-        const apiKeys = JSON.parse(localStorage.getItem('apiKeys')) || {};
-        apiKeys[selectedCard] = apiKey;
-        localStorage.setItem('apiKeys', JSON.stringify(apiKeys));
-        const newEnabledTools = { ...enabledTools, [name ? selectedSyntheticOption : null]: true, [selectedCard]: true };
-        setEnabledTools(newEnabledTools);
-        localStorage.setItem('enabledTools', JSON.stringify(newEnabledTools));
-        setToast({ message: `Saved configuration for ${selectedCard}`, type: 'success' });
-        closeModal();
+        setEnabledAgents(updatedAgents);
+        localStorage.setItem('enabledAgents', JSON.stringify(updatedAgents));
     };
 
     const resetConfiguration = () => {
-        setEnabledTools({});
-        localStorage.removeItem('enabledTools');
-        console.log('All tools have been reset');
-        setToast({ message: 'All tools have been reset', type: 'error' });
+        setEnabledAgents([]);
+        localStorage.removeItem('enabledAgents');
+        setToast({ message: 'All agents have been reset', type: 'error' });
     };
 
     const saveAllConfigurations = () => {
-        console.log('All configurations saved');
-        localStorage.setItem('enabledTools', JSON.stringify(enabledTools));
+        localStorage.setItem('enabledAgents', JSON.stringify(enabledAgents));
         setToast({ message: 'All configurations saved', type: 'success' });
     };
 
     return (
         <>
-            <div className="flex justify-center w-full mt-4">
-                <div className='border-2 w-[90%] bg-slate-50 rounded-lg'>
-                    <h3 className='p-2 m-2 font-bold'>Enable Tools</h3>
-                    <div className="grid grid-cols-3 overflow-y-scroll gap-4 p-4 bg-white">
-                        {Tools.map((card, index) => (
-                            <Card
-                                key={index}
-                                title={card.title}
-                                heading={<span className='font-semibold w-40 flex flex-wrap mt-2'>{card.heading}</span>}
-                                icon={card.icon}
-                                toggle={
-                                    <Toggle
-                                        isChecked={!!enabledTools[card.title]}
-                                        onToggleChange={() => handleToggleChange(card.title)}
-                                    />
-                                }
-                            />
-                        ))}
-                    </div>
+            <div className="min-h-screen w-full flex flex-col items-start bg-white p-4">
+                <h3 className="text-3xl font-bold text-gray-900 mb-4">
+                    Manage Agents
+                </h3>
 
-                    <div className="flex justify-end m-3">
-                        <button
-                            onClick={resetConfiguration}
-                            className="bg-red-500 text-white py-2 px-4 rounded mr-4"
-                            style={{ height: '40px' }}
-                        >
-                            Reset
-                        </button>
-                        <button
-                            onClick={saveAllConfigurations}
-                            className="bg-blue-500 text-white py-2 px-4 rounded"
-                            style={{ height: '40px' }}
-                        >
-                            Save
-                        </button>
-                    </div>
+                {/* Search Bar */}
+                <div className="w-full max-w-md mb-6">
+                    <input
+                        type="text"
+                        placeholder="Search agents..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                </div>
+
+                {/* Scrollable Agents List */}
+                <div className="w-full max-w-6xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 overflow-y-auto max-h-[500px]">
+                    {filteredAgents.map((agent, index) => (
+                        <Card
+                            key={index}
+                            title={agent.title}
+                            heading={<span className="font-semibold">{agent.heading}</span>}
+                            icon={agent.icon}
+                            toggle={
+                                <Toggle
+                                    isChecked={enabledAgents.some(a => a.id === agent.id)}
+                                    onToggleChange={() => handleToggleChange(agent)}
+                                />
+                            }
+                            className="w-full h-48 flex flex-col justify-between" // Set card size
+                        />
+                    ))}
+                </div>
+
+                <div className="flex space-x-4 mt-8 w-full justify-end">
+                    <button
+                        onClick={resetConfiguration}
+                        className="bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-6 rounded-lg transition-all"
+                    >
+                        Reset
+                    </button>
+                    <button
+                        onClick={saveAllConfigurations}
+                        className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-6 rounded-lg transition-all"
+                    >
+                        Save
+                    </button>
                 </div>
             </div>
-
-            {showModal && (
-                <div className="fixed inset-0 flex w-full items-center justify-center z-50 bg-black bg-opacity-50">
-                    <div className="bg-white w-[40%] p-6 rounded-lg shadow-lg">
-                        {selectedCard === "Synthetic Data" ? (
-                            <>
-                                <h2 className="text-2xl font-extrabold mb-6 text-center text-gray-800">
-                                    Choose Synthetic Data Option
-                                </h2>
-
-                                <div className="space-y-3">
-                                    <label className="flex items-center gap-1">
-                                        <input
-                                            type="radio"
-                                            name="syntheticOption"
-                                            value="Synthetic_data_extended_data"
-                                            checked={selectedSyntheticOption === 'Synthetic_data_extended_data'}
-                                            onChange={() => handleSyntheticOptionChange('Synthetic_data_extended_data')}
-                                            className="w-4 h-4"
-                                        />
-                                        <span className="text-gray-700 text-lg">Extend Data</span>
-                                    </label>
-
-                                    <label className="flex items-center gap-1">
-                                        <input
-                                            type="radio"
-                                            name="syntheticOption"
-                                            value="Synthetic_data_new_data"
-                                            checked={selectedSyntheticOption === 'Synthetic_data_new_data'}
-                                            onChange={() => handleSyntheticOptionChange('Synthetic_data_new_data')}
-                                            className="w-4 h-4"
-                                        />
-                                        <span className="text-gray-700 text-lg">Generate New Data</span>
-                                    </label>
-
-                                    <label className="flex items-center gap-1">
-                                        <input
-                                            type="radio"
-                                            name="syntheticOption"
-                                            value="Synthetic_data_missing_data"
-                                            checked={selectedSyntheticOption === 'Synthetic_data_missing_data'}
-                                            onChange={() => handleSyntheticOptionChange('Synthetic_data_missing_data')}
-                                            className="w-4 h-4"
-                                        />
-                                        <span className="text-gray-700 text-lg">Add Missing Data</span>
-                                    </label>
-                                </div>
-
-                                <div className="flex justify-between mt-6">
-                                    <button
-                                        onClick={closeModal}
-                                        className="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-5 rounded-md transition duration-300"
-                                    >
-                                        Close
-                                    </button>
-                                    <button
-                                        onClick={() => saveConfiguration('syn')}
-                                        className="bg-black hover:bg-gray-800 text-white py-2 px-5 rounded-md transition duration-300"
-                                    >
-                                        Save
-                                    </button>
-                                </div>
-                            </>
-
-                        ) : (
-                            <>
-                                <h2 className="text-xl font-bold mb-4">Token for {selectedCard}</h2>
-                                <input
-                                    type="text"
-                                    className="border border-gray-300 p-2 w-full mb-4"
-                                    placeholder="Enter API Key"
-                                    value={apiKey}
-                                    onChange={(e) => setApiKey(e.target.value)}
-                                />
-                                <div className="flex justify-between mt-4">
-                                    <button onClick={closeModal} className="bg-gray-300 py-2 px-4 rounded">Close</button>
-                                    <button onClick={saveConfiguration} className="bg-black text-white py-2 px-4 rounded">Save</button>
-                                </div>
-                            </>
-                        )}
-                    </div>
-                </div>
-            )}
 
             {toast.message && (
                 <Toast
@@ -212,19 +108,17 @@ export const ConfigureTools = () => {
     );
 };
 
-const Toggle = ({ isChecked, onToggleChange }) => {
-    return (
-        <label className="inline-flex items-center">
-            <input
-                type="checkbox"
-                className="hidden"
-                checked={isChecked}
-                onChange={onToggleChange}
-            />
-            <div className="toggle-bg w-12 h-6 rounded-full relative cursor-pointer">
-                <div className={`toggle-dot w-6 h-6 bg-white rounded-full shadow-md absolute top-0 transition-transform duration-300 transform ${isChecked ? 'translate-x-6' : 'translate-x-0'}`}></div>
-            </div>
-            <span className="ml-2">Enable</span>
-        </label>
-    );
-};
+const Toggle = ({ isChecked, onToggleChange }) => (
+    <label className="relative inline-flex items-center cursor-pointer w-12 h-6">
+        <input
+            type="checkbox"
+            checked={isChecked}
+            onChange={onToggleChange}
+            className="sr-only peer"
+        />
+        <div className="w-full h-full bg-gray-300 rounded-full peer peer-checked:bg-blue-500 transition-all duration-300"></div>
+        <div className="absolute top-0 left-0 w-6 h-6 bg-white rounded-full shadow-md transition-transform duration-300 transform peer-checked:translate-x-6"></div>
+    </label>
+);
+
+export default ConfigureAgents;

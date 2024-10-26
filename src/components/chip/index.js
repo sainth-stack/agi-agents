@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from 'react';
 
-const ChipsInput = ({ chip = {}, label }) => {
+const ChipsInput = ({ chip = [], label }) => {
     const [chips, setChips] = useState([]);
 
     // Extract keys with `true` values when component mounts or `chipsObject` changes
     useEffect(() => {
-        const extractedChips = Object.keys(chip).filter(key => chip[key]);
-        const data=extractedChips?.filter((item)=>item !=='Synthetic Data')
-        setChips(data);
+        const extractedChips = chip.filter(tool => tool.name !== 'Synthetic Data').map(tool => tool.name);
+        setChips(extractedChips);
     }, [chip]);
 
     const handleDeleteChip = (chipToDelete) => {
-        const updatedChips = chips.filter((chip) => chip !== chipToDelete);
+        const updatedChips = chips.filter(chip => chip !== chipToDelete);
         setChips(updatedChips); // Update state with remaining chips
     };
 
@@ -38,4 +37,4 @@ const ChipsInput = ({ chip = {}, label }) => {
     );
 };
 
-export default ChipsInput;
+export default ChipsInput

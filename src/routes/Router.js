@@ -18,7 +18,7 @@ import BlogManager from "../views/BlogManager/BlogManager.js";
 import SyntheticDataGenerator from "../views/Synthetic/Synthetic.js";
 import LinkdinManager from "../views/LinkedinManager/LinkdinManager.js";
 import AiEnvironment from "../views/AgentApps/ai-environment/index.js";
-import { ConfigureTools } from "../views/Tools/ConfigureTools.js";
+import ConfigureAgents from "../views/Tools/ConfigureTools.js";
 import AgentHubHome from "../views/agiAgents/home/index.js";
 import SubmitPage from "../components/form/Form.js";
 import DetailPage from "../components/details/index.js";
@@ -60,7 +60,7 @@ const ThemeRoutes = [
       { path: "/new-request", element: <NewRequest /> },
       { path: "/start-design", element: <Design /> },
       { path: "/configure-llm", element: <ConfigureLLM /> },
-      { path: "/configure-tools", element: <ConfigureTools /> },
+      { path: "/configure-tools", element: <ConfigureAgents /> },
       { path: "/create-agent", element: <AgentStudio /> },
       { path: "/market-place", element: <AgentApps /> },
       { path: "/agnets-hub", element: <AgentHubHome /> },
