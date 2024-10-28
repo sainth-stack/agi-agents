@@ -62,7 +62,8 @@ export const ConfigureAgents = () => {
                     />
                 </div>
 
-                <div className="w-full max-w-6xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 overflow-y-auto max-h-[500px]">
+                {/* Card Container with Controlled Height */}
+                <div className="w-full max-w-6xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 overflow-y-auto max-h-full">
                     {filteredAgents.map((agent, index) => (
                         <Card
                             key={index}
@@ -75,7 +76,7 @@ export const ConfigureAgents = () => {
                                     onToggleChange={() => handleToggleChange(agent)}
                                 />
                             }
-                            className="w-full h-48 flex flex-col justify-between" // Set card size
+                            className="w-full h-full flex flex-col justify-between" // Set card size to full width and height
                         />
                     ))}
                 </div>

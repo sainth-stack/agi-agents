@@ -26,11 +26,6 @@ const Menuitems = [
         href: "/configure-llm",
       },
       {
-        title: "Agents",
-        icon: AssistantIcon, // Updated icon for Agents
-        href: "/configure-tools",
-      },
-      {
         title: "AI Employee",
         icon: AssistantIcon, // Updated icon for AI Employee
         href: "/create-agent",
@@ -40,6 +35,11 @@ const Menuitems = [
   {
     title: "Market",
     list: [
+      {
+        title: "Agents",
+        icon: AssistantIcon, // Updated icon for Agents
+        href: "/configure-tools",
+      },
       {
         title: "Market Place",
         icon: StorefrontIcon, // Updated icon for Market Place

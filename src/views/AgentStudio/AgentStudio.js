@@ -20,8 +20,39 @@ const EmployeeStudio = () => {
         name: '',
         employee_description: '',
         modelEmployee: '',
-        system_prompt: ''
+        system_prompt: '',
+        postGeneratorType: '',
     });
+
+    const postGeneratorOptions = [
+        { value: 'website', label: 'Website Blog Post Generator' },
+        { value: 'video', label: 'Video Blog Post Generator' },
+        { value: 'audio', label: 'Audio Blog Post Generator' },
+        { value: 'youtube', label: 'Youtube Blog Post Generator' },
+        { value: 'others', label: 'Others' },
+    ];
+
+    const postGeneratorToolsMap = {
+        website: [
+            { id: 'blog_post', name: 'Website Agent' },
+            { id: 'mail_blog', name: 'Mail Agent' },
+            { id: 'research_blog', name: 'Research Agent' },
+        ],
+        audio: [
+            { id: 'audio_blog', name: 'Audio Agent' },
+            { id: 'mail_blog', name: 'Mail Agent' },
+        ],
+        video: [
+            { id: 'video_blog', name: 'Video Agent' },
+            { id: 'mail_blog', name: 'Mail Agent' },
+        ],
+        youtube: [
+            { id: 'youtube_blog', name: 'YouTube Agent' },
+            { id: 'mail_blog', name: 'Mail Agent' },
+        ],
+    };
+
+
 
     useEffect(() => {
         const prompt = [
@@ -34,12 +65,18 @@ const EmployeeStudio = () => {
 
     const handleChange = (key, value) => {
         setFormData({ ...formData, [key]: value });
+
+        // Handle specific tool selection based on postGeneratorType
+        if (key === 'postGeneratorType') {
+            const selectedTools = postGeneratorToolsMap[value] || [];
+            setTools(selectedTools);
+        }
     };
 
     useEffect(() => {
         const storedTools = JSON.parse(localStorage.getItem('enabledAgents')) || [];
-        setTools(storedTools); // Assume tools is an array of objects { id, name }
-        console.log(storedTools)
+        setTools(storedTools);
+        console.log(storedTools);
     }, []);
 
     useEffect(() => {
@@ -66,11 +103,22 @@ const EmployeeStudio = () => {
         e.preventDefault();
 
         setLoading(true);
-        const filteredTools = tools.map(tool => tool.id).filter(id => id !== 'Synthetic Data');
-
+        const filteredTools = Array.from(
+            new Set(
+                tools.map(tool => {
+                    // Check if the tool ID is one of the specified ones
+                    if (['blog_post', 'mail_blog', 'audio_blog', 'video_blog', 'youtube_blog'].includes(tool.id)) {
+                        return 'blog_post'; // Return 'blog_post' if any of the specified IDs match
+                    } else {
+                        return tool.id; // Return the original tool ID
+                    }
+                })
+            )
+        );
+        console.log(filteredTools)
         let systemPrompt = formData.system_prompt;
         if (uploadFileEnabled && file) {
-            systemPrompt += ` File: ${file.name}`;
+            systemPrompt += `File: ${file.name}`;
         }
         if (readUrlEnabled && url) {
             systemPrompt += ` URL: ${url}`;
@@ -92,7 +140,7 @@ const EmployeeStudio = () => {
 
             if (!response.ok) throw new Error('Failed to create employee');
             showToast('Employee created successfully', 'success');
-            setFormData({ name: '', employee_description: '', modelEmployee: '', system_prompt: '' });
+            setFormData({ name: '', employee_description: '', modelEmployee: '', system_prompt: '', postGeneratorType: '' });
             setUploadFileEnabled(false);
             setReadUrlEnabled(false);
             setFile(null);
@@ -158,14 +206,8 @@ const EmployeeStudio = () => {
                         {renderInput('text', 'name', 'Employee Name', 'Enter Employee Name')}
                         {renderInput('textarea', 'employee_description', 'Employee Description', 'Enter Employee Description')}
                         {renderInput('select', 'modelEmployee', 'Model Employee Planner', '', environmentOptions)}
-{/* 
-                        <div className="mb-3 d-flex gap-3">
-                            {renderInput('switch', 'uploadFileEnabled', 'Upload File')}
-                            {renderInput('switch', 'readUrlEnabled', 'Read URL')}
-                        </div> */}
-
-                        {/* {renderInput('textarea', 'system_prompt', 'System Prompt')} */}
-                        <ChipsInput label="Tools" chip={tools} />
+                        {renderInput('select', 'postGeneratorType', 'Post Generator Type', '', postGeneratorOptions)}
+                        <ChipsInput label="Agents" chip={tools} chips={tools} setChips={setTools} formData={formData} />
 
                         <button
                             type="submit"

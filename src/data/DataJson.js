@@ -1,5 +1,5 @@
 
-import { FaGlobe, FaLinkedin, FaEnvelope, FaMailchimp, FaDatabase, FaCode, FaBlog,FaChartLine } from 'react-icons/fa'; // Importing icons from react-icons
+import { FaBlog, FaLinkedin, FaCode, FaChartLine, FaDatabase, FaEnvelope, FaGlobe,FaYoutube,FaMicrophone,FaVideo ,FaEnvelopeOpenText} from 'react-icons/fa';
 import PostAddIcon from '@mui/icons-material/PostAdd';
 
 
@@ -54,11 +54,47 @@ export const cardData = [
     }
 ];
 
+
 export const Tools = [
     {
         id: 'blog_post',
-        title: 'Blog Post',
-        heading: 'Ability to post blogs',
+        title: 'YouTube',
+        heading: 'Manage YouTube blog posts',
+        icon: <FaYoutube />,
+        href: "/youtube-blog-manager"
+    },
+    {
+        id: 'blog_post',
+        title: 'Audio',
+        heading: 'Manage audio blog posts',
+        icon: <FaMicrophone />,
+        href: "/audio-blog-manager"
+    },
+    {
+        id: 'blog_post',
+        title: 'Video',
+        heading: 'Manage video blog posts',
+        icon: <FaVideo />,
+        href: "/video-blog-manager"
+    },
+    {
+        id: 'mail_blog',
+        title: 'Mail',
+        heading: 'Manage blog posts via mail',
+        icon: <FaEnvelopeOpenText />,
+        href: "/mail-blog-manager"
+    },
+    {
+        id: 'blog_post',
+        title: 'Website',
+        heading: 'Ability to post via website',
+        icon: <FaBlog />,
+        href: "/blog-manager"
+    },
+    {
+        id: 'blog_post',
+        title: 'Research',
+        heading: 'Ability to post via website',
         icon: <FaBlog />,
         href: "/blog-manager"
     },
@@ -111,4 +147,8 @@ export const Tools = [
         icon: <FaDatabase />,
         href: "/synthetic-data-new"
     }
-];
+].map(tool => ({
+    ...tool,
+    title: tool.title + ' Agent'
+}));
+

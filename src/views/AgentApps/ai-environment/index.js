@@ -56,38 +56,27 @@ const AiEnvironment = () => {
         // Convert the CSV data into a blob
         const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
 
-        // Create a temporary link element
         const link = document.createElement('a');
         const url = URL.createObjectURL(blob);
         link.href = url;
         link.setAttribute('download', 'synthetic_data.csv'); // Set the file name
-
-        // Append the link to the body and trigger the download
         document.body.appendChild(link);
         link.click();
-
-        // Clean up by removing the link element
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        // Regular expression to match URLs
         const urlRegex = /(https?:\/\/[^\s]+)/g;
         const foundUrls = prompt.match(urlRegex);
         const urlFromPrompt = foundUrls ? foundUrls[0] : undefined; // Take the first URL if it exists
-
-        // Prepare the payload based on user input
         const payload = {
             agent_id: id, // Pass the agent ID from URL params
             prompt: prompt || undefined, // Use undefined instead of null
             url: urlFromPrompt || undefined, // Use URL from the prompt if found
             file: uploadedFile || undefined, // Use undefined instead of null
         };
-
-        // Remove undefined properties
         Object.keys(payload).forEach(key => payload[key] === undefined && delete payload[key]);
 
         // Clear the input fields immediately on submit
