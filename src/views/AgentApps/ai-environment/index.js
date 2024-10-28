@@ -4,7 +4,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { Button, TextField, Typography, Paper, IconButton } from '@mui/material';
 import { baseURL } from '../../../const';
 import ENVT from './env';
-
+import axios from 'axios'
 const AiEnvironment = () => {
     const [prompt, setPrompt] = useState('');
     const [url, setUrl] = useState(''); // New state for the URL
@@ -14,6 +14,7 @@ const AiEnvironment = () => {
     const [agentDetails, setAgentDetails] = useState({ name: '', system_prompt: '', description: '' });
     const [uploadedFile, setUploadedFile] = useState(null); // State for the uploaded file
     const [uploadedFileName, setUploadedFileName] = useState(''); // New state for the uploaded file name
+    const [htmlResponse, setHtmlResponse] = useState('')
     const { id } = useParams();
     const responsesEndRef = useRef(null); // Reference for scrolling
 
@@ -97,7 +98,8 @@ const AiEnvironment = () => {
         const loadingResponse = { input: payload.prompt, loading: true, output: '' };
         const updateRes = [loadingResponse];
         setResponses(() => updateRes);
-        console.log(loadingResponse, 'dada')
+        console.log(loadingResponse, 'dada');
+
         try {
             const formData = new FormData(); // Use FormData to handle file uploads
 
@@ -108,45 +110,62 @@ const AiEnvironment = () => {
                 }
             }
 
-            const response = await fetch(`${baseURL}/openai/run`, {
-                method: 'POST',
-                body: formData,
+            // Perform the Axios POST request with FormData
+            const response = await axios.post(`${baseURL}/openai/run`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
             });
 
             if (response.status !== 200) throw new Error('API call failed');
 
-            const data = await response.json();
-            if (data?.csv_file) {
-                const updatedResponses = [...updateRes]; // Create a copy of the current responses
-                updatedResponses[updatedResponses.length-1] = {
-                    input: '',
-                    loading: false,
-                    output: 'Downloaded',
-                };
-                setResponses(updatedResponses);
-                downloadCSV(data?.csv_file?.data)
-            }
-            else {
-                const updatedResponses = [...updateRes]; // Create a copy of the current responses
+            // Function to check if response is HTML
+            const isHTML = (str) => /<\/?[a-z][\s\S]*>/i.test(str);
+
+            const data = response.data;
+            if (isHTML(data)) {
+                const updatedResponses = [...updateRes];
                 updatedResponses[updatedResponses.length - 1] = {
                     input: payload.prompt,
                     image: data?.result?.image_base64 || data?.image_base64,
                     loading: false,
-                    output: data?.content || data?.result?.content,
+                    output: '',
+                    htmlContent: data
                 };
                 setResponses(updatedResponses);
+            } else {
+                if (data?.csv_file) {
+                    const updatedResponses = [...updateRes];
+                    updatedResponses[updatedResponses.length - 1] = {
+                        input: '',
+                        loading: false,
+                        output: 'Downloaded',
+                    };
+                    setResponses(updatedResponses);
+                    downloadCSV(data?.csv_file?.data);
+                } else {
+                    const updatedResponses = [...updateRes];
+                    updatedResponses[updatedResponses.length - 1] = {
+                        input: payload.prompt,
+                        image: data?.result?.image_base64 || data?.image_base64,
+                        loading: false,
+                        output: data?.content || data?.result?.content,
+                    };
+                    setResponses(updatedResponses);
+                }
             }
         } catch (error) {
             console.error('Error during API call:', error);
-            const updatedResponses = [...updateRes]; // Create a copy of the current responses
+            const updatedResponses = [...updateRes];
             updatedResponses[updatedResponses.length - 1] = {
                 input: payload.prompt,
                 loading: false,
                 output: 'Error: ' + error.message,
             };
-            setResponses((prev) => [...updatedResponses]);
+            setResponses(updatedResponses);
         }
     };
+
 
 
     // Fetch environment data from /api/environment/{id} when the component mounts
@@ -221,7 +240,7 @@ const AiEnvironment = () => {
             responses,
             responsesEndRef,
             prompt,
-            uploadedFile
+            uploadedFile,
         }} />
     );
 };

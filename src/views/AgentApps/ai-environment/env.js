@@ -16,6 +16,7 @@ const ENVT = ({
     prompt,
     uploadedFile
 }) => {
+    console.log(responses)
     return (
         <div className="flex w-full" style={{ height: '100%' }}>
             {/* Left Section */}
@@ -122,8 +123,9 @@ const ENVT = ({
                             </Typography>
                         </Paper>
                     ) : (
-                        responses.map((response, index) => (
-                            <Paper key={index} className="p-4 border border-gray-300 rounded shadow-sm bg-white mt-2">
+                        responses.map((response, index) =>{
+                            return(
+                                <Paper key={index} className="p-4 border border-gray-300 rounded shadow-sm bg-white mt-2">
                                 {/* <Typography variant="subtitle1" className="font-bold mb-2 text-gray-800 font-custom">
                                     Input:
                                 </Typography> */}
@@ -135,7 +137,7 @@ const ENVT = ({
                                     </div>
                                 ) : (
                                     <>
-                                     {response?.input&&   <button
+                                        {response?.input && <button
                                             onClick={() => {
                                                 const doc = new jsPDF();
 
@@ -185,9 +187,22 @@ const ENVT = ({
                                             Download as PDF
                                         </button>}
 
-                                        <pre className="whitespace-pre-wrap font-custom text-gray-600" style={{ fontSize: '16px' }}>
-                                            {response.output}
-                                        </pre>
+                                        <>
+                                            {(response?.htmlContent) ? (
+                                                <div
+                                                    className="whitespace-pre-wrap font-custom text-gray-600"
+                                                    style={{ fontSize: '16px' }}
+                                                    dangerouslySetInnerHTML={{ __html: response?.htmlContent }}
+                                                />
+                                            ) : (
+                                                <pre
+                                                    className="whitespace-pre-wrap font-custom text-gray-600"
+                                                    style={{ fontSize: '16px' }}
+                                                >
+                                                    {response?.output}
+                                                </pre>
+                                            )}
+                                        </>
                                         {response?.image &&
                                             <img
                                                 src={`data:image/jpeg;base64,${response?.image}`}
@@ -198,7 +213,8 @@ const ENVT = ({
                                     </>
                                 )}
                             </Paper>
-                        ))
+                            )
+                        })
                     )}
                     <div ref={responsesEndRef} /> {/* This element is used for scrolling */}
                 </div>
