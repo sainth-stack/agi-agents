@@ -6,53 +6,27 @@ import SwitchInput from '../../components/switch';
 import ChipsInput from '../../components/chip';
 import Toast from '../../components/toast';
 import { baseURL } from '../../const';
+import { useNavigate } from 'react-router-dom';
+import { postGeneratorOptions, postGeneratorToolsMap } from '../../data/DataJson';
 
 const EmployeeStudio = () => {
     const [uploadFileEnabled, setUploadFileEnabled] = useState(false);
     const [readUrlEnabled, setReadUrlEnabled] = useState(false);
     const [environmentOptions, setEnvironmentOptions] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [toast, setToast] = useState({ message: '', type: '', visible: false });
     const [tools, setTools] = useState([]);
     const [file, setFile] = useState(null);
     const [url, setUrl] = useState('');
+    const navigate = useNavigate()
     const [formData, setFormData] = useState({
         name: '',
-        employee_description: '',
+        agent_description: '',
         modelEmployee: '',
         system_prompt: '',
         postGeneratorType: '',
     });
-
-    const postGeneratorOptions = [
-        { value: 'website', label: 'Website Blog Post Generator' },
-        { value: 'video', label: 'Video Blog Post Generator' },
-        { value: 'audio', label: 'Audio Blog Post Generator' },
-        { value: 'youtube', label: 'Youtube Blog Post Generator' },
-        { value: 'others', label: 'Others' },
-    ];
-
-    const postGeneratorToolsMap = {
-        website: [
-            { id: 'blog_post', name: 'Website Agent' },
-            { id: 'mail_blog', name: 'Mail Agent' },
-            { id: 'research_blog', name: 'Research Agent' },
-        ],
-        audio: [
-            { id: 'audio_blog', name: 'Audio Agent' },
-            { id: 'mail_blog', name: 'Mail Agent' },
-        ],
-        video: [
-            { id: 'video_blog', name: 'Video Agent' },
-            { id: 'mail_blog', name: 'Mail Agent' },
-        ],
-        youtube: [
-            { id: 'youtube_blog', name: 'YouTube Agent' },
-            { id: 'mail_blog', name: 'Mail Agent' },
-        ],
-    };
-
-
 
     useEffect(() => {
         const prompt = [
@@ -70,8 +44,19 @@ const EmployeeStudio = () => {
         if (key === 'postGeneratorType') {
             const selectedTools = postGeneratorToolsMap[value] || [];
             setTools(selectedTools);
+
+            // Open agents modal when Agent Name is selected
+            if (value) {
+                setIsModalOpen(true);
+            }
         }
     };
+
+    // Callback function to save the tools selected in the modal
+    const handleSaveTools = (selectedTools) => {
+        setTools(selectedTools);
+    };
+
 
     useEffect(() => {
         const storedTools = JSON.parse(localStorage.getItem('enabledAgents')) || [];
@@ -87,7 +72,7 @@ const EmployeeStudio = () => {
                 const data = await response.json();
                 setEnvironmentOptions(data.map((env) => ({ value: env.id, label: env.name })));
             } catch (error) {
-                showToast(error.message, 'error');
+                // showToast(error.message, 'error');
                 console.error('Error fetching environment options:', error);
             }
         };
@@ -106,16 +91,10 @@ const EmployeeStudio = () => {
         const filteredTools = Array.from(
             new Set(
                 tools.map(tool => {
-                    // Check if the tool ID is one of the specified ones
-                    if (['blog_post', 'mail_blog', 'audio_blog', 'video_blog', 'youtube_blog'].includes(tool.id)) {
-                        return 'blog_post'; // Return 'blog_post' if any of the specified IDs match
-                    } else {
-                        return tool.id; // Return the original tool ID
-                    }
+                    return tool.id; // Return the original tool ID
                 })
             )
         );
-        console.log(filteredTools)
         let systemPrompt = formData.system_prompt;
         if (uploadFileEnabled && file) {
             systemPrompt += `File: ${file.name}`;
@@ -126,6 +105,7 @@ const EmployeeStudio = () => {
 
         const requestBody = {
             ...formData,
+            system_prompt:formData.postGeneratorType,
             tools: filteredTools.join(', '),
             env_id: formData.modelEmployee,
             upload_attachment: uploadFileEnabled,
@@ -140,11 +120,12 @@ const EmployeeStudio = () => {
 
             if (!response.ok) throw new Error('Failed to create employee');
             showToast('Employee created successfully', 'success');
-            setFormData({ name: '', employee_description: '', modelEmployee: '', system_prompt: '', postGeneratorType: '' });
+            setFormData({ name: '', agent_description: '', modelEmployee: '', system_prompt: '', postGeneratorType: '' });
             setUploadFileEnabled(false);
             setReadUrlEnabled(false);
             setFile(null);
             setUrl('');
+            navigate('/market-place')
         } catch (error) {
             showToast('Failed to create employee: ' + error.message, 'error');
             console.error('Error creating employee:', error);
@@ -204,10 +185,10 @@ const EmployeeStudio = () => {
                     <form onSubmit={handleSubmit}>
                         <h2 className="text-2xl font-bold mb-6 text-gray-700">Configure your Employee</h2>
                         {renderInput('text', 'name', 'Employee Name', 'Enter Employee Name')}
-                        {renderInput('textarea', 'employee_description', 'Employee Description', 'Enter Employee Description')}
+                        {renderInput('textarea', 'agent_description', 'Employee Description', 'Enter Employee Description')}
                         {renderInput('select', 'modelEmployee', 'Model Employee Planner', '', environmentOptions)}
-                        {renderInput('select', 'postGeneratorType', 'Post Generator Type', '', postGeneratorOptions)}
-                        <ChipsInput label="Agents" chip={tools} chips={tools} setChips={setTools} formData={formData} />
+                        {renderInput('select', 'postGeneratorType', 'Agent Name', '', postGeneratorOptions)}
+                        <ChipsInput label="Agents" chip={tools} chips={tools} setChips={setTools} formData={formData} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
 
                         <button
                             type="submit"

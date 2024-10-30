@@ -1,8 +1,10 @@
 import { Typography, Button, TextField, IconButton, Paper, CircularProgress, Divider } from '@mui/material';
 import MicIcon from '@mui/icons-material/Mic';
+import { Download } from '@mui/icons-material';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import wayg from '../../../assets/images/poser.jpg'
 import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 const ENVT = ({
     agentDetails,
     handleSubmit,
@@ -14,9 +16,59 @@ const ENVT = ({
     responses,
     responsesEndRef,
     prompt,
-    uploadedFile
+    uploadedFile,
+    conditions
 }) => {
-    console.log(responses)
+    const handleDownloadPDF = async () => {
+        const element = document.getElementById('response22');
+
+        // Use html2canvas with improved configurations
+        const canvas = await html2canvas(element, {
+            scale: 2, // Higher scale for better resolution
+            useCORS: true, // Enable CORS to ensure images are captured
+            logging: false, // Disable logging to avoid console clutter
+        });
+
+        const pdf = new jsPDF('p', 'mm', 'a4'); // A4 size (210x297 mm)
+        const imgWidth = 190; // PDF width minus margins
+        const pageHeight = 297; // A4 height in mm
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+        let heightLeft = imgHeight;
+        let position = 10; // Initial margin from the top
+
+        let pageCanvas, pageImgData;
+
+        // Slice the canvas into sections if it exceeds one page
+        while (heightLeft > 0) {
+            // Create a new canvas for each page
+            pageCanvas = document.createElement('canvas');
+            pageCanvas.width = canvas.width;
+            pageCanvas.height = Math.min(canvas.height, (pageHeight * canvas.width) / imgWidth); // Maintain aspect ratio
+
+            const pageCtx = pageCanvas.getContext('2d');
+            pageCtx.drawImage(
+                canvas,
+                0, canvas.height - heightLeft, // Start from the remaining height
+                canvas.width, pageCanvas.height,
+                0, 0,
+                pageCanvas.width, pageCanvas.height
+            );
+
+            pageImgData = pageCanvas.toDataURL('image/png');
+            pdf.addImage(pageImgData, 'PNG', 10, position, imgWidth, (pageCanvas.height * imgWidth) / pageCanvas.width);
+
+            heightLeft -= pageCanvas.height;
+            if (heightLeft > 0) {
+                pdf.addPage(); // Add a new page if content is still left
+                position = 0; // Reset position for the new page
+            }
+        }
+
+        pdf.save('Response2.pdf');
+    };
+
+
     return (
         <div className="flex w-full" style={{ height: '100%' }}>
             {/* Left Section */}
@@ -38,7 +90,7 @@ const ENVT = ({
                             <TextField
                                 value={prompt}
                                 onChange={handlePromptChange}
-                                placeholder={placeholder}
+                                placeholder={conditions?.placeholder || "Enter Prompt"}
                                 multiline
                                 rows={5}
                                 variant="outlined"
@@ -92,10 +144,10 @@ const ENVT = ({
 
                             {/* Icons positioned at the bottom right corner */}
                             <div className="absolute top-28 right-2 flex gap-2">
-                                <IconButton component="label">
+                               { conditions?.attachment&&<IconButton component="label">
                                     <input type="file" hidden onChange={handleFileChange} />
                                     <AttachFileIcon />
-                                </IconButton>
+                                </IconButton>}
                                 <IconButton onClick={handleMicClick}>
                                     <MicIcon />
                                 </IconButton>
@@ -123,96 +175,57 @@ const ENVT = ({
                             </Typography>
                         </Paper>
                     ) : (
-                        responses.map((response, index) =>{
-                            return(
-                                <Paper key={index} className="p-4 border border-gray-300 rounded shadow-sm bg-white mt-2">
-                                {/* <Typography variant="subtitle1" className="font-bold mb-2 text-gray-800 font-custom">
+                        responses.map((response, index) => {
+                            return (
+                                <Paper key={index}
+                                    id={`response22`} className="p-4 border border-gray-300 rounded shadow-sm bg-white mt-2">
+                                    {/* <Typography variant="subtitle1" className="font-bold mb-2 text-gray-800 font-custom">
                                     Input:
                                 </Typography> */}
-                                {/* <pre className="whitespace-pre-wrap font-custom">{response.input}</pre> */}
+                                    {/* <pre className="whitespace-pre-wrap font-custom">{response.input}</pre> */}
 
-                                {response.loading ? (
-                                    <div className="flex items-center justify-center mt-4">
-                                        <CircularProgress size={24} />
-                                    </div>
-                                ) : (
-                                    <>
-                                        {response?.input && <button
-                                            onClick={() => {
-                                                const doc = new jsPDF();
-
-                                                // Add the text content to the PDF
-                                                let textContent = response.output || ''; // Ensure there's text content
-                                                if (typeof textContent === 'string') {
-                                                    // Split text into multiple lines to fit the width of the page
-                                                    const splitText = doc.splitTextToSize(textContent, 180);
-                                                    doc.setFontSize(12);
-
-                                                    // Variables for pagination and keeping track of where to add content
-                                                    let pageHeight = doc.internal.pageSize.height;
-                                                    let cursorY = 10; // Starting point on each page
-
-                                                    // Iterate over lines, adding text to the PDF
-                                                    splitText.forEach((line) => {
-                                                        if (cursorY + 10 > pageHeight - 10) {
-                                                            doc.addPage(); // Add a new page if we're out of space
-                                                            cursorY = 10; // Reset cursor to the top for the new page
-                                                        }
-                                                        doc.text(line, 10, cursorY);
-                                                        cursorY += 10; // Move cursor down for the next line
-                                                    });
-
-                                                    // Add a line break before the image
-                                                    cursorY += 10; // Adding some space before the image
-
-                                                    // Add the image to the PDF if it exists
-                                                    const imgData = `data:image/jpeg;base64,${response?.image}`;
-                                                    if (response?.image) {
-                                                        doc.addImage(imgData, 'JPEG', 10, cursorY, 180, 100); // Adjust the position and size as needed
-                                                    } else {
-                                                        // Fallback if there is no image
-                                                        doc.text("No image available to include.", 10, cursorY);
-                                                    }
-                                                } else {
-                                                    // Fallback in case textContent is not a string (ensure it's printable)
-                                                    doc.text("No valid output to download.", 10, 10);
-                                                }
-
-                                                // Download the PDF with a user reference ID or custom filename
-                                                const userId = response?.userId || 'user_ref_id'; // Example user ID or fallback
-                                                doc.save(`${userId}_output.pdf`);
-                                            }}
-                                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2 flex justify-end"
-                                        >
-                                            Download as PDF
-                                        </button>}
-
+                                    {response.loading ? (
+                                        <div className="flex items-center justify-center mt-4">
+                                            <CircularProgress size={24} />
+                                        </div>
+                                    ) : (
                                         <>
-                                            {(response?.htmlContent) ? (
-                                                <div
-                                                    className="whitespace-pre-wrap font-custom text-gray-600"
-                                                    style={{ fontSize: '16px' }}
-                                                    dangerouslySetInnerHTML={{ __html: response?.htmlContent }}
-                                                />
-                                            ) : (
-                                                <pre
-                                                    className="whitespace-pre-wrap font-custom text-gray-600"
-                                                    style={{ fontSize: '16px' }}
+                                            {response?.input && (
+                                                <div className='w-full flex justify-end'> <button
+                                                    className="btn btn-primary flex justify-end items-center"
+                                                    onClick={() => handleDownloadPDF()}
                                                 >
-                                                    {response?.output}
-                                                </pre>
+                                                    Download as PDF
+                                                    <Download className="ml-2" />
+                                                </button></div>
                                             )}
+                                            <>
+                                                {(response?.htmlContent) ? (
+                                                    <div
+                                                        className="whitespace-pre-wrap font-custom text-gray-600"
+
+                                                        style={{ fontSize: '16px' }}
+                                                        dangerouslySetInnerHTML={{ __html: response?.htmlContent.content }}
+                                                    />
+                                                ) : (
+                                                    <pre
+                                                        className="whitespace-pre-wrap font-custom text-gray-600"
+                                                        style={{ fontSize: '16px' }}
+                                                    >
+                                                        {response?.output}
+                                                    </pre>
+                                                )}
+                                            </>
+                                            {response?.image &&
+                                                <img
+                                                    src={`data:image/jpeg;base64,${response?.image}`}
+                                                    width={700}
+                                                    height={500}
+                                                    alt=''
+                                                />}
                                         </>
-                                        {response?.image &&
-                                            <img
-                                                src={`data:image/jpeg;base64,${response?.image}`}
-                                                width={700}
-                                                height={500}
-                                                alt=''
-                                            />}
-                                    </>
-                                )}
-                            </Paper>
+                                    )}
+                                </Paper>
                             )
                         })
                     )}

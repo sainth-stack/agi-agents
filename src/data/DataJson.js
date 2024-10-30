@@ -1,5 +1,5 @@
 
-import { FaBlog, FaLinkedin, FaCode, FaChartLine, FaDatabase, FaEnvelope, FaGlobe,FaYoutube,FaMicrophone,FaVideo ,FaEnvelopeOpenText} from 'react-icons/fa';
+import { FaBlog, FaLinkedin, FaCode, FaChartLine, FaDatabase, FaEnvelope, FaGlobe, FaYoutube, FaMicrophone, FaVideo, FaEnvelopeOpenText } from 'react-icons/fa';
 import PostAddIcon from '@mui/icons-material/PostAdd';
 
 
@@ -86,7 +86,7 @@ export const Tools = [
     },
     {
         id: 'blog_post',
-        title: 'Website',
+        title: 'WB',
         heading: 'Ability to post via website',
         icon: <FaBlog />,
         href: "/blog-manager"
@@ -108,23 +108,23 @@ export const Tools = [
     {
         id: 'text_to_sql',
         title: 'Text to SQL',
-        heading: 'Convert text to SQL',
+        heading: 'Convert Text to SQL',
         icon: <FaCode />,
         href: "/text-to-sql"
     },
     {
-        id: 'chat_to_sql',
-        title: 'Chat to SQL',
-        heading: 'Convert chat to SQL',
-        icon: <FaCode />,
-        href: "/chat-to-sql"
-    },
-    {
         id: 'graph_to_sql',
         title: 'Graph to SQL',
-        heading: 'Convert graphs to SQL',
+        heading: 'Convert Graphs to SQL',
         icon: <FaChartLine />,
         href: "/graph-to-sql"
+    },
+    {
+        id: 'forecasting_to_sql',
+        title: 'Forecasting to SQL',
+        heading: 'Convert Forecasting Data to SQL',
+        icon: <FaChartLine />,
+        href: "/forecasting-to-sql"
     },
     {
         id: 'synthetic_data_missing_data',
@@ -136,14 +136,14 @@ export const Tools = [
     {
         id: 'synthetic_data_extended_data',
         title: 'Extend Synthetic Data',
-        heading: 'Extend synthetic data sets',
+        heading: 'Extend synthetic data',
         icon: <FaDatabase />,
         href: "/synthetic-data-extend"
     },
     {
         id: 'synthetic_data_new_data',
         title: 'Create New Synthetic Data',
-        heading: 'Create new synthetic data sets',
+        heading: 'Create new synthetic data',
         icon: <FaDatabase />,
         href: "/synthetic-data-new"
     }
@@ -152,3 +152,81 @@ export const Tools = [
     title: tool.title + ' Agent'
 }));
 
+
+export const postGeneratorToolsMap = {
+    website: [
+        { id: 'blog_post', name: 'WB Agent' },
+        { id: 'mail_blog', name: 'Mail Agent' },
+        { id: 'research_blog', name: 'Research Agent' }
+    ],
+    audio: [
+        { id: 'audio_blog', name: 'Audio Agent' },
+        { id: 'mail_blog', name: 'Mail Agent' }
+    ],
+    video: [
+        { id: 'video_blog', name: 'Video Agent' },
+        { id: 'mail_blog', name: 'Mail Agent' }
+    ],
+    youtube: [
+        { id: 'youtube_blog', name: 'YouTube Agent' },
+        { id: 'mail_blog', name: 'Mail Agent' }
+    ],
+    linkedin: [
+        {
+            id: 'linkedin_post',
+            name: 'LinkedIn Post Agent'
+        }
+    ],
+    text_sql: [
+        {
+            id: 'text_to_sql',
+            name: 'Text to SQL Agent'
+        }
+    ],
+    graph_sql: [
+        {
+            id: 'graph_to_sql',
+            name: 'Graph to SQL Agent'
+        }
+    ],
+    forecasting_sql: [
+        {
+            id: 'forecasting_to_sql',
+            name: 'Forecasting to SQL Agent'
+        }
+    ],
+    synthetic_data_missing: [
+        {
+            id: 'synthetic_data_missing_data',
+            name: 'Missing Synthetic Data Agent'
+        }
+    ],
+    synthetic_data_extend: [
+        {
+            id: 'synthetic_data_extended_data',
+            name: 'Extend Synthetic Data Agent'
+        }
+    ],
+    synthetic_data_new: [
+        {
+            id: 'synthetic_data_new_data',
+            name: 'Create New Synthetic Data Agent'
+        }
+    ]
+};
+
+
+
+export const postGeneratorOptions = [
+    { value: 'website', label: 'Website Blog Post Generator',placeholder:'Enter URL And Prompt',attachment:false },
+    { value: 'video', label: 'Video Blog Post Generator',placeholder:'Attach Video File and Enter Prompt',attachment:true },
+    { value: 'audio', label: 'Audio Blog Post Generator' ,placeholder:'Attach Audio File and Enter Prompt',attachment:true},
+    { value: 'youtube', label: 'Youtube Blog Post Generator',placeholder:'Enter Youtube URL and Prompt',attachment:false },
+    { value: 'linkedin', label: 'LinkedIn Post Generator',placeholder:'Enter Prompt, URL, Attach File',attachment:true },
+    { value: 'text_sql', label: 'Text to SQL Converter',placeholder:'Attach File and Enter Prompt',attachment:true },
+    { value: 'graph_sql', label: 'Graph to SQL Converter',placeholder:'Attach File and Enter Prompt',attachment:true },
+    { value: 'forecasting_sql', label: 'Forecasting to SQL Converter',placeholder:'Attach File and Enter Prompt',attachment:true },
+    { value: 'synthetic_data_missing', label: 'Missing Synthetic Data',placeholder:'Attach File and Enter Prompt',attachment:true },
+    { value: 'synthetic_data_extend', label: 'Extend Synthetic Data',placeholder:'Attach File and Enter Prompt',attachment:true },
+    { value: 'synthetic_data_new', label: 'New Synthetic Data',placeholder:'Attach File and Enter Prompt',attachment:true }
+];

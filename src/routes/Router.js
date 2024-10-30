@@ -18,11 +18,11 @@ import BlogManager from "../views/BlogManager/BlogManager.js";
 import SyntheticDataGenerator from "../views/Synthetic/Synthetic.js";
 import LinkdinManager from "../views/LinkedinManager/LinkdinManager.js";
 import AiEnvironment from "../views/AgentApps/ai-environment/index.js";
-import ConfigureAgents from "../views/Tools/ConfigureTools.js";
 import AgentHubHome from "../views/agiAgents/home/index.js";
 import SubmitPage from "../components/form/Form.js";
 import DetailPage from "../components/details/index.js";
 import UpdatePage from "../components/update/Form.js";
+import { ConfigureAgents } from "../views/Tools/ConfigureTools.js";
 
 /****Layouts*****/
 const FullLayout = lazy(() => import("../layouts/FullLayout/FullLayout.js"));

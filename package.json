@@ -21,6 +21,7 @@
     "axios-mock-adapter": "1.21.4",
     "bootstrap": "^5.3.3",
     "flexy": "file:",
+    "html2canvas": "^1.4.1",
     "jspdf": "^2.5.2",
     "lottie-react": "^2.4.0",
     "react": "18.2.0",

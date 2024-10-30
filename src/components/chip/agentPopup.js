@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import Card from '../../components/Card/Card';
+import Card from '../Card/Card';
 import { Tools } from '../../data/DataJson';
-import Toast from '../../components/toast';
+import Toast from '../toast';
 
-export const ConfigureAgents = ({ selectedTools = [], handleToolChange }) => {
+export const ConfigureAgents2 = ({ selectedTools = [], handleToolChange,setIsModalOpen }) => {
     const [enabledAgents, setEnabledAgents] = useState([]);
     const [toast, setToast] = useState({ message: '', type: '' });
     const [searchQuery, setSearchQuery] = useState('');
@@ -36,19 +36,18 @@ export const ConfigureAgents = ({ selectedTools = [], handleToolChange }) => {
     const resetConfiguration = () => {
         setEnabledAgents([]);
         localStorage.removeItem('enabledAgents');
-        setToast({ message: 'All agents have been reset', type: 'error' });
+        // setToast({ message: 'All agents have been reset', type: 'error' });
     };
 
     const saveAllConfigurations = () => {
+        setIsModalOpen(false)
         localStorage.setItem('enabledAgents', JSON.stringify(enabledAgents));
-        setToast({ message: 'All configurations saved', type: 'success' });
+        // setToast({ message: 'All configurations saved', type: 'success' });
     };
 
     return (
         <>
             <div className="min-h-screen w-full flex flex-col items-start bg-white p-4">
-                <h3 className="text-3xl font-bold text-gray-900 mb-4">Manage Agents</h3>
-
                 <div className="w-full max-w-md mb-6">
                     <input
                         type="text"
@@ -79,17 +78,17 @@ export const ConfigureAgents = ({ selectedTools = [], handleToolChange }) => {
                 </div>
 
                 <div className="flex space-x-4 mt-8 w-full justify-end">
-                    <button
+                    {/* <button
                         onClick={resetConfiguration}
                         className="bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-6 rounded-lg transition-all"
                     >
                         Reset
-                    </button>
+                    </button> */}
                     <button
                         onClick={saveAllConfigurations}
                         className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-6 rounded-lg transition-all"
                     >
-                        Save
+                        Close
                     </button>
                 </div>
             </div>
@@ -106,7 +105,7 @@ export const ConfigureAgents = ({ selectedTools = [], handleToolChange }) => {
 };
 
 const Toggle = ({ isChecked, onToggleChange, disabled }) => (
-    <label className="relative inline-flex items-center cursor-pointer w-12 h-6">
+    <label className="relative inline-flex items-center cursor-pointer w-12 h-6" style={{ opacity: disabled ? 0.5 : 0.5, cursor: disabled ? "default" : 'default' }}>
         <input
             type="checkbox"
             checked={isChecked}
@@ -119,4 +118,4 @@ const Toggle = ({ isChecked, onToggleChange, disabled }) => (
     </label>
 );
 
-export default ConfigureAgents;
+export default ConfigureAgents2;

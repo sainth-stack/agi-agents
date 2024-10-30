@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
-import { Button, TextField, Typography, Paper, IconButton } from '@mui/material';
 import { baseURL } from '../../../const';
 import ENVT from './env';
 import axios from 'axios'
+import { postGeneratorOptions } from '../../../data/DataJson';
 const AiEnvironment = () => {
     const [prompt, setPrompt] = useState('');
     const [url, setUrl] = useState(''); // New state for the URL
@@ -17,6 +17,7 @@ const AiEnvironment = () => {
     const [htmlResponse, setHtmlResponse] = useState('')
     const { id } = useParams();
     const responsesEndRef = useRef(null); // Reference for scrolling
+    const [conditions, setConditions] = useState(null)
 
     const handlePromptChange = (e) => setPrompt(e.target.value);
 
@@ -109,10 +110,13 @@ const AiEnvironment = () => {
             if (response.status !== 200) throw new Error('API call failed');
 
             // Function to check if response is HTML
-            const isHTML = (str) => /<\/?[a-z][\s\S]*>/i.test(str);
+            const isHTML = (str) => {
+                return /<\/?[a-z][\s\S]*?>/i.test(str);
+            };
 
             const data = response.data;
-            if (isHTML(data)) {
+            console.log(isHTML(data))
+            if (isHTML(data?.content)) {
                 const updatedResponses = [...updateRes];
                 updatedResponses[updatedResponses.length - 1] = {
                     input: payload.prompt,
@@ -189,7 +193,10 @@ const AiEnvironment = () => {
                 system_prompt: data.system_prompt,
                 description: data.agent_description,
             });
-            setPlaceholder(data.system_prompt);
+            const finData = postGeneratorOptions.filter((item) => item?.value === data?.system_prompt)
+            if (finData.length > 0) {
+                setConditions(finData[0])
+            }
         } catch (error) {
             console.error('Error fetching agent data:', error);
         } finally {
@@ -230,6 +237,7 @@ const AiEnvironment = () => {
             responsesEndRef,
             prompt,
             uploadedFile,
+            conditions
         }} />
     );
 };
