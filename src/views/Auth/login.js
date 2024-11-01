@@ -110,7 +110,7 @@ export const Login = () => {
 
   return (
     <div
-      className="container-fluid row m-0  h-screen"
+      className=" row m-0  w-screen h-screen"
       style={{ background: "rgb(255,255,255)" }}
     >
       <div
