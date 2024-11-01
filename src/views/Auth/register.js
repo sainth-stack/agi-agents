@@ -63,8 +63,8 @@ export const Register = () => {
           backgroundPosition: "center",
         }}
       ></div>
-      <div className="col-md-6 col-xs-12 col-sm-12 text-center pt-5 ">
-        <div className="row mt-5">
+      <div className="col-md-6 col-xs-12 col-sm-12 text-center pt-4 ">
+        <div className="row ">
           <div className="col-md-9 col-lg-9 col-sm-12 col-xs-12 mx-auto">
             <h2 className="mb-3">Register</h2>
 
