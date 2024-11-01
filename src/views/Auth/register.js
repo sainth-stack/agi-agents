@@ -52,8 +52,8 @@ export const Register = () => {
 
   return (
     <div
-      className="container-fluid row m-0 p-0 "
-      style={{ background: "rgb(255 252 245)" }}
+      className="container-fluid row m-0 p-0 h-screen "
+      style={{ background: "rgb(255, 255, 255)" }}
     >
       <div
         className="col-md-6 pt-4 pb-4 d-flex justify-content-center align-items-center "
@@ -72,7 +72,6 @@ export const Register = () => {
               <div className="form-group d-flex flex-column text-start">
                 <label className="label2 fs13">User Name*</label>
                 <input
-                  style={{ borderRadius: "40px" }}
                   type="text"
                   className="form-control border"
                   id="username"
@@ -91,7 +90,6 @@ export const Register = () => {
               <div className="form-group d-flex flex-column mt-3 text-start">
                 <label className="label2 fs13">Email*</label>
                 <input
-                  style={{ borderRadius: "40px" }}
                   type="email"
                   className="form-control border"
                   id="email"
@@ -110,7 +108,6 @@ export const Register = () => {
               <div className="form-group d-flex flex-column mt-3 text-start">
                 <label className="label2 fs13">Password*</label>
                 <input
-                  style={{ borderRadius: "40px" }}
                   type={toggle2 ? "text" : "password"}
                   className="form-control border"
                   id="password"
@@ -138,7 +135,6 @@ export const Register = () => {
               <div className="form-group d-flex flex-column mt-3 text-start">
                 <label className="label2 fs13">Confirm Password*</label>
                 <input
-                  style={{ borderRadius: "40px" }}
                   type={toggle2 ? "text" : "password"}
                   className="form-control border"
                   id="password2"
@@ -173,7 +169,6 @@ export const Register = () => {
                 className="btn w-100 text-white border-0 mt-4"
                 style={{
                   background: "#4887c7",
-                  borderRadius: "40px",
                   height: "40px",
                 }}
                 type={loading ? "button" : "submit"}

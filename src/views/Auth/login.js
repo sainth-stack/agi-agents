@@ -171,18 +171,18 @@ export const Login = () => {
                 <label className="label2 fs13">Email*</label>
                 <input
                   type="email"
-                  className="form-control border"
+                  className=" border rounded-lg bg-red-500"
                   value={email}
                   required
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
 
-              <div className="form-group  d-flex flex-column mt-3 text-start position-relative">
+              <div className="form-group   d-flex flex-column mt-3 text-start position-relative">
                 <label className="label2 fs13">Password*</label>
                 <input
                   type={togglePassword ? "text" : "password"}
-                  className="form-control border"
+                  className="form-control border rounded-full"
                   value={password}
                   maxLength={16}
                   minLength={8}
