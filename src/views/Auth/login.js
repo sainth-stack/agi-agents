@@ -2,10 +2,9 @@ import eye from "../../assets/svg/eye-fill.svg";
 import axios from "axios";
 import eye2 from "../../assets/svg/eye-slash.svg";
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import  LoadingIndicator  from "../../components/loader";
+import { Link, useNavigate } from "react-router-dom";
+import LoadingIndicator from "../../components/loader";
 import "./styles.css";
-import { useNavigate } from "react-router-dom";
 import { useGoogleLogin } from "@react-oauth/google";
 import { baseURL } from "../../const";
 import bedroom from "../../assets/images/neolocus/bedroom.png";
@@ -14,129 +13,100 @@ import { useUser } from "../../context/userContext";
 
 export const Login = () => {
   const [loading, setLoading] = useState(false);
-  const [toggle2, setToggle2] = useState(false);
-  /* const [email, setEmail] = useState("info@desai.net");
-   */
-
+  const [togglePassword, setTogglePassword] = useState(false);
   const [email, setEmail] = useState("");
-  /*   const [password, setPassword] = useState("Keypulse@123");
-
-*/
-
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
   const { userData, setUserData } = useUser();
+  const navigate = useNavigate();
   const googleLoginURL = `${baseURL}/googlelogin`;
 
   const getUserData = async (userName) => {
-    try {
-      if (userName) {
-        var formData = new FormData();
+    if (userName) {
+      try {
+        const formData = new FormData();
         formData.append("user", userName);
         const response = await axios.post(
           `${baseURL}/get_user_details`,
           formData
         );
-        console.log(response);
         setUserData(response?.data?.paymentinfo);
+      } catch (error) {
+        console.error("Error fetching user info:", error);
       }
-    } catch (error) {
-      console.error("Error fetching user info:", error);
     }
   };
 
-  const navigate = useNavigate();
-  const Login = (event) => {
-    // if (email === 'info@desai.net' && password === 'Keypulse@123') {
-    //   setLoading(true)
-    //   navigate('/start-design')
-    // }
-    var formData = new FormData();
-    formData.append("username", email);
-    formData.append("password", password);
-    formData.append("email", email);
+  const handleLogin = async (event) => {
     event.preventDefault();
-    axios
-      .post(`${baseURL}/login`, formData)
-      .then((response) => {
-        setLoading(false);
-        console.log(response);
-        if (response.data?.status === "Success") {
-          navigate("/start-design");
-          localStorage.setItem("username", email);
-          localStorage.setItem("email", email);
-          localStorage.setItem("token", `${response.data}`);
-          getUserData(email);
-        } else {
-          setError(response.data);
-          console.log("Login Failed");
-          // window.alert("Incorrect Password")
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    setLoading(true);
+    setError("");
+
+    const formData = new FormData();
+    formData.append("email", email);
+    formData.append("password", password);
+
+    try {
+      const response = await axios.post(`${baseURL}/login`, formData);
+      setLoading(false);
+
+      if (response.data?.status === "success") {
+        localStorage.setItem("email", email);
+        localStorage.setItem("token", `${response.data}`);
+        navigate("/start-design");
+        getUserData(email);
+      } else {
+        setError(response.data?.errors?.password2?.join(" ") || "Login Failed");
+      }
+    } catch (error) {
+      setLoading(false);
+      setError("An error occurred. Please try again.");
+      console.error("Login error:", error);
+    }
   };
 
-  const onSuccess = (response) => {};
-
-  const onFailure = (response) => {
-    console.log("Login Failed:", response);
-  };
-
-  const onLogoutSuccess = () => {
-    console.log("Logout Success");
-  };
+  const handleGoogleLogin = useGoogleLogin({
+    onSuccess: (tokenResponse) => getUserInfo(tokenResponse.access_token),
+    onFailure: (response) => setError("Google login failed. Please try again."),
+  });
 
   const getUserInfo = async (token) => {
     try {
       const response = await axios.get(
         "https://www.googleapis.com/oauth2/v1/userinfo",
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
-      GoogleLogin(response.data);
+      handleGoogleLoginSuccess(response.data);
     } catch (error) {
-      console.error("Error fetching user info:", error);
+      setError("Failed to fetch Google user info.");
+      console.error("Error fetching Google user info:", error);
     }
   };
 
-  const GoogleLogin = (data) => {
-    var formData = new FormData();
-    formData.append("username", `${data.name.replaceAll(" ", "_")}`);
-    formData.append("id", data.id);
-    formData.append("email", data.email);
+  const handleGoogleLoginSuccess = async (data) => {
+    try {
+      const formData = new FormData();
+      formData.append("email", `${data.name.replaceAll(" ", "_")}`);
+      formData.append("id", data.id);
+      formData.append("email", data.email);
 
-    axios
-      .post(googleLoginURL, formData)
-      .then((response) => {
-        console.log(response);
-        setLoading(false);
-        if (response.status == 200) {
-          navigate("/start-design");
-          console.log(data);
-          localStorage.setItem("username", `${data.name.replaceAll(" ", "_")}`);
-          localStorage.setItem("email", data.email);
-          localStorage.setItem("token", `${response.data}`);
-        } else {
-          setError(response.data);
-          console.log("Login Failed");
-          // window.alert("Incorrect Password")
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      const response = await axios.post(googleLoginURL, formData);
+      if (response.status === 200) {
+        localStorage.setItem("email", data.name.replaceAll(" ", "_"));
+        localStorage.setItem("email", data.email);
+        localStorage.setItem("token", response.data);
+        navigate("/start-design");
+      } else {
+        setError(response.data);
+      }
+    } catch (error) {
+      setError("Google login failed.");
+      console.error("Google login error:", error);
+    }
   };
-
-  const login = useGoogleLogin({
-    onSuccess: (tokenResponse) => {
-      getUserInfo(tokenResponse.access_token);
-    },
-  });
 
   return (
     <div
@@ -179,7 +149,7 @@ export const Login = () => {
               <button
                 className="custom-google-login-button"
                 onClick={() => {
-                  login();
+                  handleGoogleLogin();
                 }}
               >
                 <img
@@ -208,85 +178,66 @@ export const Login = () => {
               <div className="border-top"></div>
             </div>
             <h2 className="mb-1">{"Login"}</h2>
-            <form
-              onSubmit={(event) => Login(event)}
-              className="pr-lg-5 pl-lg-5"
-            >
-              <div
-                className="form-group d-flex flex-column"
-                style={{ textAlign: "start" }}
-              >
-                <label className="label2 fs13 ">{"UserName"}*</label>
+            <form onSubmit={handleLogin} className="px-lg-5">
+              <div className="form-group d-flex flex-column text-start">
+                <label className="label2 fs13">Email*</label>
                 <input
-                  style={{ borderRadius: "40px" }}
-                  // type="email"
+                  type="email"
                   className="form-control border"
-                  id="email"
-                  name="email"
-                  autoComplete="off"
                   value={email}
-                  // readOnly
                   required
                   onChange={(e) => setEmail(e.target.value)}
-                  // onFocus={() => setMessage("")}
+                />
+              </div>
+
+              <div className="form-group  d-flex flex-column mt-3 text-start position-relative">
+                <label className="label2 fs13">Password*</label>
+                <input
+                  type={togglePassword ? "text" : "password"}
+                  className="form-control border"
+                  value={password}
+                  maxLength={16}
+                  minLength={8}
+                  required
+                  onChange={(e) => setPassword(e.target.value)}
+                  style={{ paddingRight: "2.5rem" }} // Add padding to avoid overlap with the icon
+                />
+                <img
+                  src={togglePassword ? eye2 : eye} // Use eye icons defined in your component
+                  onClick={() => setTogglePassword(!togglePassword)}
+                  alt="Toggle visibility"
+                  style={{
+                    cursor: "pointer",
+                    position: "absolute",
+                    right: "10px",
+
+                    top: "50%",
+
+                    transform: "translateY(50%)",
+                    width: "20px",
+                    height: "20px",
+                  }}
                 />
               </div>
 
               <div
-                className="form-group d-flex flex-column mt-3"
-                style={{ textAlign: "start" }}
-              >
-                <label className="label2 fs13 ">{"Password"}*</label>
-                <input
-                  style={{ borderRadius: "40px" }}
-                  type={toggle2 ? "text" : "password"}
-                  className="form-control border"
-                  id="password"
-                  name="password"
-                  value={password}
-                  // maxLength={16}
-                  // minLength={8}
-                  // required
-                  onChange={(e) => setPassword(e.target.value)}
-                  // onFocus={() => setMessage("")}
-                />
-                <div className="relative">
-                  <img
-                    className="eye3"
-                    src={toggle2 ? eye2 : eye}
-                    onClick={() => setToggle2(!toggle2)}
-                    alt="Logo"
-                  />
-                </div>
-              </div>
-              <div
-                style={{
-                  fontSize: "14px",
-                  color: "red",
-                  display: "flex",
-                  justifyContent: "flex-start",
-                  marginTop: "4px",
-                }}
+                className="text-danger text-start mt-2"
+                style={{ fontSize: "14px" }}
               >
                 {error}
               </div>
-              <div className="d-flex flex-row-reverse mb-4">
-                <Link to="#">
-                  <span className="fs-12 cursor-pointer">Forgot Password</span>
-                </Link>
-              </div>
+
               <button
-                className="font-weight-bold text-uppercase w-100 text-white border-0 login2"
+                className="btn w-100 text-white border-0 mt-4"
                 style={{
-                  background: "rgb(72, 136, 200)",
+                  background: "#4887c7",
                   borderRadius: "40px",
                   height: "40px",
                 }}
-                type={loading ? "button" : "submit"}
+                type="submit"
                 disabled={loading}
               >
-                {loading ? "Logging in..." : "SIGN IN"}{" "}
-                {loading ? <LoadingIndicator size={"1"} /> : null}
+                {loading ? "Loading..." : "Login"}
               </button>
             </form>
             <div className="account2 mt-2">{"Don't have an account?"}</div>

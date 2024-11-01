@@ -2,7 +2,7 @@ import eye from "../../assets/svg/eye-fill.svg";
 import eye2 from "../../assets/svg/eye-slash.svg";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import  LoadingIndicator  from "../../components/loader/index";
+import LoadingIndicator from "../../components/loader/index";
 import { useNavigate } from "react-router-dom";
 import "./styles.css";
 import bedroom from "../../assets/images/neolocus/bedroom.png";
@@ -17,32 +17,37 @@ export const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState({});
   const [password2, setPassword2] = useState("");
   const navigate = useNavigate();
 
-  const Register = (event) => {
+  const handleRegister = async (event) => {
     setLoading(true);
+    setError("");
+    setFieldErrors({});
     event.preventDefault();
     var formData = new FormData();
+
     formData.append("username", userName);
     formData.append("email", email);
     formData.append("password1", password);
     formData.append("password2", password2);
-    axios
-      .post(`${baseURL}/register`, formData)
-      .then((response) => {
-        setLoading(false);
-        if (response?.data?.status === "Success") {
-          navigate("/login");
-        } else {
-          setError(response?.data);
-        }
-      })
-      .catch((err) => {
-        setError(err.data);
-        setLoading(false);
-        console.log(err);
-      });
+
+    try {
+      const response = await axios.post(`${baseURL}/register`, formData);
+      setLoading(false);
+
+      if (response.data.status === "success") {
+        navigate("/login");
+      } else {
+        setError("Registration failed");
+        setFieldErrors(response.data.errors || {});
+      }
+    } catch (err) {
+      setLoading(false);
+      setError(err.response?.data?.message || "An error occurred");
+      console.error(err);
+    }
   };
 
   return (
@@ -53,8 +58,6 @@ export const Register = () => {
       <div
         className="col-md-6 pt-4 pb-4 d-flex justify-content-center align-items-center "
         style={{
-          height: "90vh",
-
           backgroundImage: `url(${bedroom})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
@@ -67,12 +70,12 @@ export const Register = () => {
           Design the room of your dreams
         </h5>
       </div>
-      <div className="col-md-6 col-xs-12 col-sm-12 text-center pt-5 mt-5">
+      <div className="col-md-6 col-xs-12 col-sm-12 text-center pt-5 ">
         <div className="row mt-5">
           <div className="col-md-9 col-lg-9 col-sm-12 col-xs-12 mx-auto">
             <h2 className="mb-3">Register</h2>
 
-            <form onSubmit={Register} className="px-lg-5">
+            <form onSubmit={handleRegister} className="px-lg-5">
               <div className="form-group d-flex flex-column text-start">
                 <label className="label2 fs13">User Name*</label>
                 <input
@@ -86,6 +89,11 @@ export const Register = () => {
                   required
                   onChange={(e) => setUsername(e.target.value)}
                 />
+                {fieldErrors.username && (
+                  <div className="text-danger" style={{ fontSize: "14px" }}>
+                    {fieldErrors.username.join(", ")}
+                  </div>
+                )}
               </div>
               <div className="form-group d-flex flex-column mt-3 text-start">
                 <label className="label2 fs13">Email*</label>
@@ -100,6 +108,11 @@ export const Register = () => {
                   required
                   onChange={(e) => setEmail(e.target.value)}
                 />
+                {fieldErrors.email && (
+                  <div className="text-danger" style={{ fontSize: "14px" }}>
+                    {fieldErrors.email.join(", ")}
+                  </div>
+                )}
               </div>
               <div className="form-group d-flex flex-column mt-3 text-start">
                 <label className="label2 fs13">Password*</label>
@@ -123,6 +136,11 @@ export const Register = () => {
                     alt="Toggle visibility"
                   />
                 </div>
+                {fieldErrors.password1 && (
+                  <div className="text-danger" style={{ fontSize: "14px" }}>
+                    {fieldErrors.password1.join(", ")}
+                  </div>
+                )}
               </div>
               <div className="form-group d-flex flex-column mt-3 text-start">
                 <label className="label2 fs13">Confirm Password*</label>
@@ -146,6 +164,11 @@ export const Register = () => {
                     alt="Toggle visibility"
                   />
                 </div>
+                {fieldErrors.password2 && (
+                  <div className="text-danger" style={{ fontSize: "14px" }}>
+                    {fieldErrors.password2.join(", ")}
+                  </div>
+                )}
               </div>
               <div
                 className="text-danger text-start mt-2"
@@ -154,7 +177,7 @@ export const Register = () => {
                 {error}
               </div>
               <button
-                className="btn  w-100 text-white border-0 mt-4"
+                className="btn w-100 text-white border-0 mt-4"
                 style={{
                   background: "#4887c7",
                   borderRadius: "40px",
@@ -163,8 +186,7 @@ export const Register = () => {
                 type={loading ? "button" : "submit"}
                 disabled={loading}
               >
-                {loading ? "Registering..." : "Register"}{" "}
-                {loading && <LoadingIndicator size={"1"} />}
+                {loading ? "Registering..." : "Register"}
               </button>
             </form>
             <div className="mt-3 ">Already Have An Account?</div>
