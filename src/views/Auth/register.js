@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import LoadingIndicator from "../../components/loader/index";
 import { useNavigate } from "react-router-dom";
 import "./styles.css";
-import bedroom from "../../assets/images/neolocus/bedroom.png";
+import bedroom from "../../assets/images/neolocus/bg.jpg";
 import axios from "axios";
 import { baseURL } from "../../const";
 // import "../../components/styles/resgister.css";
@@ -62,14 +62,7 @@ export const Register = () => {
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
-      >
-        <h5
-          className="sm:text-danger title font-weight-bold mt-2 text-light container text-center"
-          style={{ fontSize: "7rem", width: "90%" }}
-        >
-          Design the room of your dreams
-        </h5>
-      </div>
+      ></div>
       <div className="col-md-6 col-xs-12 col-sm-12 text-center pt-5 ">
         <div className="row mt-5">
           <div className="col-md-9 col-lg-9 col-sm-12 col-xs-12 mx-auto">

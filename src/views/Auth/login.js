@@ -7,7 +7,7 @@ import LoadingIndicator from "../../components/loader";
 import "./styles.css";
 import { useGoogleLogin } from "@react-oauth/google";
 import { baseURL } from "../../const";
-import bedroom from "../../assets/images/neolocus/bedroom.png";
+import bedroom from "../../assets/images/neolocus/bg.jpg";
 // import "../../components/styles/login.css";
 import { useUser } from "../../context/userContext";
 
@@ -110,29 +110,17 @@ export const Login = () => {
 
   return (
     <div
-      className="container-fluid row m-0 p-0"
-      style={{ background: "rgb(255 252 245)" }}
+      className="container-fluid row m-0  h-screen"
+      style={{ background: "rgb(255,255,255)" }}
     >
       <div
-        className="col-md-6 pt-4 pb-4"
+        className="col-md-6 pt-4 pb-4 d-flex justify-content-center align-items-center "
         style={{
-          height: "100vh",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          // background: 'rgb(72, 136, 200)',
           backgroundImage: `url(${bedroom})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
-      >
-        <h5
-          className="sm:text-danger title font-weight-bold mt-2 text-light container text-center"
-          style={{ fontSize: "4.3rem", width: "90%" }}
-        >
-          Generate Room designs in Seconds
-        </h5>
-      </div>
+      ></div>
       <div className="col-md-6 col-xs-12 col-sm-12 text-center pt-lg-5 mt-lg-5">
         <div className="pt-5"></div>
         <div
@@ -239,11 +227,11 @@ export const Login = () => {
               >
                 {loading ? "Loading..." : "Login"}
               </button>
+              <div className="account2 mt-2">{"Don't have an account?"}</div>
+              <Link to="/register" className="text-decoration-none register2">
+                <span className="btn "> {"Register"}</span>
+              </Link>
             </form>
-            <div className="account2 mt-2">{"Don't have an account?"}</div>
-            <Link to="/register" className="text-decoration-none register2">
-              <span className="btn "> {"Register"}</span>
-            </Link>
           </div>
         </div>
       </div>
