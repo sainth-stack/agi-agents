@@ -169,6 +169,8 @@ export const Register = () => {
                 className="btn w-100 text-white border-0 mt-4"
                 style={{
                   background: "#4887c7",
+                  borderRadius: "40px",
+
                   height: "40px",
                 }}
                 type={loading ? "button" : "submit"}
