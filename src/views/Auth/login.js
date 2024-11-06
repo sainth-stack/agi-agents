@@ -20,7 +20,7 @@ export const Login = () => {
 
   const { userData, setUserData } = useUser();
   const navigate = useNavigate();
-  const googleLoginURL = `${baseURL}/googlelogin`;
+  const googleLoginURL = `${baseURL}/google_login`;
 
   const getUserData = async (userName) => {
     if (userName) {
@@ -54,7 +54,7 @@ export const Login = () => {
       if (response.data?.status === "success") {
         localStorage.setItem("email", email);
         localStorage.setItem("token", `${response.data}`);
-        navigate("/start-design");
+        navigate("/dashboards/dashboard1");
         getUserData(email);
       } else {
         setError(response.data?.errors?.password2?.join(" ") || "Login Failed");
@@ -89,7 +89,7 @@ export const Login = () => {
   const handleGoogleLoginSuccess = async (data) => {
     try {
       const formData = new FormData();
-      formData.append("email", `${data.name.replaceAll(" ", "_")}`);
+      formData.append("username", `${data.name.replaceAll(" ", "_")}`);
       formData.append("id", data.id);
       formData.append("email", data.email);
 
@@ -98,7 +98,7 @@ export const Login = () => {
         localStorage.setItem("email", data.name.replaceAll(" ", "_"));
         localStorage.setItem("email", data.email);
         localStorage.setItem("token", response.data);
-        navigate("/start-design");
+        navigate("/dashboards/dashboard1");
       } else {
         setError(response.data);
       }
@@ -110,7 +110,7 @@ export const Login = () => {
 
   return (
     <div
-      className="container-fluid row m-0  h-screen"
+      className="container-fluid row m-0  h-screen p-0"
       style={{ background: "rgb(255,255,255)" }}
     >
       <div

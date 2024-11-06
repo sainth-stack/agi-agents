@@ -58,36 +58,9 @@ export const cardData = [
 export const Tools = [
     {
         id: 'blog_post',
-        title: 'YouTube',
-        heading: 'Manage YouTube blog posts',
-        icon: <FaYoutube />,
-        href: "/youtube-blog-manager"
-    },
-    {
-        id: 'blog_post',
-        title: 'Audio',
-        heading: 'Manage audio blog posts',
-        icon: <FaMicrophone />,
-        href: "/audio-blog-manager"
-    },
-    {
-        id: 'blog_post',
-        title: 'Video',
-        heading: 'Manage video blog posts',
-        icon: <FaVideo />,
-        href: "/video-blog-manager"
-    },
-    {
-        id: 'mail_blog',
-        title: 'Mail',
-        heading: 'Manage blog posts via mail',
-        icon: <FaEnvelopeOpenText />,
-        href: "/mail-blog-manager"
-    },
-    {
-        id: 'blog_post',
-        title: 'WB',
+        title: 'Blog',
         heading: 'Ability to post via website',
+        category:"Blog",
         icon: <FaBlog />,
         href: "/blog-manager"
     },
@@ -95,6 +68,7 @@ export const Tools = [
         id: 'blog_post',
         title: 'Research',
         heading: 'Ability to post via website',
+        category:"Blog",
         icon: <FaBlog />,
         href: "/blog-manager"
     },
@@ -102,6 +76,7 @@ export const Tools = [
         id: 'linkedin_post',
         title: 'LinkedIn Post',
         heading: 'Post on LinkedIn',
+        category:"Blog",
         icon: <FaLinkedin />,
         href: "/linkedin-manager"
     },
@@ -109,6 +84,7 @@ export const Tools = [
         id: 'text_to_sql',
         title: 'Text to SQL',
         heading: 'Convert Text to SQL',
+        category:"DataBase",
         icon: <FaCode />,
         href: "/text-to-sql"
     },
@@ -116,6 +92,7 @@ export const Tools = [
         id: 'graph_to_sql',
         title: 'Graph to SQL',
         heading: 'Convert Graphs to SQL',
+        category:"DataBase",
         icon: <FaChartLine />,
         href: "/graph-to-sql"
     },
@@ -123,6 +100,7 @@ export const Tools = [
         id: 'forecasting_to_sql',
         title: 'Forecasting to SQL',
         heading: 'Convert Forecasting Data to SQL',
+        category:"DataBase",
         icon: <FaChartLine />,
         href: "/forecasting-to-sql"
     },
@@ -130,6 +108,7 @@ export const Tools = [
         id: 'synthetic_data_missing_data',
         title: 'Missing Synthetic Data',
         heading: 'Handle missing synthetic data',
+        category:"Data",
         icon: <FaDatabase />,
         href: "/synthetic-data-missing"
     },
@@ -137,6 +116,7 @@ export const Tools = [
         id: 'synthetic_data_extended_data',
         title: 'Extend Synthetic Data',
         heading: 'Extend synthetic data',
+        category:"Data",
         icon: <FaDatabase />,
         href: "/synthetic-data-extend"
     },
@@ -144,6 +124,15 @@ export const Tools = [
         id: 'synthetic_data_new_data',
         title: 'Create New Synthetic Data',
         heading: 'Create new synthetic data',
+        category:"Data",
+        icon: <FaDatabase />,
+        href: "/synthetic-data-new"
+    },
+    {
+        id: 'chat_to_pdf',
+        title: 'Chat to PDF',
+        heading: 'Chat to PDF',
+        category:"PDF",
         icon: <FaDatabase />,
         href: "/synthetic-data-new"
     }
@@ -212,6 +201,12 @@ export const postGeneratorToolsMap = {
             id: 'synthetic_data_new_data',
             name: 'Create New Synthetic Data Agent'
         }
+    ],
+    chat_to_pdf: [
+        {
+            id: 'chat_to_pdf',
+            name: 'Chat to PDF'
+        }
     ]
 };
 
@@ -228,5 +223,6 @@ export const postGeneratorOptions = [
     { value: 'forecasting_sql', label: 'Forecasting to SQL Converter',placeholder:'Attach File and Enter Prompt',attachment:true },
     { value: 'synthetic_data_missing', label: 'Missing Synthetic Data',placeholder:'Attach File and Enter Prompt',attachment:true },
     { value: 'synthetic_data_extend', label: 'Extend Synthetic Data',placeholder:'Attach File and Enter Prompt',attachment:true },
-    { value: 'synthetic_data_new', label: 'New Synthetic Data',placeholder:'Attach File and Enter Prompt',attachment:true }
+    { value: 'synthetic_data_new', label: 'New Synthetic Data',placeholder:'Attach File and Enter Prompt',attachment:true },
+    { value: 'chat_to_pdf', label: 'Chat to PDF',placeholder:'Attach File and Enter Prompt',attachment:true }
 ];

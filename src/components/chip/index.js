@@ -99,7 +99,7 @@ const ChipsInput = ({ chip = [], label, chips, setChips, formData, isModalOpen, 
                         >
                             ✖
                         </button>
-                        <h1 className="text-[25px] font-semibold mb-4 text-gray-700">Manage Tools</h1>
+                        <h1 className="text-[25px] font-semibold mb-4 text-gray-700">Manage Agents</h1>
                         <div className="flex flex-col h-[500px] overflow-y-auto pr-2">
                             <ConfigureAgents2
                                 selectedTools={selectedTools} // Pass selected tools as prop

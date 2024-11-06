@@ -48,7 +48,7 @@ const Menuitems = [
       {
         title: "Agi Agents Hub",
         icon: HubIcon, // Updated icon for Agi Agents Hub
-        href: "/agents-hub",
+        href: "/agnets-hub",
       },
     ],
   },

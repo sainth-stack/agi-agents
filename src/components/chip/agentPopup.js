@@ -3,7 +3,7 @@ import Card from '../Card/Card';
 import { Tools } from '../../data/DataJson';
 import Toast from '../toast';
 
-export const ConfigureAgents2 = ({ selectedTools = [], handleToolChange,setIsModalOpen }) => {
+export const ConfigureAgents2 = ({ selectedTools = [], handleToolChange, setIsModalOpen }) => {
     const [enabledAgents, setEnabledAgents] = useState([]);
     const [toast, setToast] = useState({ message: '', type: '' });
     const [searchQuery, setSearchQuery] = useState('');
@@ -44,6 +44,7 @@ export const ConfigureAgents2 = ({ selectedTools = [], handleToolChange,setIsMod
         localStorage.setItem('enabledAgents', JSON.stringify(enabledAgents));
         // setToast({ message: 'All configurations saved', type: 'success' });
     };
+    const categories = [...new Set(filteredAgents.map(agent => agent.category))];
 
     return (
         <>
@@ -58,23 +59,34 @@ export const ConfigureAgents2 = ({ selectedTools = [], handleToolChange,setIsMod
                     />
                 </div>
 
-                <div className="w-full max-w-6xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-                    {filteredAgents.map((agent, index) => (
-                        <Card
-                            key={index}
-                            title={agent.title}
-                            heading={<span className="font-semibold">{agent.heading}</span>}
-                            icon={agent.icon}
-                            toggle={(
-                                <Toggle
-                                    isChecked={selectedTools.includes(agent.title)}
-                                    onToggleChange={() => handleToggleChange(agent)}
-                                    disabled={selectedTools.length > 0 && !selectedTools.includes(agent.title)}
-                                />
-                            )}
-                            className="w-full h-full flex flex-col justify-between"
-                        />
-                    ))}
+                <div className="">
+                    {
+                        categories.map(category => (
+                            <div key={category} className="category-section mt-5">
+                                <h2 className="category-title font-bold text-lg mb-2">{category}</h2>
+                                <div className="w-full max-w-6xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                                    {filteredAgents
+                                        .filter(agent => agent.category === category)
+                                        .map((agent, index) => (
+                                            <Card
+                                                key={index}
+                                                title={agent.title}
+                                                heading={<span className="font-semibold">{agent.heading}</span>}
+                                                icon={agent.icon}
+                                                toggle={(
+                                                    <Toggle
+                                                        isChecked={selectedTools.includes(agent.title)}
+                                                        onToggleChange={() => handleToggleChange(agent)}
+                                                        disabled={selectedTools.length > 0 && !selectedTools.includes(agent.title)}
+                                                    />
+                                                )}
+                                                className="w-full h-full flex flex-col justify-between"
+                                            />
+                                        ))}
+                                </div>
+                            </div>
+                        ))}
+
                 </div>
 
                 <div className="flex space-x-4 mt-8 w-full justify-end">
