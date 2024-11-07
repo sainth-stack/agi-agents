@@ -97,7 +97,7 @@ export const Tools = [
         href: "/graph-to-sql"
     },
     {
-        id: 'forecasting_to_sql',
+        id: 'forecast_to_sql',
         title: 'Forecasting to SQL',
         heading: 'Convert Forecasting Data to SQL',
         category:"DataBase",
@@ -178,9 +178,9 @@ export const postGeneratorToolsMap = {
             name: 'Graph to SQL Agent'
         }
     ],
-    forecasting_sql: [
+    forecast_to_sql: [
         {
-            id: 'forecasting_to_sql',
+            id: 'forecast_to_sql',
             name: 'Forecasting to SQL Agent'
         }
     ],
@@ -220,7 +220,7 @@ export const postGeneratorOptions = [
     { value: 'linkedin', label: 'LinkedIn Post Generator',placeholder:'Enter Prompt, URL, Attach File',attachment:true },
     { value: 'text_sql', label: 'Text to SQL Converter',placeholder:'Attach File and Enter Prompt',attachment:true },
     { value: 'graph_sql', label: 'Graph to SQL Converter',placeholder:'Attach File and Enter Prompt',attachment:true },
-    { value: 'forecasting_sql', label: 'Forecasting to SQL Converter',placeholder:'Attach File and Enter Prompt',attachment:true },
+    { value: 'forecast_to_sql', label: 'Forecasting to SQL Converter',placeholder:'Attach File and Enter Prompt',attachment:true },
     { value: 'synthetic_data_missing', label: 'Missing Synthetic Data',placeholder:'Attach File and Enter Prompt',attachment:true },
     { value: 'synthetic_data_extend', label: 'Extend Synthetic Data',placeholder:'Attach File and Enter Prompt',attachment:true },
     { value: 'synthetic_data_new', label: 'New Synthetic Data',placeholder:'Attach File and Enter Prompt',attachment:true },
