@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import "./data.css";
 import img1 from "../../../assets/icon1.png";
 import img2 from "../../../assets/icon2.png";
-import img3 from "../../../assets/icon3.png";
-import img4 from "../../../assets/icon2.png";
 import img5 from "../../../assets/icon3.png";
 import img6 from "../../../assets/icon6.png";
 import img7 from "../../../assets/icon2.png";
@@ -195,9 +193,8 @@ export default function AgentHubHome() {
     <>
       <div className="w-12/12 bg-gray-100">
         <div
-          className={`bg-slate-50 shadow-md rounded-lg  ${
-            location.pathname == "/agnets-hub" ? "" : ""
-          }`}
+          className={`bg-slate-50 shadow-md rounded-lg  ${location.pathname == "/agnets-hub" ? "" : ""
+            }`}
         >
           {/* // <Navbar /> */}
           <div

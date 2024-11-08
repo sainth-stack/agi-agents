@@ -66,18 +66,21 @@ export default function UpdatePage() {
     });
     setIsLoading(true);
     try {
-      const logoUrl = await uploadToCloudinary(formData.logo);
-      // const previewImageUrl = await uploadToCloudinary(formData.preview_image);
+      let logoUrl = formData.logo;
 
-      // Update formData with Cloudinary URLs
+      // Check if formData.logo is already a URL
+      if (!logoUrl || typeof logoUrl !== 'string' || !logoUrl.startsWith('http')) {
+        // If logo is not a URL, upload it to Cloudinary
+        logoUrl = await uploadToCloudinary(formData.logo);
+      }
+
       const updatedFormData = {
         ...formData,
         logo: logoUrl,
-        // preview_image: previewImageUrl,
       };
       const agentId = getAgentIdFromURL();
       const response = await axios.post(
-        `http://13.215.228.42:4001//api/agent/${agentId}/modify/`,
+        `http://13.215.228.42:4001/api/agent/${agentId}/modify/`,
         updatedFormData,
         {
           headers: {
@@ -93,7 +96,7 @@ export default function UpdatePage() {
       // } else {
       //   alert("Please enter the correct data!");
 
-      navigate("/");
+      navigate("/market-place");
     } catch (error) {
       console.error("Error:", error);
       alert("An error occurred while Updating the form.");
@@ -105,8 +108,8 @@ export default function UpdatePage() {
     const url = window.location.href;
 
     const id = url.split("/"); // Split the URL at the '?' and get the part after it
-    console.log(id[4]);
-    return id[4]; // Return the ID directly
+    console.log(id[id.length - 1]);
+    return id[id.length - 1]; // Return the ID directly
   };
 
   const agentId = getAgentIdFromURL();
@@ -115,7 +118,7 @@ export default function UpdatePage() {
     const fetchAgentDetails = async () => {
       try {
         const response = await fetch(
-          `http://13.215.228.42:4001//api/agents_detail/${agentId}`
+          `http://13.215.228.42:4001/api/agents_detail/${agentId}`
         );
         const data = await response.json();
         const finalData = {

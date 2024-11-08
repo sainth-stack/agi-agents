@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 // Import the CSS file for styling
-import img1 from "../../assets/icon1.png";
+import './index.css'
 import { useNavigate } from "react-router-dom";
 import {
   FaUser,
@@ -17,8 +17,9 @@ const DetailPage = () => {
   // Extract the ID from the URL
   const getAgentIdFromURL = () => {
     const url = window.location.href;
-    const id = url.split("?")[1]; // Split the URL at the '?' and get the part after it
-    return id; // Return the ID directly
+
+    const id = url.split("/"); 
+    return id[id.length - 1];
   };
 
   // const getVideoIdFromURL = (url) => {
