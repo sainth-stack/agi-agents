@@ -97,11 +97,12 @@ const DetailPage = () => {
                 <i class="fas fa-lock"></i> Closed Source
               </span>
             </div>
-            <button className="visit-website-button">
+            <button className="visit-website-button" style={{marginTop:'15px'}}>
               <a
                 href={agent.website_url}
                 target="_blank"
                 rel="noopener noreferrer"
+
               >
                 {" "}
                 <i class="fas fa-external-link-alt"></i>
@@ -129,9 +130,9 @@ const DetailPage = () => {
         {/* Key Features Section */}
         <div className="detail-section section-border">
           <h2>Key Features</h2>
-          <ul className="star-list">
+          <ul className="star-list p-0" >
             {agent.key_features.map((feature, index) => (
-              <li key={index}>{feature}</li>
+              <li key={index} className="mt-2">{feature}</li>
             ))}
           </ul>
         </div>

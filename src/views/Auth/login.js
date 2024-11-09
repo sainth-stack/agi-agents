@@ -54,7 +54,12 @@ export const Login = () => {
       if (response.data?.status === "success") {
         localStorage.setItem("email", email);
         localStorage.setItem("token", `${response.data}`);
-        navigate("/dashboards/dashboard1");
+        if (email == 'admin@gmail.com') {
+          navigate('/admin/agents')
+        }
+        else {
+          navigate("/dashboards/dashboard1");
+        }
         getUserData(email);
       } else {
         setError(response.data?.errors?.password2?.join(" ") || "Login Failed");
@@ -95,9 +100,11 @@ export const Login = () => {
 
       const response = await axios.post(googleLoginURL, formData);
       if (response.status === 200) {
-        localStorage.setItem("email", data.name.replaceAll(" ", "_"));
-        localStorage.setItem("email", data.email);
-        localStorage.setItem("token", response.data);
+        localStorage.setItem("email", data?.name.replaceAll(" ", "_"));
+        localStorage.setItem("email", data?.email);
+        localStorage.setItem("token", response?.data);
+      
+        console.log(data?.email)
         if (data?.email == 'admin@gmail.com') {
           navigate('/admin/agents')
         }

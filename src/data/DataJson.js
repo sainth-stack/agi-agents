@@ -137,7 +137,7 @@ export const Tools = [
         href: "/synthetic-data-new"
     },
     {
-        id: 'chat_app',
+        id: 'chat_app_text',
         title: 'Chat App',
         heading: 'Chat App',
         category:"Content",
@@ -216,9 +216,9 @@ export const postGeneratorToolsMap = {
             name: 'Chat to PDF Agent'
         }
     ],
-    chat_app: [
+    chat_app_text: [
         {
-            id: 'chat_app',
+            id: 'chat_app_text',
             name: 'Chat App Agent'
         }
     ]
@@ -239,5 +239,5 @@ export const postGeneratorOptions = [
     { value: 'synthetic_data_extend', label: 'Extend Synthetic Data',placeholder:'Attach File and Enter Prompt',attachment:true },
     { value: 'synthetic_data_new', label: 'New Synthetic Data',placeholder:'Attach File and Enter Prompt',attachment:true },
     { value: 'chat_to_pdf', label: 'Chat to PDF',placeholder:'Attach File and Enter Prompt',attachment:true },
-    { value: 'chat_app', label: 'Chat App',placeholder:'Attach File and Enter Prompt',attachment:true }
+    { value: 'chat_app_text', label: 'Chat App',placeholder:'Attach File and Enter Prompt',attachment:true }
 ];
