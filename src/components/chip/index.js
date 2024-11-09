@@ -17,17 +17,6 @@ const ChipsInput = ({ chip = [], label, chips, setChips, formData, isModalOpen, 
         }
     }, [chip]);
 
-    const handleDeleteChip = (chipToDelete) => {
-        const updatedChips = chips.filter(c => c.name !== chipToDelete.name);
-        setChips(updatedChips);
-
-        const updatedSelected = selectedTools.filter(tool => tool !== chipToDelete.name);
-        setSelectedTools(updatedSelected);
-
-        if (defaultSelection === chipToDelete.name) {
-            setDefaultSelection(null);
-        }
-    };
 
     const handleManageTools = () => {
         setIsModalOpen(true);
@@ -44,16 +33,6 @@ const ChipsInput = ({ chip = [], label, chips, setChips, formData, isModalOpen, 
         setSelectedTools(updatedSelection);
     };
 
-    const handleSave = () => {
-        const selectedChips = selectedTools.map(name => {
-            const tool = Tools.find(tool => tool.title === name);
-            return tool ? { name: tool.title, id: tool.id } : null;
-        }).filter(Boolean);
-
-        setChips(selectedChips);
-        setIsModalOpen(false);
-        document.body.style.overflow = 'auto';
-    };
 
     const handleCancel = () => {
         setIsModalOpen(false);

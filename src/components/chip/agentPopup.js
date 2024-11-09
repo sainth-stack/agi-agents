@@ -4,6 +4,7 @@ import { Tools } from '../../data/DataJson';
 import Toast from '../toast';
 
 export const ConfigureAgents2 = ({ selectedTools = [], handleToolChange, setIsModalOpen }) => {
+    console.log(selectedTools)
     const [enabledAgents, setEnabledAgents] = useState([]);
     const [toast, setToast] = useState({ message: '', type: '' });
     const [searchQuery, setSearchQuery] = useState('');

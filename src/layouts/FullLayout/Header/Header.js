@@ -101,7 +101,7 @@ const Header = (props) => {
         )}
 
         <Box flexGrow={1} />
-
+{/* 
         <Grid
           onClick={() => navigate("/start-design")}
           style={{
@@ -112,7 +112,7 @@ const Header = (props) => {
           }}
         >
           Start Design
-        </Grid>
+        </Grid> */}
 
         {location.pathname == "/agnets-hub" && (
           <Grid
@@ -129,7 +129,7 @@ const Header = (props) => {
           </Grid>
         )}
 
-        <Grid
+        {/* <Grid
           onClick={() => navigate("/pricing")}
           style={{
             fontSize: "18px",
@@ -139,7 +139,7 @@ const Header = (props) => {
           }}
         >
           Pricing
-        </Grid>
+        </Grid> */}
         {/* ------------------------------------------- */}
         {/* End Notifications Dropdown */}
         {/* ------------------------------------------- */}

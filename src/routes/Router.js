@@ -23,6 +23,7 @@ import SubmitPage from "../components/form/Form.js";
 import DetailPage from "../components/details/index.js";
 import UpdatePage from "../components/update/Form.js";
 import { ConfigureAgents } from "../views/Tools/ConfigureTools.js";
+import AdminAgents from "../views/admin-agents/index.js";
 
 /****Layouts*****/
 const FullLayout = lazy(() => import("../layouts/FullLayout/FullLayout.js"));
@@ -55,6 +56,7 @@ const ThemeRoutes = [
     children: [
       { path: "/", element: <Navigate to="dashboards/dashboard1" /> },
       { path: "dashboards/dashboard1", exact: true, element: <Home /> },
+      { path: "admin/agents", exact: true, element: <AdminAgents /> },
       { path: "/support", element: <Support /> },
       { path: "/affliate", element: <Affliate /> },
       { path: "/new-request", element: <NewRequest /> },
@@ -67,7 +69,6 @@ const ThemeRoutes = [
       { path: "/agnets-hub/submit", element: <SubmitPage /> },
       { path: "/agnets-hub/details/:id", element: <DetailPage /> },
       { path: "/agnets-hub/update/:id", element: <UpdatePage /> },
-
       { path: "/blog-manager", element: <BlogManager /> },
       { path: "/synthetic-generator", element: <SyntheticDataGenerator /> },
       { path: "/linkedin-manager", element: <LinkdinManager /> },

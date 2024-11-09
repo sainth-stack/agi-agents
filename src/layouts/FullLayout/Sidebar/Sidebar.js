@@ -30,7 +30,7 @@ const Sidebar = (props) => {
   };
 
   const SidebarContent = (
-    <Box sx={{ p: 3, height: "calc(100vh - 40px)",zIndex:99 }}>
+    <Box sx={{ p: 3, height: "calc(100vh - 40px)", zIndex: 99 }}>
       <Link to="/">
         <Box sx={{ display: "flex", alignItems: "Center" }}>
           <LogoIcon />
@@ -44,43 +44,85 @@ const Sidebar = (props) => {
           }}
         >
           {Menuitems.map((item) => {
-            return (
-              <Box sx={{borderBottom:'1px solid rgb(0 0 0 / 5%)'}}>
-                <div style={{padding:'20px',paddingLeft:'0px',fontFamily:'DM Sans'}}>
-                  <span style={{ fontSize: '1rem', fontWeight: 500 }}>{item.title}</span>
-                </div>
-                {item?.list?.map((item, index) => {
-                  return (
-                    <List component="li" disablePadding key={item.title}>
-                      <ListItem
-                        onClick={() => handleClick(index)}
-                        button
-                        component={NavLink}
-                        to={item.href}
-                        selected={pathDirect === item.href}
-                        sx={{
-                          mb: 1,
-                          ...(pathDirect === item.href && {
-                            color: "white",
-                            backgroundColor: (theme) =>
-                              `${theme.palette.primary.main}!important`,
-                          }),
-                        }}
-                      >
-                        <ListItemIcon
+            const email = localStorage.getItem('email')
+
+            if (email === 'admin@gmail.com' && item.admin) {
+              return (
+                <Box sx={{ borderBottom: '1px solid rgb(0 0 0 / 5%)' }}>
+                  <div style={{ padding: '20px', paddingLeft: '0px', fontFamily: 'DM Sans' }}>
+                    <span style={{ fontSize: '1rem', fontWeight: 500 }}>{item.title}</span>
+                  </div>
+                  {item?.list?.map((item, index) => {
+                    return (
+                      <List component="li" disablePadding key={item.title}>
+                        <ListItem
+                          onClick={() => handleClick(index)}
+                          button
+                          component={NavLink}
+                          to={item.href}
+                          selected={pathDirect === item.href}
                           sx={{
-                            ...(pathDirect === item.href && { color: "white" }),
+                            mb: 1,
+                            ...(pathDirect === item.href && {
+                              color: "white",
+                              backgroundColor: (theme) =>
+                                `${theme.palette.primary.main}!important`,
+                            }),
                           }}
                         >
-                          <item.icon width="20" height="20" />
-                        </ListItemIcon>
-                        <ListItemText>{item.title}</ListItemText>
-                      </ListItem>
-                    </List>
-                  );
-                })}
-              </Box>
-            )
+                          <ListItemIcon
+                            sx={{
+                              ...(pathDirect === item.href && { color: "white" }),
+                            }}
+                          >
+                            <item.icon width="20" height="20" />
+                          </ListItemIcon>
+                          <ListItemText>{item.title}</ListItemText>
+                        </ListItem>
+                      </List>
+                    );
+                  })}
+                </Box>
+              )
+            } else if (email !== 'admin@gmail.com' && !item.admin) {
+              return (
+                <Box sx={{ borderBottom: '1px solid rgb(0 0 0 / 5%)' }}>
+                  <div style={{ padding: '20px', paddingLeft: '0px', fontFamily: 'DM Sans' }}>
+                    <span style={{ fontSize: '1rem', fontWeight: 500 }}>{item.title}</span>
+                  </div>
+                  {item?.list?.map((item, index) => {
+                    return (
+                      <List component="li" disablePadding key={item.title}>
+                        <ListItem
+                          onClick={() => handleClick(index)}
+                          button
+                          component={NavLink}
+                          to={item.href}
+                          selected={pathDirect === item.href}
+                          sx={{
+                            mb: 1,
+                            ...(pathDirect === item.href && {
+                              color: "white",
+                              backgroundColor: (theme) =>
+                                `${theme.palette.primary.main}!important`,
+                            }),
+                          }}
+                        >
+                          <ListItemIcon
+                            sx={{
+                              ...(pathDirect === item.href && { color: "white" }),
+                            }}
+                          >
+                            <item.icon width="20" height="20" />
+                          </ListItemIcon>
+                          <ListItemText>{item.title}</ListItemText>
+                        </ListItem>
+                      </List>
+                    );
+                  })}
+                </Box>
+              )
+            }
           })}
         </List>
       </Box>
@@ -95,7 +137,7 @@ const Sidebar = (props) => {
         PaperProps={{
           sx: {
             width: SidebarWidth,
-            zIndex:'auto'
+            zIndex: 'auto'
           },
         }}
       >
@@ -111,7 +153,7 @@ const Sidebar = (props) => {
       PaperProps={{
         sx: {
           width: SidebarWidth,
-          zIndex:99
+          zIndex: 99
         },
       }}
       variant="temporary"

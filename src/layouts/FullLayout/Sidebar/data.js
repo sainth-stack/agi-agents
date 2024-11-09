@@ -67,6 +67,17 @@ const Menuitems = [
       },
     ],
   },
+  {
+    title: "Agents Hub",
+    admin:true,
+    list: [
+      {
+        title: "Agents",
+        icon: AssistantIcon,
+        href: "/admin/agents",
+      },
+    ],
+  },
 ];
 
 export default Menuitems;

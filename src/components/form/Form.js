@@ -94,7 +94,7 @@ export default function SubmitPage() {
       alert("successfully completed and approval with 24 hours."); // You can customize this message
 
       // Navigate to a different page if needed
-      navigate("/market-place");
+      navigate("/agnets-hub");
     } catch (error) {
       console.error("Error:", error);
       alert("An error occurred while submitting the form.");

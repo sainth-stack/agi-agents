@@ -96,7 +96,7 @@ export default function UpdatePage() {
       // } else {
       //   alert("Please enter the correct data!");
 
-      navigate("/market-place");
+      navigate(`/admin/agents`);
     } catch (error) {
       console.error("Error:", error);
       alert("An error occurred while Updating the form.");

@@ -98,7 +98,12 @@ export const Login = () => {
         localStorage.setItem("email", data.name.replaceAll(" ", "_"));
         localStorage.setItem("email", data.email);
         localStorage.setItem("token", response.data);
-        navigate("/dashboards/dashboard1");
+        if (email == 'admin@gmail.com') {
+          navigate('/admin/agents')
+        }
+        else {
+          navigate("/dashboards/dashboard1");
+        }
       } else {
         setError(response.data);
       }
