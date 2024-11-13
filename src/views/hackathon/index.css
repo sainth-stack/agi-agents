@@ -259,7 +259,7 @@ a:hover {
     color: #E8F0FE; /* Medium gray text color */
     margin-bottom: 10px; /* Space between each list item */
     text-align: start;
-    width:200px
+    width:800px
 }
 
 .expectations ul li::before {
