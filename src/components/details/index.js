@@ -73,7 +73,7 @@ const DetailPage = () => {
   return (
     <div className="total-container">
       <div className="detail-container">
-        <button className="back-button" onClick={() => navigate("/")}>
+        <button className="back-button" onClick={() => navigate("/agnets-hub")}>
           ← Back to Directory
         </button>
 
@@ -213,7 +213,7 @@ const DetailPage = () => {
           <iframe
             className="demo"
             width="100%"
-            height="500"
+            height="300"
             name="demo_video"
             src={`https://www.youtube.com/embed/${getVideoIdFromURL(
               agent?.demo_video || "https://youtu.be/cJsZwyh7O5M"

@@ -12,24 +12,22 @@ const AiEnvironment = () => {
     const [responses, setResponses] = useState([]);
     const [loading, setLoading] = useState(true);
     const [agentDetails, setAgentDetails] = useState({ name: '', system_prompt: '', description: '' });
-    const [uploadedFile, setUploadedFile] = useState(null); // State for the uploaded file
-    const [uploadedFileName, setUploadedFileName] = useState(''); // New state for the uploaded file name
-    const [htmlResponse, setHtmlResponse] = useState('')
     const { id } = useParams();
     const responsesEndRef = useRef(null); // Reference for scrolling
     const [conditions, setConditions] = useState(null)
+    const [uploadedFiles, setUploadedFiles] = useState(null)
+    const [uploadedFileNames, setUploadedFileNames] = useState(null)
 
     const handlePromptChange = (e) => setPrompt(e.target.value);
 
     const handleFileChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            setUploadedFile(file); // Set the uploaded file
-            setUploadedFileName(file.name); // Set the uploaded file name
-            console.log("Uploaded file:", file);
+        const files = e.target.files;
+        if (files.length > 0) {
+            setUploadedFiles((files)); // Set the uploaded files
+            setUploadedFileNames(Array.from(files).map(file => file.name)); // Set the uploaded file names
+            console.log("Uploaded files:", files);
         }
     };
-
     const handleMicClick = () => {
         // Start listening to the user's voice here (e.g., with Web Speech API)
         if (!('webkitSpeechRecognition' in window)) {
@@ -76,7 +74,7 @@ const AiEnvironment = () => {
             agent_id: id, // Pass the agent ID from URL params
             prompt: prompt || undefined, // Use undefined instead of null
             url: urlFromPrompt || undefined, // Use URL from the prompt if found
-            file: uploadedFile || undefined, // Use undefined instead of null
+            file: uploadedFiles || undefined, // Use undefined instead of null
         };
         Object.keys(payload).forEach(key => payload[key] === undefined && delete payload[key]);
 
@@ -88,7 +86,6 @@ const AiEnvironment = () => {
         const loadingResponse = { input: payload.prompt, loading: true, output: '' };
         const updateRes = [loadingResponse];
         setResponses(() => updateRes);
-        console.log(loadingResponse, 'dada');
 
         try {
             const formData = new FormData(); // Use FormData to handle file uploads
@@ -230,13 +227,13 @@ const AiEnvironment = () => {
             handleSubmit,
             handlePromptChange,
             placeholder,
-            uploadedFileName,
+            uploadedFileName:uploadedFileNames,
             handleFileChange,
             handleMicClick,
             responses,
             responsesEndRef,
             prompt,
-            uploadedFile,
+            uploadedFile:uploadedFiles,
             conditions
         }} />
     );

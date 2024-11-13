@@ -43,7 +43,7 @@ const Delete = ({ agentId }) => {
     }
   };
   return (
-    <div cl>
+    <div>
       {error && <p style={{ color: "red" }}>{error}</p>}
       <button
         style={{
@@ -54,13 +54,12 @@ const Delete = ({ agentId }) => {
           color: "black",
           fontSize: "20px",
           borderRadius: "10px",
-          marginTop: "20px",
         }}
         onClick={deleteItem}
         disabled={isDeleting}
-        className="w-fit bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+        className="w-fit bg-red-500 hover:bg-red-700 text-white font-bold p-2 h-[43px] rounded text-[12px]"
       >
-        {isDeleting ? "Deleting..." : "Delete"} {""}
+        {isDeleting ? "Deleting..." : "Reject"} {""}
       </button>
 
       {isDeleting && (

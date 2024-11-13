@@ -9,8 +9,6 @@ const ENVT = ({
     agentDetails,
     handleSubmit,
     handlePromptChange,
-    placeholder,
-    uploadedFileName,
     handleFileChange,
     handleMicClick,
     responses,
@@ -118,18 +116,26 @@ const ENVT = ({
                                     },
                                 }}
                             />
-                            {uploadedFile && (
-                                <Typography variant="body2" className="text-gray-600 mt-2 font-custom">
-                                    Uploaded File:{" "}
-                                    <a
-                                        href={URL.createObjectURL(uploadedFile)}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="text-blue-500 underline"
-                                    >
-                                        {uploadedFile.name}
-                                    </a>
-                                </Typography>
+                            {uploadedFile?.length > 0 && (
+                                <div className="mt-2">
+                                    {uploadedFile.map((file, index) => (
+                                        <Typography
+                                            key={index}
+                                            variant="body2"
+                                            className="text-gray-600 mt-2 font-custom"
+                                        >
+                                            Uploaded File {index + 1}:{" "}
+                                            <a
+                                                href={URL.createObjectURL(file)}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="text-blue-500 underline"
+                                            >
+                                                {file.name}
+                                            </a>
+                                        </Typography>
+                                    ))}
+                                </div>
                             )}
 
 
@@ -144,8 +150,8 @@ const ENVT = ({
 
                             {/* Icons positioned at the bottom right corner */}
                             <div className="absolute top-28 right-2 flex gap-2">
-                               { conditions?.attachment&&<IconButton component="label">
-                                    <input type="file" hidden onChange={handleFileChange} />
+                                {conditions?.attachment && <IconButton component="label">
+                                    <input type="file" multiple hidden onChange={handleFileChange} />
                                     <AttachFileIcon />
                                 </IconButton>}
                                 <IconButton onClick={handleMicClick}>

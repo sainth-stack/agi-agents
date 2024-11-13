@@ -24,6 +24,8 @@ import DetailPage from "../components/details/index.js";
 import UpdatePage from "../components/update/Form.js";
 import { ConfigureAgents } from "../views/Tools/ConfigureTools.js";
 import AdminAgents from "../views/admin-agents/index.js";
+import AgentHackathon from "../views/hackathon/index.js";
+import AdminRegistrations from "../views/admin-registrations/index.js";
 
 /****Layouts*****/
 const FullLayout = lazy(() => import("../layouts/FullLayout/FullLayout.js"));
@@ -57,6 +59,8 @@ const ThemeRoutes = [
       { path: "/", element: <Navigate to="dashboards/dashboard1" /> },
       { path: "dashboards/dashboard1", exact: true, element: <Home /> },
       { path: "admin/agents", exact: true, element: <AdminAgents /> },
+      { path: "admin/hackathon", exact: true, element: <AgentHackathon /> },
+      { path: "admin/registartions", exact: true, element: <AdminRegistrations /> },
       { path: "/support", element: <Support /> },
       { path: "/affliate", element: <Affliate /> },
       { path: "/new-request", element: <NewRequest /> },

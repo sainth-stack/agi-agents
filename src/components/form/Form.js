@@ -689,7 +689,7 @@ export default function SubmitPage() {
         </div>
 
         <div className="tagline">
-          <p>
+          <p className="align-center p-0 m-0">
             <label className="hi">
               Tagline <span className="star">*</span>
             </label>
@@ -706,11 +706,13 @@ export default function SubmitPage() {
         </div>
 
         <div>
-          <label className="hi">
-            Description <span className="star">*</span>
-          </label>
-          <div className="wordCount1">{formData?.description?.length}/750</div>
+          <div className="align-center">
+            <label className="hi">
+              Description <span className="star">*</span>
+            </label>
+            <div className="wordCount1">{formData?.description?.length}/750</div>
 
+          </div>
           <textarea
             id="discription"
             placeholder="Briefly describe your AI Agent, the description is used on your AI Agent page ."
@@ -723,8 +725,10 @@ export default function SubmitPage() {
         </div>
 
         <div>
-          <label className="hi">Key Features</label>
-          <div className="wordCount1">{formData?.key_features?.length}/600</div>
+          <div className="align-center">
+            <label className="hi">Key Features</label>
+            <div className="wordCount1">{formData?.key_features?.length}/600</div>
+          </div>
 
           <textarea
             id="tagline"
@@ -736,33 +740,6 @@ export default function SubmitPage() {
           ></textarea>
         </div>
 
-        {/* <div>
-        <label className="hi">Use Cases</label>
-        <textarea id="tagline" placeholder="Enter 5 comma-seperated use cases for your AI Agent " rows="4" cols="90" name="use_cases" onChange={handleChange}
-        >
-        </textarea>
-      </div> */}
-
-        {/* <div className="input-container">
-        <div style={{ width: "100%" }}>
-          <label className="hi" for="Ai Agent">
-            Tags
-          </label>
-                     <div className="wordCount">{formData?.tags?.length}/200</div>
-
-
-          <textarea
-            rows={3}
-            className="container"
-            type="email"
-            class="form-control"
-            id="tagline"
-            placeholder="Enter comma-seperated tags."
-            name="tags"
-            onChange={handleChange}
-          />
-        </div>
-      </div> */}
         <div className="ai-agent-input-container">
           <div className="ai-agent-input-group">
             <label className="ai-agent-label" htmlFor="logo">
@@ -779,20 +756,7 @@ export default function SubmitPage() {
               required //This makes the field mandatory
             />
           </div>
-          {/* <div className="ai-agent-input-group">
-          <label className="ai-agent-label" htmlFor="preview_image">
-            AI Agent Screenshot (URL)
-          </label>
-          <input
-            className="ai-agent-input"
-            type="file" // Change to file input for image upload
-            id="preview_image"
-            name="preview_image"
-            onChange={(e) =>
-              setFormData({ ...formData, preview_image: e.target.files[0] })
-            }
-          />
-        </div> */}
+
         </div>
 
         <div className="input-container">

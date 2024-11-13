@@ -678,8 +678,8 @@ export default function UpdatePage() {
         </div>
       </div>
 
-      <div className="tagline">
-        <p>
+      <div className="tagline mt-2">
+        <p className="align-center p-0 m-0">
           <label className="hi">
             Tagline <span className="star">*</span>
           </label>
@@ -696,11 +696,13 @@ export default function UpdatePage() {
       </div>
 
       <div>
-        <label className="hi1">
-          Description <span className="star">*</span>
-        </label>
+        <div className="align-center">
+          <label className="hi1">
+            Description <span className="star">*</span>
+          </label>
 
-        <div className="wordCount1">{formData?.description?.length}/750</div>
+          <div className="wordCount1">{formData?.description?.length}/750</div>
+        </div>
         <textarea
           id="discription"
           placeholder="Briefly describe your AI Agent, the description is used on your AI Agent page ."
@@ -811,13 +813,13 @@ export default function UpdatePage() {
           />
         </div>
       </div>
-      <div className="total-buttons">
+      <div className="total-buttons mt-4">
         <button
-          className="w-fit bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+          className="w-fit bg-green-500 hover:bg-green-700 text-white font-bold rounded h-[40px] p-2"
           onClick={(e) => handleCreate(e)}
           disabled={isLoading} // Disable button while loading
         >
-          {isLoading ? "Submitting..." : "Submit AI Agent"}{" "}
+          {isLoading ? "Submitting..." : "Approve"}{" "}
           {/* Change button text */}
         </button>
 

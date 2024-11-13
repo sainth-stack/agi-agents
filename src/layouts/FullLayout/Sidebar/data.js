@@ -26,7 +26,7 @@ const Menuitems = [
         href: "/configure-llm",
       },
       {
-        title: "AI Employee",
+        title: "AI Workers",
         icon: AssistantIcon, // Updated icon for AI Employee
         href: "/create-agent",
       },
@@ -50,6 +50,11 @@ const Menuitems = [
         icon: HubIcon, // Updated icon for Agi Agents Hub
         href: "/agnets-hub",
       },
+      {
+        title: "Hackathon",
+        icon: AssistantIcon,
+        href: "/admin/hackathon",
+      },
     ],
   },
   {
@@ -69,12 +74,17 @@ const Menuitems = [
   },
   {
     title: "Agents Hub",
-    admin:true,
+    admin: true,
     list: [
       {
         title: "Agents",
         icon: AssistantIcon,
         href: "/admin/agents",
+      },
+      {
+        title: "Registrations",
+        icon: AssistantIcon,
+        href: "/admin/registartions",
       },
     ],
   },
