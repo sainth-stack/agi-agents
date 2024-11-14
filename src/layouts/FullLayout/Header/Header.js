@@ -56,7 +56,7 @@ const Header = (props) => {
 
   return (
     <AppBar
-      sx={{ ...props.sx, borderBottom: "1px solid rgb(0 0 0 / 5%)" }}
+      sx={{ ...props.sx, borderBottom: "1px solid rgb(0 0 0 / 5%)" ,zIndex:99}}
       elevation={0}
       className={props.customClass}
     >

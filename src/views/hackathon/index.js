@@ -6,6 +6,9 @@ import axios from 'axios';
 import robo from '../../assets/images/robo.webp'
 import { baseURL } from '../../const';
 import Toast from '../../components/toast';
+import { useNavigate } from 'react-router-dom';
+import TeamSection from './components/teams';
+import Repo from './components/repo';
 const AgentHackathon = () => {
     const defaultdata = {
         firstName: '',
@@ -19,7 +22,7 @@ const AgentHackathon = () => {
     }
     const [form, setForm] = useState(defaultdata);
     const [toast, setToast] = useState({ message: '', type: '' });
-
+    const navigate = useNavigate()
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
         setForm({
@@ -64,42 +67,24 @@ const AgentHackathon = () => {
         <div className="hackathon-container">
             {/* Existing design code here... */}
             <div class="header">
-                <div class="header-text">In conjunction with <span class="langchain">LangChain</span></div>
-                <button class="about-tensorops">About TensorOps</button>
+                <div class="header-text"></div>
+                <button class="about-tensorops">About WYGE</button>
             </div>
 
             <div class="main-content">
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
                     <div className='title22'>
-                        <h1 class="">AGENTS CRAFT</h1>
+                        <h1 class="">AGENTIC AI</h1>
                         <span class="highlight">HACKATHON</span>
                     </div>
-                    <p class="date-location">November 14-17 2024 | Online</p>
+                    <p class="date-location">December 8 2024 | Online</p>
                     <div class="button-group">
                         <button class="register-btn">Register Now</button>
-                        <button class="sponsor-btn">Sponsor</button>
+                        <button class="sponsor-btn" onClick={() => navigate('/sponsership')}>Sponsor</button>
                     </div>
                 </div>
                 <div class="robot-image">
                     <img src={robo} alt="Robot" width="150" />
-                </div>
-            </div>
-
-            <div class="stats">
-                <div class="stat">
-                    <div class="stat-icon">🌐</div>
-                    <p class="stat-title">Number of countries:</p>
-                    <p class="stat-value">59</p>
-                </div>
-                <div class="stat">
-                    <div class="stat-icon">💰</div>
-                    <p class="stat-title">Current prize value:</p>
-                    <p class="stat-value">$26,000</p>
-                </div>
-                <div class="stat">
-                    <div class="stat-icon">👥</div>
-                    <p class="stat-title">Registered participants:</p>
-                    <p class="stat-value">620</p>
                 </div>
             </div>
 
@@ -118,6 +103,9 @@ const AgentHackathon = () => {
                 </ul>
             </div>
 
+
+            <TeamSection />
+            <Repo />
 
             <div className="form-container">
                 <h2>Join AI Agents Virtual Hackathon</h2>

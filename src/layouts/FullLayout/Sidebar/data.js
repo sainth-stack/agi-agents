@@ -5,6 +5,10 @@ import StorefrontIcon from "@mui/icons-material/Storefront"; // For Market Place
 import HubIcon from "@mui/icons-material/Hub"; // For Agi Agents Hub
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+import QuickstartIcon from "@mui/icons-material/Start";
+import GuideIcon from "@mui/icons-material/MenuBook";
+import TutorialIcon from "@mui/icons-material/School";
+import UIIcon from "@mui/icons-material/DesignServices";
 
 const Menuitems = [
   {
@@ -72,6 +76,32 @@ const Menuitems = [
       },
     ],
   },
+  {
+    title: "Docs",
+    list: [
+      {
+        title: "Quickstart",
+        icon: QuickstartIcon,
+        href: "/quickstart",
+      },
+      {
+        title: "Guides",
+        icon: GuideIcon,
+        href: "/guide",
+      },
+      {
+        title: "Tutorials",
+        icon: TutorialIcon,
+        href: "/tutorial",
+      },
+      {
+        title: "UI",
+        icon: UIIcon,
+        href: "/ui",
+      },
+    ],
+  },
+
   {
     title: "Agents Hub",
     admin: true,

@@ -64,14 +64,14 @@ export const Tools = [
         icon: <FaBlog />,
         href: "/blog-manager"
     },
-    {
-        id: 'blog_post',
-        title: 'Research',
-        heading: 'Ability to post via website',
-        category:"Content",
-        icon: <FaBlog />,
-        href: "/blog-manager"
-    },
+    // {
+    //     id: 'blog_post',
+    //     title: 'Research',
+    //     heading: 'Ability to post via website',
+    //     category:"Content",
+    //     icon: <FaBlog />,
+    //     href: "/blog-manager"
+    // },
     {
         id: 'linkedin_post',
         title: 'LinkedIn Post',

@@ -1,0 +1,148 @@
+.sponsership-container {
+    font-family: Arial, sans-serif;
+    color: white;
+    padding: 50px;
+    text-align: center;
+    background-color: #0d0c27;
+    background-size: cover;
+    background-position: center;
+}
+
+.sponsership-header {
+    position: relative;
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    gap: 20px;
+    height: 200px;
+    margin-bottom: 40px;
+    background: url('../../../assets/images/hand.webp') no-repeat left/cover; /* Robot hand */
+}
+
+.sponsership-header h1 {
+    font-size: 3em;
+    font-weight: bold;
+    width: 30%;
+    text-align: left;
+    margin-left: 20%;
+    margin-top: 3%;
+}
+
+.sponsership-cards {
+    display: flex;
+    justify-content: center;
+    margin-top: 100px !important;
+    gap: 30px;
+}
+
+.card {
+    background-color: rgb(15, 15, 32) !important;
+    border-width: 0 !important;
+    border-style: solid !important;
+    border-color: rgba(176, 169, 134, 1) !important;
+    border-radius: 45px !important;
+    box-shadow: 0 0 5px 1px rgba(24, 255, 251, 1) !important;
+    overflow: hidden !important;
+    transform: translateZ(0) !important;
+    margin: 0 !important;
+    width: fit-content;
+    z-index: 10 !important;
+}
+
+
+.card h2 {
+    color: #00bcd4;
+    font-size: 1.7em;
+    margin-bottom: 10px;
+}
+
+.card ul {
+    list-style:disc;
+    padding: 20px;
+    font-size: 1em !important;
+    line-height: 1.6;
+    color: white !important;
+    text-align: start;
+}
+
+.card ul li{
+    width: 300px;
+}
+
+
+.sponsership-form {
+    background-color: rgba(26, 26, 46, 0.9); /* Transparent overlay */
+    padding: 30px;
+    margin-top: 50px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.sponsership-form h2 {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+.formform{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+input[type="text"], input[type="email"] {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    /* background-color: #333; */
+    color: white;
+}
+
+.sponsorship-options {
+    display: flex;
+    justify-content: start;
+    gap: 20px;
+    color: white !important;
+}
+
+button {
+    padding: 12px 24px !important;
+    color: black !important;
+    background-color: white !important;
+    border: none;
+    border-radius: 20px !important;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.home-button {
+    margin-top: 20px;
+    background-color: #28a745;
+}
+
+.home-button:hover {
+    background-color: #218838;
+}
+
+
+.labellabel{
+    color: white !important;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    .input{
+        width: 24px;
+    }
+}
