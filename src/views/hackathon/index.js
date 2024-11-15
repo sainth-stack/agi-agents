@@ -9,6 +9,7 @@ import Toast from '../../components/toast';
 import { useNavigate } from 'react-router-dom';
 import TeamSection from './components/teams';
 import Repo from './components/repo';
+import logo from '../../assets/images/image3.jpg'
 const AgentHackathon = () => {
     const defaultdata = {
         firstName: '',
@@ -68,7 +69,8 @@ const AgentHackathon = () => {
             {/* Existing design code here... */}
             <div class="header">
                 <div class="header-text"></div>
-                <button class="about-tensorops">About WYGE</button>
+                {/* <button class="about-tensorops">About WYGE</button> */}
+                <img src={logo} alt='' width={130} height={40}/>
             </div>
 
             <div class="main-content">

@@ -72,7 +72,7 @@ const Sponsership = () => {
                         </label>
                     </div>
 
-                    <button type="submit">Submit</button>
+                    <button type="submit" className='buttonbutton'>Submit</button>
                 </form>
             </div>
         </div>

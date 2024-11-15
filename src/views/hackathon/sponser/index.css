@@ -112,7 +112,7 @@ input[type="text"], input[type="email"] {
     color: white !important;
 }
 
-button {
+.buttonbutton {
     padding: 12px 24px !important;
     color: black !important;
     background-color: white !important;
@@ -123,7 +123,7 @@ button {
     transition: background-color 0.3s ease;
 }
 
-button:hover {
+.buttonbutton:hover {
     background-color: #0056b3;
 }
 
