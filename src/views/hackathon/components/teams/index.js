@@ -1,25 +1,26 @@
 import './index.css'
 import profile1 from '../../../../assets/images/12.jpeg'
 import profile2 from '../../../../assets/images/13.jpeg'
+import profile3 from '../../../../assets/images/kalyan.jpg'
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import TwitterIcon from '@mui/icons-material/Twitter';
 const teamMembers = [
     {
         name: "Vijay Gunti",
-        title: "Founder of WYGE",
+        title: "Agentic AI Specialist",
         imageUrl: profile1,
         linkedInUrl: "https://www.linkedin.com/in/vijaygunti/?originalSubdomain=in",
     },
     {
         name: "Kalyan Doppalapudi",
         title: "Development Director",
-        imageUrl: profile2,
+        imageUrl: profile3,
         linkedInUrl: "https://www.linkedin.com/in/kalyan-doppalapudi-18895016/?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app",
     },
     {
         name: "Ashok Boddeda",
         title: "Enterprise AI Strategist",
-        imageUrl: profile1,
+        imageUrl: profile2,
         linkedInUrl: "https://www.linkedin.com/in/ashok-boddeda-4791309/?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app",
     }
 ];
