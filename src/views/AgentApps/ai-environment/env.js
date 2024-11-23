@@ -65,7 +65,7 @@ const ENVT = ({
 
         pdf.save('Response2.pdf');
     };
-
+console.log(uploadedFile)
 
     return (
         <div className="flex w-full" style={{ height: '100%' }}>
@@ -116,26 +116,21 @@ const ENVT = ({
                                     },
                                 }}
                             />
-                            {uploadedFile?.length > 0 && (
-                                <div className="mt-2">
-                                    {uploadedFile.map((file, index) => (
-                                        <Typography
-                                            key={index}
-                                            variant="body2"
-                                            className="text-gray-600 mt-2 font-custom"
-                                        >
-                                            Uploaded File {index + 1}:{" "}
-                                            <a
-                                                href={URL.createObjectURL(file)}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="text-blue-500 underline"
-                                            >
-                                                {file.name}
-                                            </a>
-                                        </Typography>
-                                    ))}
-                                </div>
+                            {uploadedFile && (
+                                <Typography
+                                    variant="body2"
+                                    className="text-gray-600 mt-2 font-custom"
+                                >
+                                    Uploaded File:{" "}
+                                    <a
+                                        href={URL.createObjectURL(uploadedFile)}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-blue-500 underline"
+                                    >
+                                        {uploadedFile.name}
+                                    </a>
+                                </Typography>
                             )}
 
 

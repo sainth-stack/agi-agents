@@ -30,6 +30,7 @@ import Tutorial from "../views/docs/tutorial.js";
 import UI from "../views/docs/ui.js";
 import Guid from "../views/docs/guide.js";
 import Sponsership from "../views/hackathon/sponser/index.js";
+import AdminPatners from "../views/admin-patners/index.js";
 
 /****Layouts*****/
 const FullLayout = lazy(() => import("../layouts/FullLayout/FullLayout.js"));
@@ -45,7 +46,8 @@ const ThemeRoutes = [
       { path: "admin/agents", exact: true, element: <AdminAgents /> },
       { path: "admin/hackathon", exact: true, element: <AgentHackathon /> },
       { path: "admin/registartions", exact: true, element: <AdminRegistrations /> },
-      { path: "/support", element: <Support /> },
+      { path: "admin/patners", exact: true, element: <AdminPatners /> },
+      { path: "/support", element: <Support /> }, 
       { path: "/sponsership", element: <Sponsership /> },
       { path: "/quickstart", element: <QuickStart /> },
       { path: "/tutorial", element: <Tutorial /> },

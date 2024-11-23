@@ -21,11 +21,11 @@ const AiEnvironment = () => {
     const handlePromptChange = (e) => setPrompt(e.target.value);
 
     const handleFileChange = (e) => {
-        const files = e.target.files;
-        if (files.length > 0) {
-            setUploadedFiles((files)); // Set the uploaded files
-            setUploadedFileNames(Array.from(files).map(file => file.name)); // Set the uploaded file names
-            console.log("Uploaded files:", files);
+        const file = e.target.files[0]; // Get only the first file
+        if (file) {
+            setUploadedFiles(file); // Set single file
+            setUploadedFileNames(file.name); // Set single filename
+            console.log("Uploaded file:", file);
         }
     };
     const handleMicClick = () => {

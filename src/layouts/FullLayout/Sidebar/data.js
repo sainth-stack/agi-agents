@@ -116,6 +116,11 @@ const Menuitems = [
         icon: AssistantIcon,
         href: "/admin/registartions",
       },
+      {
+        title: "Patners",
+        icon: AssistantIcon,
+        href: "/admin/patners",
+      },
     ],
   },
 ];
