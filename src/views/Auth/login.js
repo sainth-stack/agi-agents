@@ -103,8 +103,7 @@ export const Login = () => {
         localStorage.setItem("email", data?.name.replaceAll(" ", "_"));
         localStorage.setItem("email", data?.email);
         localStorage.setItem("token", response?.data);
-      
-        console.log(data?.email)
+
         if (data?.email == 'admin@gmail.com') {
           navigate('/admin/agents')
         }
@@ -183,10 +182,19 @@ export const Login = () => {
                 <label className="label2 fs13">Email*</label>
                 <input
                   type="email"
-                  className=" border rounded-lg bg-red-500"
+                  className="border rounded-lg bg-red-500"
                   value={email}
                   required
                   onChange={(e) => setEmail(e.target.value)}
+                  style={{
+                    padding: "8px 12px",
+                    width: "100%",
+                    border: "1px solid #ddd",
+                    borderRadius: "40px",
+                    height: "40px",
+                    color: "#000",
+                    outline: "none"
+                  }}
                 />
               </div>
 
@@ -200,7 +208,16 @@ export const Login = () => {
                   minLength={8}
                   required
                   onChange={(e) => setPassword(e.target.value)}
-                  style={{ paddingRight: "2.5rem" }} // Add padding to avoid overlap with the icon
+                  style={{
+                    padding: "8px 12px",
+                    paddingRight: "2.5rem",
+                    width: "100%",
+                    border: "1px solid #ddd",
+                    borderRadius: "40px",
+                    height: "40px",
+                    color: "#000",
+                    outline: "none"
+                  }}
                 />
                 <img
                   src={togglePassword ? eye2 : eye} // Use eye icons defined in your component

@@ -121,6 +121,11 @@ const Menuitems = [
         icon: AssistantIcon,
         href: "/admin/patners",
       },
+      {
+        title: "Hana DB",
+        icon: AssistantIcon,
+        href: "/admin/hana-db",
+      },
     ],
   },
 ];

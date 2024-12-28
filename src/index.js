@@ -1,7 +1,6 @@
 import React, { Suspense } from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
-import { HashRouter } from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
 import Spinner from "./views/Spinner/Spinner";
 import { UserProvider } from "./context/userContext";
@@ -12,9 +11,7 @@ root.render(
   <React.StrictMode>
     <UserProvider>
       <Suspense fallback={<Spinner />}>
-        <HashRouter>
-          <App />
-        </HashRouter>
+        <App />
       </Suspense>
     </UserProvider>
   </React.StrictMode>

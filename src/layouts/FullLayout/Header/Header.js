@@ -52,7 +52,6 @@ const Header = (props) => {
     }
   };
 
-  console.log(location);
 
   return (
     <AppBar
@@ -180,7 +179,7 @@ const Header = (props) => {
           anchorEl={anchorEl4}
           keepMounted
           open={Boolean(anchorEl4)}
-          onClose={handleClose4}
+          onClose={()=>setAnchorEl4(null)}
           anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
           transformOrigin={{ horizontal: "right", vertical: "top" }}
           sx={{
@@ -191,23 +190,23 @@ const Header = (props) => {
             },
           }}
         >
-          <MenuItem onClick={handleClose4} ml={2} sx={{ fontWeight: 500 }}>
+          <MenuItem  ml={2} sx={{ fontWeight: 500 }}>
             Sainath Reddy
           </MenuItem>
-          <MenuItem onClick={handleClose4} ml={2} sx={{ fontWeight: 500 }}>
+          <MenuItem  ml={2} sx={{ fontWeight: 500 }}>
             sainathreddy@gmail.com
           </MenuItem>
-          <MenuItem onClick={handleClose4} ml={2} sx={{ fontWeight: 500 }}>
+          <MenuItem  ml={2} sx={{ fontWeight: 500 }}>
             10 Credits
           </MenuItem>
           <Divider />
-          {/* <MenuItem onClick={handleClose4}>
+          {/* <MenuItem >
             <ListItemIcon>
               <PersonAddOutlinedIcon fontSize="small" />
             </ListItemIcon>
             Add another account
           </MenuItem> */}
-          <MenuItem onClick={handleClose4}>
+          <MenuItem >
             <Avatar
               sx={{
                 width: "24px",
@@ -223,7 +222,7 @@ const Header = (props) => {
               Account & Billing
             </Box>
           </MenuItem>
-          <MenuItem onClick={handleClose4}>
+          <MenuItem >
             <ListItemIcon>
               <SettingsOutlinedIcon fontSize="small" />
             </ListItemIcon>
