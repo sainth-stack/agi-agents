@@ -4,14 +4,17 @@ import TextAreaInput from '../../components/TextArea/TextAreaInput';
 import SelectInput from '../../components/Select/SelectInput';
 import SwitchInput from '../../components/switch';
 import ChipsInput from '../../components/chip';
-import { postGeneratorOptions, postGeneratorToolsMap } from '../../data/DataJson';
 import { useNavigate } from 'react-router-dom';
 import { baseURL } from '../../const';
 import Toast from '../../components/toast';
+import { AgentTools, postGeneratorToolsMap } from '../../data/DataJson';
 
 const CreateAgent = () => {
 
     /* states */
+    const [filteredAgents, setFilteredAgents] = useState(AgentTools);
+
+  console.log("acjeimg at create agent ",AgentTools)
    const [uploadFileEnabled, setUploadFileEnabled] = useState(false);
    const [readUrlEnabled, setReadUrlEnabled] = useState(false);
    const [loading, setLoading] = useState(false);
@@ -38,16 +41,16 @@ const CreateAgent = () => {
         console.log("key ",key,"value",value)
       setFormData({ ...formData, [key]: value });
 
-      // Handle specific tool selection based on postGeneratorType
-       if (key === "postGeneratorType") {
-         const selectedTools = postGeneratorToolsMap[value] || [];
-         setTools(selectedTools);
+         if (key === "postGeneratorType") {
+           const selectedTools = postGeneratorToolsMap[value] || [];
+           setTools(selectedTools);
 
-        //   Open agents modal when     Agent Name is selected
-         if (value) {
-           setIsModalOpen(true);
+           // Open agents modal when Agent Name is selected
+           if (value) {
+             setIsModalOpen(true);
+           }
          }
-       }
+       
     };
 
     /* input render */
@@ -188,8 +191,10 @@ const CreateAgent = () => {
             )}
 
             <ChipsInput
-              label="Agents"
-              chip={tools}
+              label="Tools"
+                          chip={tools}
+                          PopupTitle="Manage Tools"
+                          buttonTitle={"Manage Tools"}
               chips={tools}
               setChips={setTools}
               formData={formData}

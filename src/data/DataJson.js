@@ -1,5 +1,5 @@
 
-import { FaBlog, FaLinkedin, FaCode, FaChartLine, FaDatabase, FaEnvelope, FaGlobe, FaYoutube, FaMicrophone, FaVideo, FaEnvelopeOpenText } from 'react-icons/fa';
+import { FaBlog, FaLinkedin, FaCode, FaChartLine, FaDatabase, FaEnvelope, FaGlobe, FaYoutube, FaMicrophone, FaVideo, FaEnvelopeOpenText, FaGoogleDrive } from 'react-icons/fa';
 import PostAddIcon from '@mui/icons-material/PostAdd';
 
 
@@ -27,7 +27,7 @@ export const environmentOptions = [
 export const cardData = [
     {
         title: "Interior Design",
-        icon: <PostAddIcon />,  // Render as JSX element
+        icon: <PostAddIcon />,  // Render as JStX element
         heading: 'Provides ability to design interiors',
         href: "/start-design"
     },
@@ -52,6 +52,28 @@ export const cardData = [
         icon: <FaEnvelope />,
         href: "/linkedin-manager"// Render as JSX element
     }
+];
+
+
+
+export const AgentTools = [
+  
+  {
+    id: "gmail",
+    title: "Gmail",
+    heading: "Access your Gmail account",
+    category: "Communication",
+    icon: <FaEnvelope />,
+    href: "/gmail",
+  },
+  {
+    id: "drive",
+    title: "Google Drive",
+    heading: "Access and manage your files",
+    category: "Storage",
+    icon: <FaGoogleDrive />,
+    href: "/drive",
+  },
 ];
 
 
