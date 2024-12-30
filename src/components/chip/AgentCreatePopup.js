@@ -67,13 +67,13 @@ export const CreateAgentPopup = ({
           />
         </div>
 
-        <div className="">
+        <div className="flex gap-3">
           {categories.map((category) => (
             <div key={category} className="category-section mt-5">
-              <h2 className="category-title font-bold text-lg mb-2">
+              <h2 className="category-title font-bold text-lg mb-2 ">
                 {category}
               </h2>
-              <div className="w-full max-w-6xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+              <div className="w-full max-w-6xl flex flex-wrap gap-8">
                 {filteredAgents
                   .filter((agent) => agent.category === category)
                   .map((agent, index) => (
@@ -94,7 +94,7 @@ export const CreateAgentPopup = ({
                           }
                         />
                       }
-                      className="w-full h-full flex flex-col justify-between"
+                      className="w-full sm:w-[calc(50%-1rem)] md:w-[calc(33.333%-1rem)] lg:w-[calc(25%-1rem)] flex flex-col justify-between"
                     />
                   ))}
               </div>

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Tools } from '../../data/DataJson';
 import ConfigureAgents2 from './agentPopup';
+import CreateAgentPopup from './AgentCreatePopup';
+import { useLocation } from 'react-router-dom';
 
 const ChipsInput = ({
   chip = [],
@@ -50,6 +52,8 @@ const ChipsInput = ({
     document.body.style.overflow = "auto";
   };
 
+  const location = useLocation();
+
   return (
     <div className="flex flex-col mb-4 px-2">
       <div className="flex justify-between items-center mb-2">
@@ -92,12 +96,23 @@ const ChipsInput = ({
             <h1 className="text-[25px] font-semibold mb-4 text-gray-700">
               {(PopupTitle && PopupTitle) || "Manage Agents"}
             </h1>
+
             <div className="flex flex-col h-[500px] overflow-y-auto pr-2">
-              <ConfigureAgents2
-                selectedTools={selectedTools} // Pass selected tools as prop
-                handleToolChange={handleToolChange} // Pass tool change handler
-                setIsModalOpen={setIsModalOpen}
-              />
+              {location.pathname === "/agent-create" ? (
+                <CreateAgentPopup
+                  selectedTools={selectedTools} // Pass selected tools as prop
+                  handleToolChange={handleToolChange} // Pass tool change handler
+                  setIsModalOpen={setIsModalOpen}
+                />
+              ) : location.pathname === "/create-agent" ? (
+                <ConfigureAgents2
+                  selectedTools={selectedTools} // Pass selected tools as prop
+                  handleToolChange={handleToolChange} // Pass tool change handler
+                  setIsModalOpen={setIsModalOpen}
+                />
+              ) : (
+                <div>No component available for this path.</div>
+              )}
             </div>
             {/* <button onClick={handleSave} className="mt-4 bg-blue-600 text-white px-4 py-2 rounded">
                             Save Tools
