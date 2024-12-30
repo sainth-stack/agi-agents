@@ -9,7 +9,6 @@ export const CreateAgentPopup = ({
   handleToolChange,
   setIsModalOpen,
 }) => {
-  console.log("AgentTools from data", AgentTools);
   const [enabledAgents, setEnabledAgents] = useState([]);
   const [toast, setToast] = useState({ message: "", type: "" });
   const [searchQuery, setSearchQuery] = useState("");

@@ -77,6 +77,25 @@ export const AgentTools = [
 ];
 
 
+
+
+export const ToolMapping = {
+  website: [
+    { id: "blog_post", name: "WB Agent" },
+    { id: "mail_blog", name: "Mail Agent" },
+    { id: "research_blog", name: "Research Agent" },
+    { id: "gmail", name: "Gmail Agent" },
+    { id: "drive", name: "Drive Agent" },
+  ],
+  audio: [
+    { id: "audio_blog", name: "Audio Agent" },
+    { id: "mail_blog", name: "Mail Agent" },
+    { id: "gmail", name: "Gmail Audio Agent" },
+  ],
+};
+
+
+
 export const Tools = [
     {
         id: 'blog_post',
@@ -189,6 +208,8 @@ export const Tools = [
 
 
 export const postGeneratorToolsMap = {
+
+
     website: [
         { id: 'blog_post', name: 'WB Agent' },
         { id: 'mail_blog', name: 'Mail Agent' },
