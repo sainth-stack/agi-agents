@@ -34,6 +34,11 @@ const Menuitems = [
         icon: AssistantIcon, // Updated icon for AI Employee
         href: "/create-agent",
       },
+      {
+        title: "Agent Creation",
+        icon: AssistantIcon, // Updated icon for AI Employee
+        href: "/agent-create",
+      },
     ],
   },
   {

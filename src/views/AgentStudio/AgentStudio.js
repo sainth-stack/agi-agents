@@ -179,7 +179,7 @@ const EmployeeStudio = () => {
     };
 
     return (
-        <div className="flex bg-gray-100 font-sans font-custom">
+        <div className="flex bg-gray-100 font-sans font-custom justify-center">
             <div className="w-full md:w-1/2 p-6">
                 <div className="border-2 bg-white rounded-lg shadow-lg p-8">
                     <form onSubmit={handleSubmit}>
@@ -201,14 +201,14 @@ const EmployeeStudio = () => {
                 </div>
             </div>
 
-            <div className="hidden md:flex w-1/2 justify-center items-center p-6">
+            {/* <div className="hidden md:flex w-1/2 justify-center items-center p-6">
                 <div className="border-2 bg-white rounded-lg shadow-lg p-6 w-full">
                     <h3 className="text-lg font-bold mb-4 text-gray-600">Form Data JSON</h3>
                     <pre className="bg-gray-100 p-4 rounded text-sm overflow-auto">
                         {JSON.stringify({ ...formData, tools, uploadFileEnabled, readUrlEnabled }, null, 2)}
                     </pre>
                 </div>
-            </div>
+            </div> */}
 
             {toast.visible && (
                 <Toast message={toast.message} onClose={() => setToast({ ...toast, visible: false })} type={toast.type} />

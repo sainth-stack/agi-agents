@@ -101,7 +101,7 @@ const ConfigureLLM = () => {
     };
 
     return (
-        <div className="flex bg-gray-100 ">
+        <div className="flex bg-gray-100 justify-center ">
             {/* Left form section */}
             <div className="w-full md:w-1/2 p-6">
                 <div className="border-2 bg-white rounded-lg shadow-lg p-8">
@@ -124,7 +124,7 @@ const ConfigureLLM = () => {
             </div>
 
             {/* Right JSON display section */}
-            <div className="hidden md:flex w-1/2 justify-center items-center p-6">
+            {/* <div className="hidden md:flex w-1/2 justify-center items-center p-6">
                 <div className="border-2 bg-white rounded-lg shadow-lg p-6 w-full">
                     <h3 className="text-lg font-bold mb-4 text-gray-600">Configuration Preview</h3>
                     <pre className="bg-gray-100 p-4 rounded text-sm overflow-auto">
@@ -136,7 +136,7 @@ const ConfigureLLM = () => {
                         }, null, 2)}
                     </pre>
                 </div>
-            </div>
+            </div> */}
 
             {/* Toast for messages */}
             {toast.message && (

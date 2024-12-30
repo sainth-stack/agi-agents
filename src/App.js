@@ -37,6 +37,7 @@ import { Login } from "./views/Auth/login";
 import { Register } from "./views/Auth/register";
 import FullLayout from "./layouts/FullLayout/FullLayout";
 import EmployeeStudio from "./views/AgentStudio/AgentStudio";
+import CreateAgent from "./views/create-agent/CreateAgent";
 
 const App = () => {
   const theme = baseTheme;
@@ -52,7 +53,10 @@ const App = () => {
               <Route path="dashboards/dashboard1" element={<Home />} />
               <Route path="admin/agents" element={<AdminAgents />} />
               <Route path="admin/hackathon" element={<AgentHackathon />} />
-              <Route path="admin/registartions" element={<AdminRegistrations />} />
+              <Route
+                path="admin/registartions"
+                element={<AdminRegistrations />}
+              />
               <Route path="admin/patners" element={<AdminPartners />} />
               <Route path="support" element={<Support />} />
               <Route path="sponsership" element={<Sponsership />} />
@@ -66,19 +70,23 @@ const App = () => {
               <Route path="configure-llm" element={<ConfigureLLM />} />
               <Route path="configure-tools" element={<ConfigureAgents />} />
               <Route path="create-agent" element={<EmployeeStudio />} />
+              <Route path="agent-create" element={<CreateAgent />} />
+
               <Route path="market-place" element={<AgentApps />} />
               <Route path="agnets-hub" element={<AgentHubHome />} />
               <Route path="agnets-hub/submit" element={<SubmitPage />} />
               <Route path="agnets-hub/details/:id" element={<DetailPage />} />
               <Route path="agnets-hub/update/:id" element={<UpdatePage />} />
               <Route path="blog-manager" element={<BlogManager />} />
-              <Route path="synthetic-generator" element={<SyntheticDataGenerator />} />
+              <Route
+                path="synthetic-generator"
+                element={<SyntheticDataGenerator />}
+              />
               <Route path="linkedin-manager" element={<LinkdinManager />} />
               <Route path="pricing" element={<Pricing />} />
               <Route path="billing" element={<BillingSection />} />
               <Route path="graph-view" element={<GraphView />} />
               <Route path="admin/hana-db" element={<AdminHana />} />
-
             </Route>
 
             <Route path="ai-environment/:id" element={<AiEnvironment />} />
