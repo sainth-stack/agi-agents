@@ -3,7 +3,6 @@ import TextInput from '../../components/Inputs/TextInput';
 import TextAreaInput from '../../components/TextArea/TextAreaInput';
 import SelectInput from '../../components/Select/SelectInput';
 import SwitchInput from '../../components/switch';
-import ChipsInput from '../../components/chip';
 import { useNavigate } from 'react-router-dom';
 import { baseURL } from '../../const';
 import Toast from '../../components/toast';
@@ -41,15 +40,7 @@ const CreateAgent = () => {
     setFormData({ ...formData, [key]: value });
 
 
-    if (key === "postGeneratorType") {
-      const selectedTools = ToolMapping[value] || [];
-      setTools(selectedTools);
-
-      // Open agents modal when Agent Name is selected
-      if (value) {
-        setIsModalOpen(true);
-      }
-    }
+  
 
   };
 
@@ -190,17 +181,7 @@ const CreateAgent = () => {
               "Enter Agent Instructions"
             )}
 
-            <ChipsInput
-              label="Tools"
-              chip={tools}
-              PopupTitle="Manage Tools"
-              buttonTitle={"Manage Tools"}
-              chips={tools}
-              setChips={setTools}
-              formData={formData}
-              isModalOpen={isModalOpen}
-              setIsModalOpen={setIsModalOpen}
-            />
+            
 
             <button
               type="submit"

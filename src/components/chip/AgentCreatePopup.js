@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Card from "../Card/Card";
-
 import Toast from "../toast";
 import { AgentTools } from "../../data/DataJson";
 
@@ -13,6 +12,8 @@ export const CreateAgentPopup = ({
   const [toast, setToast] = useState({ message: "", type: "" });
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredAgents, setFilteredAgents] = useState(AgentTools);
+  const [selectedToggle, setSelectedToggle] = useState(null); // Keeps track of the selected agent's ID
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const storedAgents =
@@ -28,13 +29,26 @@ export const CreateAgentPopup = ({
   }, [searchQuery]);
 
   const handleToggleChange = (agent) => {
-    setEnabledAgents((prev) => {
-      const isEnabled = prev.some((a) => a.id === agent.id);
-      const updatedAgents = isEnabled
-        ? prev.filter((a) => a.id !== agent.id)
-        : [...prev, agent];
+    if (selectedToggle && selectedToggle !== agent.id) {
+      setError("You can select at most 1 agent.");
+      return;
+    }
 
-      handleToolChange(agent.title); // Call the handler for enabling/disabling
+    if (selectedToggle === agent.id) {
+      setSelectedToggle(null);
+      setError(""); // Clear error if the same agent is unselected
+    } else {
+      setSelectedToggle(agent.id); // Select the new agent
+      setError(""); // Clear error on successful selection
+    }
+
+    setEnabledAgents((prev) => {
+      const updatedAgents =
+        selectedToggle === agent.id
+          ? prev.filter((a) => a.id !== agent.id)
+          : [...prev, agent];
+
+      handleToolChange(agent.title);
       return updatedAgents;
     });
   };
@@ -50,65 +64,79 @@ export const CreateAgentPopup = ({
     localStorage.setItem("enabledAgents", JSON.stringify(enabledAgents));
     // setToast({ message: 'All configurations saved', type: 'success' });
   };
+
   const categories = [
     ...new Set(filteredAgents.map((agent) => agent.category)),
   ];
 
+
+  console.log("error checking",error)
   return (
     <>
-      <div className="min-h-screen w-full flex flex-col items-start bg-white p-4">
-        <div className="w-full max-w-md mb-6">
+      <div className="w-full   items-start bg-white p-4">
+        <div className="w-full max-w-md mb-6 shadow-md rounded-md p-2">
           <input
             type="text"
             placeholder="Search Tools..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full border text-lg rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
-        <div className="flex gap-3">
-          {categories.map((category) => (
-            <div key={category} className="category-section mt-5">
-              <h2 className="category-title font-bold text-lg mb-2 ">
-                {category}
-              </h2>
-              <div className="w-full max-w-6xl flex flex-wrap gap-8">
-                {filteredAgents
-                  .filter((agent) => agent.category === category)
-                  .map((agent, index) => (
-                    <Card
-                      key={index}
-                      title={agent.title}
-                      heading={
-                        <span className="font-semibold">{agent.heading}</span>
-                      }
-                      icon={agent.icon}
-                      toggle={
-                        <Toggle
-                          isChecked={selectedTools.includes(agent.title)}
-                          onToggleChange={() => handleToggleChange(agent)}
-                          disabled={
-                            selectedTools.length > 0 &&
-                            !selectedTools.includes(agent.title)
-                          }
-                        />
-                      }
-                      className="w-full sm:w-[calc(50%-1rem)] md:w-[calc(33.333%-1rem)] lg:w-[calc(25%-1rem)] flex flex-col justify-between"
-                    />
-                  ))}
-              </div>
+        {error && (
+          <div className="max-w-md mx-auto mt-2 bg-red-100 border-l-4 border-red-500 text-red-700 rounded-lg p-2 shadow-lg">
+            <div className="flex items-center justify-center">
+              <svg
+                className="w-6 h-6 mr-3"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M12 9v2m0 4h.01m9 3H3a2 2 0 01-2-2V4a2 2 0 012-2h18a2 2 0 012 2v14a2 2 0 01-2 2z"
+                />
+              </svg>
+              <p className="font-bold flex items-center mt-2">{error}</p>
             </div>
-          ))}
-        </div>
+          </div>
+        )}
+
+        {categories.map((category) => (
+          <div key={category} className="mt-5  f">
+            <h2 className="category-title font-bold text-lg mb-2">
+              {category}
+            </h2>
+            <div className="w-full max-w-6xl flex flex-wrap gap-8">
+              {filteredAgents
+                .filter((agent) => agent.category === category)
+                .map((agent) => (
+                  <Card
+                    key={agent.id}
+                    title={agent.title}
+                    heading={
+                      <span className="font-semibold">{agent.heading}</span>
+                    }
+                    icon={agent.icon}
+                    toggle={
+                      <Toggle
+                        isChecked={selectedToggle === agent.id} // Check if agent is selected
+                        onToggleChange={() => handleToggleChange(agent)}
+                        // disabled={selectedToggle && selectedToggle !== agent.id} // Disable other toggles if one is selected
+                      />
+                    }
+                    className="w-full sm:w-[calc(50%-1rem)] md:w-[calc(33.333%-1rem)] lg:w-[calc(25%-1rem)] flex flex-col justify-between"
+                  />
+                ))}
+            </div>
+          </div>
+        ))}
 
         <div className="flex space-x-4 mt-8 w-full justify-end">
-          {/* <button
-                        onClick={resetConfiguration}
-                        className="bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-6 rounded-lg transition-all"
-                    >
-                        Reset
-                    </button> */}
           <button
             onClick={saveAllConfigurations}
             className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-6 rounded-lg transition-all"
@@ -133,15 +161,15 @@ const Toggle = ({ isChecked, onToggleChange, disabled }) => (
   <label
     className="relative inline-flex items-center cursor-pointer w-12 h-6"
     style={{
-      opacity: disabled ? 0.5 : 0.5,
-      cursor: disabled ? "default" : "default",
+      opacity: disabled ? 0.5 : 1,
+      cursor: disabled ? "default" : "pointer",
     }}
   >
     <input
       type="checkbox"
       checked={isChecked}
       onChange={onToggleChange}
-      disabled={disabled}
+      // disabled={disabled}
       className="sr-only peer"
     />
     <div className="w-full h-full bg-gray-300 rounded-full peer peer-checked:bg-blue-500 transition-all duration-300"></div>

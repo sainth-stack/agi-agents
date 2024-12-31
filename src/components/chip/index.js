@@ -6,16 +6,20 @@ import { useLocation } from 'react-router-dom';
 
 const ChipsInput = ({
   chip = [],
-  buttonTitle,label,
-    chips,
+  activePopup,
+  setActivePopup,
+  buttonTitle,
+  label,
+  chips,
   PopupTitle,
   setChips,
   formData,
   isModalOpen,
   setIsModalOpen,
 }) => {
+  // alert("active popup",activePopup)
 
-  console.log("cips cheking",chips)
+  // console.log("active popup",activePopup)
   const [selectedTools, setSelectedTools] = useState([]);
   const [defaultSelection, setDefaultSelection] = useState(null);
 
@@ -29,8 +33,6 @@ const ChipsInput = ({
       setDefaultSelection(initialDefault.name);
     }
   }, [chip]);
-    
-    
 
   const handleManageTools = () => {
     setIsModalOpen(true);
@@ -60,10 +62,11 @@ const ChipsInput = ({
         <label className="font-bold mb-2">{label}</label>
         <button
           type="button"
-          onClick={handleManageTools}
+          onClick={() => setActivePopup(label === "Tools" ? "Tools" : "Agents")}
           className="ml-2 py-1 px-3 text-indigo-600 font-semibold bg-transparent border border-indigo-600 rounded hover:bg-indigo-50"
         >
-          {(buttonTitle && buttonTitle) || "Manage Agents"}
+          {buttonTitle ||
+            (label === "Tools" ? "Manage Tools" : "Manage Agents")}
         </button>
       </div>
 
@@ -89,7 +92,7 @@ const ChipsInput = ({
           <div className="bg-white rounded-lg p-6 w-90 shadow-lg relative">
             <button
               onClick={handleCancel}
-              className="absolute top-3 right-10 text-gray-500 hover:text-gray-600"
+              className="absolute shadow-md w-8 hover:bg-red-800 h-8 rounded-md font-extrabold top-3 right-10 text-gray-700 hover:text-white"
             >
               ✖
             </button>
@@ -98,25 +101,28 @@ const ChipsInput = ({
             </h1>
 
             <div className="flex flex-col h-[500px] overflow-y-auto pr-2">
-              {location.pathname === "/agent-create" ? (
-                <CreateAgentPopup
-                  selectedTools={selectedTools} // Pass selected tools as prop
-                  handleToolChange={handleToolChange} // Pass tool change handler
-                  setIsModalOpen={setIsModalOpen}
-                />
-              ) : location.pathname === "/create-agent" ? (
+              {activePopup === "Agents" ? (
                 <ConfigureAgents2
                   selectedTools={selectedTools} // Pass selected tools as prop
                   handleToolChange={handleToolChange} // Pass tool change handler
-                  setIsModalOpen={setIsModalOpen}
+                  setIsModalOpen={(value) => {
+                    setIsModalOpen(value);
+                    if (!value) setActivePopup(""); // Reset activePopup when modal is closed
+                  }}
+                />
+              ) : activePopup === "Tools" ? (
+                <CreateAgentPopup
+                  selectedTools={selectedTools}
+                  handleToolChange={handleToolChange}
+                  setIsModalOpen={(value) => {
+                    setIsModalOpen(value);
+                    if (!value) setActivePopup("");
+                  }}
                 />
               ) : (
-                <div>No component available for this path.</div>
+                <div className="text-gray-500">No popup is active</div>
               )}
             </div>
-            {/* <button onClick={handleSave} className="mt-4 bg-blue-600 text-white px-4 py-2 rounded">
-                            Save Tools
-                        </button> */}
           </div>
         </div>
       )}
