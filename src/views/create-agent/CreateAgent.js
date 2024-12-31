@@ -6,17 +6,12 @@ import SwitchInput from '../../components/switch';
 import { useNavigate } from 'react-router-dom';
 import { baseURL } from '../../const';
 import Toast from '../../components/toast';
-import { AgentTools, postGeneratorToolsMap, ToolMapping } from '../../data/DataJson';
 
 const CreateAgent = () => {
-
-  /* states */
-
 
   const [uploadFileEnabled, setUploadFileEnabled] = useState(false);
   const [readUrlEnabled, setReadUrlEnabled] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [toast, setToast] = useState({
     message: "",
     type: "",
@@ -34,17 +29,10 @@ const CreateAgent = () => {
     "tools": ""
   });
 
-  /* handler functions */
   const handleChange = (key, value) => {
-    console.log("key ", key, "value", value)
     setFormData({ ...formData, [key]: value });
-
-
-  
-
   };
 
-  /* input render */
   const renderInput = (type, key, label, placeholder = "", options = []) => {
     switch (type) {
       case "text":
@@ -74,6 +62,7 @@ const CreateAgent = () => {
             onChange={(e) => handleChange(key, e.target.value)}
           />
         );
+
       case "switch":
         return (
           <SwitchInput
@@ -99,10 +88,8 @@ const CreateAgent = () => {
     setTimeout(() => setToast({ ...toast, visible: false }), 3000);
   };
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     setLoading(true);
     const filteredTools = Array.from(
       new Set(
@@ -128,7 +115,7 @@ const CreateAgent = () => {
     };
 
     try {
-      const response = await fetch(`${baseURL}/agent/create`, {
+      const response = await fetch(`${baseURL}/dyn_create-agent`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(requestBody),
@@ -141,7 +128,6 @@ const CreateAgent = () => {
         agent_goal: "",
         agent_description: "",
         agent_instructions: "",
-        tools: "",
       });
       setUploadFileEnabled(false);
       setReadUrlEnabled(false);
@@ -180,8 +166,6 @@ const CreateAgent = () => {
               "Agent Instructions",
               "Enter Agent Instructions"
             )}
-
-            
 
             <button
               type="submit"

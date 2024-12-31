@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import Card from "../Card/Card";
 import { Tools } from "../../data/DataJson";
 import Toast from "../toast";
-
+import { baseURL } from "../../const";
+import axios from 'axios'
+import { FaChartLine } from "react-icons/fa";
 export const ConfigureAgents2 = ({
   selectedTools = [],
   handleToolChange,
@@ -12,9 +14,36 @@ export const ConfigureAgents2 = ({
   const [toast, setToast] = useState({ message: "", type: "" });
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredAgents, setFilteredAgents] = useState(Tools);
-    const [selectedAgent, setSelectedAgent] = useState(null); 
-    
-    const [error,setError]=useState("")
+  const [data, setData] = useState(Tools)
+  const [selectedAgent, setSelectedAgent] = useState(null);
+
+  const [error, setError] = useState("")
+
+
+  useEffect(() => {
+    const fetchAgents = async () => {
+      try {
+        const response = await axios.get(`${baseURL}/dyn_agents/`);
+        const findata = response?.data?.agents?.map((item) => {
+          return {
+            id: item?.id,
+            title: item?.agent_name,
+            heading: item?.agent_description,
+            category: "Custom Agetns",
+            icon: <FaChartLine />,
+            href: "/graph-to-sql",
+            customagent: true
+          }
+        })
+        setData([...data, ...findata,]);
+      } catch (error) {
+      } finally {
+      }
+    };
+
+    fetchAgents();
+  }, []);
+
 
   useEffect(() => {
     const storedAgents =
@@ -23,7 +52,7 @@ export const ConfigureAgents2 = ({
   }, []);
 
   useEffect(() => {
-    const results = Tools.filter((agent) =>
+    const results = data?.filter((agent) =>
       agent.title.toLowerCase().includes(searchQuery.toLowerCase())
     );
     setFilteredAgents(results);
@@ -32,14 +61,14 @@ export const ConfigureAgents2 = ({
   const handleToggleChange = (agent) => {
     // If another agent is already selected, show alert and prevent the selection
     if (selectedAgent && selectedAgent.id !== agent.id) {
-          setError("You can select at most 1 agent.");
+      setError("You can select at most 1 agent.");
 
       return;
     }
 
     // If the agent is already selected, deselect it (uncheck the box)
     if (selectedAgent && selectedAgent.id === agent.id) {
-        setSelectedAgent(null);
+      setSelectedAgent(null);
       setError("")  // Deselect the agent
     } else {
       setSelectedAgent(agent); // Set the selected agent
@@ -57,10 +86,11 @@ export const ConfigureAgents2 = ({
   const saveAllConfigurations = () => {
     setIsModalOpen(false);
     localStorage.setItem("enabledAgents", JSON.stringify(enabledAgents));
+    // setEnabledAgents(storedAgents);
   };
 
   const categories = [
-    ...new Set(filteredAgents.map((agent) => agent.category)),
+    ...new Set(data?.map((agent) => agent.category)),
   ];
 
   return (
@@ -111,8 +141,7 @@ export const ConfigureAgents2 = ({
               </h2>
 
               <div className="w-full max-w-6xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-                {filteredAgents
-                  .filter((agent) => agent.category === category)
+                {data?.filter((agent) => agent.category === category)
                   .map((agent, index) => (
                     <Card
                       key={index}
@@ -140,11 +169,11 @@ export const ConfigureAgents2 = ({
             onClick={saveAllConfigurations}
             className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-6 rounded-lg transition-all"
           >
-            Close
+            Done
           </button>
         </div>
 
-        
+
       </div>
 
       {toast.message && (
