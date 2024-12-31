@@ -30,15 +30,15 @@ const Menuitems = [
         href: "/configure-llm",
       },
       {
-        title: "AI Workers",
-        icon: AssistantIcon, // Updated icon for AI Employee
-        href: "/create-agent",
-      },
-      {
         title: "Agent Creation",
         icon: AssistantIcon, // Updated icon for AI Employee
         href: "/agent-create",
       },
+      {
+        title: "AI Workers",
+        icon: AssistantIcon, // Updated icon for AI Employee
+        href: "/create-agent",
+      }
     ],
   },
   {
@@ -54,16 +54,16 @@ const Menuitems = [
         icon: StorefrontIcon, // Updated icon for Market Place
         href: "/market-place",
       },
-      {
-        title: "Agi Agents Hub",
-        icon: HubIcon, // Updated icon for Agi Agents Hub
-        href: "/agnets-hub",
-      },
-      {
-        title: "Hackathon",
-        icon: AssistantIcon,
-        href: "/admin/hackathon",
-      },
+      // {
+      //   title: "Agi Agents Hub",
+      //   icon: HubIcon, // Updated icon for Agi Agents Hub
+      //   href: "/agnets-hub",
+      // },
+      // {
+      //   title: "Hackathon",
+      //   icon: AssistantIcon,
+      //   href: "/admin/hackathon",
+      // },
     ],
   },
   {

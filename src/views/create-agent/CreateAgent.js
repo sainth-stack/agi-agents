@@ -11,161 +11,161 @@ import { AgentTools, postGeneratorToolsMap, ToolMapping } from '../../data/DataJ
 
 const CreateAgent = () => {
 
-    /* states */
-
- 
-   const [uploadFileEnabled, setUploadFileEnabled] = useState(false);
-   const [readUrlEnabled, setReadUrlEnabled] = useState(false);
-   const [loading, setLoading] = useState(false);
-   const [isModalOpen, setIsModalOpen] = useState(false);
-   const [toast, setToast] = useState({
-     message: "",
-     type: "",
-     visible: false,
-   });
-   const [tools, setTools] = useState([]);
-   const [file, setFile] = useState(null);
-   const [url, setUrl] = useState("");
-   const navigate = useNavigate();
-     const [formData, setFormData] = useState({
-         agent_name: "",
-         "agent_goal": "",
-         agent_description: "",
-         "agent_instructions": "",
-         "tools":""
-     });
-    
-    /* handler functions */
-    const handleChange = (key, value) => {
-        console.log("key ",key,"value",value)
-      setFormData({ ...formData, [key]: value });
+  /* states */
 
 
-         if (key === "postGeneratorType") {
-           const selectedTools = ToolMapping[value] || [];
-           setTools(selectedTools);
+  const [uploadFileEnabled, setUploadFileEnabled] = useState(false);
+  const [readUrlEnabled, setReadUrlEnabled] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [toast, setToast] = useState({
+    message: "",
+    type: "",
+    visible: false,
+  });
+  const [tools, setTools] = useState([]);
+  const [file, setFile] = useState(null);
+  const [url, setUrl] = useState("");
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    agent_name: "",
+    "agent_goal": "",
+    agent_description: "",
+    "agent_instructions": "",
+    "tools": ""
+  });
 
-           // Open agents modal when Agent Name is selected
-           if (value) {
-             setIsModalOpen(true);
-           }
-         }
-       
-    };
+  /* handler functions */
+  const handleChange = (key, value) => {
+    console.log("key ", key, "value", value)
+    setFormData({ ...formData, [key]: value });
 
-    /* input render */
-    const renderInput = (type, key, label, placeholder = "", options = []) => {
-      switch (type) {
-        case "text":
-          return (
-            <TextInput
-              label={label}
-              placeholder={placeholder}
-              value={formData[key]}
-              onChange={(e) => handleChange(key, e.target.value)}
-            />
-          );
-        case "textarea":
-          return (
-            <TextAreaInput
-              label={label}
-              placeholder={placeholder}
-              value={formData[key]}
-              onChange={(e) => handleChange(key, e.target.value)}
-            />
-          );
-        case "select":
-          return (
-            <SelectInput
-              label={label}
-              options={options}
-              value={formData[key]}
-              onChange={(e) => handleChange(key, e.target.value)}
-            />
-          );
-        case "switch":
-          return (
-            <SwitchInput
-              label={label}
-              checked={
-                key === "uploadFileEnabled" ? uploadFileEnabled : readUrlEnabled
-              }
-              onChange={() =>
-                key === "uploadFileEnabled"
-                  ? setUploadFileEnabled(!uploadFileEnabled)
-                  : setReadUrlEnabled(!readUrlEnabled)
-              }
-            />
-          );
-        default:
-          return null;
+
+    if (key === "postGeneratorType") {
+      const selectedTools = ToolMapping[value] || [];
+      setTools(selectedTools);
+
+      // Open agents modal when Agent Name is selected
+      if (value) {
+        setIsModalOpen(true);
       }
+    }
+
+  };
+
+  /* input render */
+  const renderInput = (type, key, label, placeholder = "", options = []) => {
+    switch (type) {
+      case "text":
+        return (
+          <TextInput
+            label={label}
+            placeholder={placeholder}
+            value={formData[key]}
+            onChange={(e) => handleChange(key, e.target.value)}
+          />
+        );
+      case "textarea":
+        return (
+          <TextAreaInput
+            label={label}
+            placeholder={placeholder}
+            value={formData[key]}
+            onChange={(e) => handleChange(key, e.target.value)}
+          />
+        );
+      case "select":
+        return (
+          <SelectInput
+            label={label}
+            options={options}
+            value={formData[key]}
+            onChange={(e) => handleChange(key, e.target.value)}
+          />
+        );
+      case "switch":
+        return (
+          <SwitchInput
+            label={label}
+            checked={
+              key === "uploadFileEnabled" ? uploadFileEnabled : readUrlEnabled
+            }
+            onChange={() =>
+              key === "uploadFileEnabled"
+                ? setUploadFileEnabled(!uploadFileEnabled)
+                : setReadUrlEnabled(!readUrlEnabled)
+            }
+          />
+        );
+      default:
+        return null;
+    }
+  };
+
+
+  const showToast = (message, type) => {
+    setToast({ message, type, visible: true });
+    setTimeout(() => setToast({ ...toast, visible: false }), 3000);
+  };
+
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    setLoading(true);
+    const filteredTools = Array.from(
+      new Set(
+        tools.map((tool) => {
+          return tool.id; // Return the original tool ID
+        })
+      )
+    );
+    let systemPrompt = formData.system_prompt;
+    if (uploadFileEnabled && file) {
+      systemPrompt += `File: ${file.name}`;
+    }
+    if (readUrlEnabled && url) {
+      systemPrompt += ` URL: ${url}`;
+    }
+
+    const requestBody = {
+      ...formData,
+      system_prompt: formData.postGeneratorType,
+      tools: filteredTools.join(", "),
+      env_id: formData.modelEmployee,
+      upload_attachment: uploadFileEnabled,
     };
 
+    try {
+      const response = await fetch(`${baseURL}/agent/create`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(requestBody),
+      });
 
-      const showToast = (message, type) => {
-        setToast({ message, type, visible: true });
-        setTimeout(() => setToast({ ...toast, visible: false }), 3000);
-    };
-    
+      if (!response.ok) throw new Error("Failed to create employee");
+      showToast("Employee created successfully", "success");
+      setFormData({
+        agent_name: "",
+        agent_goal: "",
+        agent_description: "",
+        agent_instructions: "",
+        tools: "",
+      });
+      setUploadFileEnabled(false);
+      setReadUrlEnabled(false);
+      setFile(null);
+      setUrl("");
+      navigate("/market-place");
+    } catch (error) {
+      showToast("Failed to create employee: " + error.message, "error");
+      console.error("Error creating employee:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-     const handleSubmit = async (e) => {
-       e.preventDefault();
 
-       setLoading(true);
-       const filteredTools = Array.from(
-         new Set(
-           tools.map((tool) => {
-             return tool.id; // Return the original tool ID
-           })
-         )
-       );
-       let systemPrompt = formData.system_prompt;
-       if (uploadFileEnabled && file) {
-         systemPrompt += `File: ${file.name}`;
-       }
-       if (readUrlEnabled && url) {
-         systemPrompt += ` URL: ${url}`;
-       }
-
-       const requestBody = {
-         ...formData,
-         system_prompt: formData.postGeneratorType,
-         tools: filteredTools.join(", "),
-         env_id: formData.modelEmployee,
-         upload_attachment: uploadFileEnabled,
-       };
-
-       try {
-         const response = await fetch(`${baseURL}/agent/create`, {
-           method: "POST",
-           headers: { "Content-Type": "application/json" },
-           body: JSON.stringify(requestBody),
-         });
-
-         if (!response.ok) throw new Error("Failed to create employee");
-         showToast("Employee created successfully", "success");
-         setFormData({
-           agent_name: "",
-           agent_goal: "",
-           agent_description: "",
-           agent_instructions: "",
-           tools: "",
-         });
-         setUploadFileEnabled(false);
-         setReadUrlEnabled(false);
-         setFile(null);
-         setUrl("");
-         navigate("/market-place");
-       } catch (error) {
-         showToast("Failed to create employee: " + error.message, "error");
-         console.error("Error creating employee:", error);
-       } finally {
-         setLoading(false);
-       }
-    };
-    
-    
   return (
     <div className="flex bg-gray-100 font-sans font-custom justify-center">
       <div className="w-full md:w-1/2 p-6">
@@ -175,14 +175,14 @@ const CreateAgent = () => {
               Configure your Agent
             </h2>
             {renderInput("text", "agent_name", "Agent Name", "Enter Agent Name")}
-            {renderInput("text", "agent_goal", "Agent Goal", "Enter Agent Goal")}
-
             {renderInput(
               "textarea",
-               "agent_description",
+              "agent_description",
               "Agent Description",
               "Enter Agent Description"
             )}
+            {renderInput("text", "agent_goal", "Agent Goal", "Enter Agent Goal")}
+
             {renderInput(
               "textarea",
               "agent_instructions",
@@ -192,9 +192,9 @@ const CreateAgent = () => {
 
             <ChipsInput
               label="Tools"
-                          chip={tools}
-                          PopupTitle="Manage Tools"
-                          buttonTitle={"Manage Tools"}
+              chip={tools}
+              PopupTitle="Manage Tools"
+              buttonTitle={"Manage Tools"}
               chips={tools}
               setChips={setTools}
               formData={formData}
@@ -204,9 +204,8 @@ const CreateAgent = () => {
 
             <button
               type="submit"
-              className={`mt-6 w-full py-2 px-4 text-white font-semibold rounded-lg bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-opacity-75 ${
-                loading ? "opacity-50 cursor-not-allowed" : ""
-              }`}
+              className={`mt-6 w-full py-2 px-4 text-white font-semibold rounded-lg bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-opacity-75 ${loading ? "opacity-50 cursor-not-allowed" : ""
+                }`}
               disabled={loading}
             >
               {loading ? "Loading..." : "Submit"}
