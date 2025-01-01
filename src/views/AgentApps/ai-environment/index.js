@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
 import { baseURL } from '../../../const';
 import ENVT from './env';
@@ -18,6 +18,10 @@ const AiEnvironment = () => {
     const [uploadedFiles, setUploadedFiles] = useState(null)
     const [uploadedFileNames, setUploadedFileNames] = useState(null)
 
+     const location = useLocation();
+    const dynamicAgentId = location.state?.dynamicAgentId;
+    
+    console.log("cutom agent id",dynamicAgentId)
     const handlePromptChange = (e) => setPrompt(e.target.value);
 
     const handleFileChange = (e) => {
@@ -65,96 +69,102 @@ const AiEnvironment = () => {
         URL.revokeObjectURL(url);
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const urlRegex = /(https?:\/\/[^\s]+)/g;
-        const foundUrls = prompt.match(urlRegex);
-        const urlFromPrompt = foundUrls ? foundUrls[0] : undefined; // Take the first URL if it exists
-        const payload = {
-            agent_id: id, // Pass the agent ID from URL params
-            prompt: prompt || undefined, // Use undefined instead of null
-            url: urlFromPrompt || undefined, // Use URL from the prompt if found
-            file: uploadedFiles || undefined, // Use undefined instead of null
-        };
-        Object.keys(payload).forEach(key => payload[key] === undefined && delete payload[key]);
+   const handleSubmit = async (e) => {
+     e.preventDefault();
 
-        // Clear the input fields immediately on submit
-        // setPrompt('');
-        // setUrl(''); // Optional: You may want to clear this as well
-        // setUploadedFile(null);
+     // Extract URL from the prompt if it exists
+     const urlRegex = /(https?:\/\/[^\s]+)/g;
+     const foundUrls = prompt.match(urlRegex);
+     const urlFromPrompt = foundUrls ? foundUrls[0] : undefined; // Take the first URL if it exists
 
-        const loadingResponse = { input: payload.prompt, loading: true, output: '' };
-        const updateRes = [loadingResponse];
-        setResponses(() => updateRes);
+     // Create payload
+     const payload = {
+       agent_id: id, // Pass the agent ID from URL params
+       query: prompt || undefined,
+       url: urlFromPrompt || undefined,
+       file: uploadedFiles || undefined,
+     };
 
-        try {
-            const formData = new FormData(); // Use FormData to handle file uploads
+     // Remove undefined keys from the payload
+     Object.keys(payload).forEach(
+       (key) => payload[key] === undefined && delete payload[key]
+     );
 
-            // Append only defined values to FormData
-            for (const [key, value] of Object.entries(payload)) {
-                if (value !== undefined) {
-                    formData.append(key, value);
-                }
-            }
+     // Add loading response
+     const loadingResponse = {
+       input: payload.prompt,
+       loading: true,
+       output: "",
+     };
+     setResponses(() => [loadingResponse]);
 
-            // Perform the Axios POST request with FormData
-            const response = await axios.post(`${baseURL}/openai/run`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            });
+     try {
+       const formData = new FormData();
 
-            if (response.status !== 200) throw new Error('API call failed');
+       // Append only defined values to FormData
+       Object.entries(payload).forEach(([key, value]) => {
+         if (value !== undefined) {
+           formData.append(key, value);
+         }
+       });
 
-            // Function to check if response is HTML
-            const isHTML = (str) => {
-                return /<\/?[a-z][\s\S]*?>/i.test(str);
-            };
+       // Determine the API endpoint dynamically
+       const apiEndpoint = `${baseURL}/${
+         dynamicAgentId ? "run-agent-environment" : "openai/run"
+       }`;
 
-            const data = response.data;
-            console.log(isHTML(data))
-            if (isHTML(data?.content)) {
-                const updatedResponses = [...updateRes];
-                updatedResponses[updatedResponses.length - 1] = {
-                    input: payload.prompt,
-                    image: data?.result?.image_base64 || data?.image_base64,
-                    loading: false,
-                    output: '',
-                    htmlContent: data
-                };
-                setResponses(updatedResponses);
-            } else {
-                if (data?.csv_file) {
-                    const updatedResponses = [...updateRes];
-                    updatedResponses[updatedResponses.length - 1] = {
-                        input: '',
-                        loading: false,
-                        output: 'Downloaded',
-                    };
-                    setResponses(updatedResponses);
-                    downloadCSV(data?.csv_file?.data);
-                } else {
-                    const updatedResponses = [...updateRes];
-                    updatedResponses[updatedResponses.length - 1] = {
-                        input: payload.prompt,
-                        image: data?.result?.image_base64 || data?.image_base64,
-                        loading: false,
-                        output: data?.content || data?.result?.content,
-                    };
-                    setResponses(updatedResponses);
-                }
-            }
-        } catch (error) {
-            console.error('Error during API call:', error);
-            const updatedResponses = [...updateRes];
-            updatedResponses[updatedResponses.length - 1] = {
-                input: payload.prompt,
-                loading: false,
-                output: 'Error: ' + error.message,
-            };
-            setResponses(updatedResponses);
-        }
-    };
+       // Call the API
+       const response = await axios.post(apiEndpoint, formData, {
+         headers: {
+           "Content-Type": "multipart/form-data",
+         },
+       });
+
+       if (response.status !== 200) throw new Error("API call failed");
+
+       const data = response.data;
+
+       // Function to check if response is HTML
+       const isHTML = (str) => /<\/?[a-z][\s\S]*?>/i.test(str);
+
+       // Handle response based on content type
+       const updatedResponses = [...responses];
+       if (isHTML(data?.content)) {
+         updatedResponses[updatedResponses.length - 1] = {
+           input: payload.prompt,
+           image: data?.result?.image_base64 || data?.image_base64,
+           loading: false,
+           output: "",
+           htmlContent: data,
+         };
+       } else if (data?.csv_file) {
+         updatedResponses[updatedResponses.length - 1] = {
+           input: "",
+           loading: false,
+           output: "Downloaded",
+         };
+         downloadCSV(data?.csv_file?.data);
+       } else {
+         updatedResponses[updatedResponses.length - 1] = {
+           input: payload.prompt,
+           image: data?.result?.image_base64 || data?.image_base64,
+           loading: false,
+           output: data?.content || data?.result?.content,
+         };
+       }
+       setResponses(updatedResponses);
+     } catch (error) {
+       console.error("Error during API call:", error);
+       const updatedResponses = [...responses];
+       updatedResponses[updatedResponses.length - 1] = {
+         input: payload.prompt,
+         loading: false,
+         output: "Error: " + error.message,
+       };
+       setResponses(updatedResponses);
+     }
+   };
+
 
 
 

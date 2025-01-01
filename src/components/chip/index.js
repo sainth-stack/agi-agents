@@ -45,7 +45,7 @@ const ChipsInput = ({
   };
 
   const handleToggleChange = (agent) => {
-    console.log("selected agent", agent);
+    // console.log("selected agent", agent);
     // If the agent is already selected, deselect it
     if (selectedChips.includes(agent.title)) {
       setSelectedChips([]); // Deselect the agent

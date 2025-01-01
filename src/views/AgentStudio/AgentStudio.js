@@ -5,7 +5,7 @@ import SelectInput from "../../components/Select/SelectInput";
 import SwitchInput from "../../components/switch";
 import ChipsInput from "../../components/chip";
 import Toast from "../../components/toast";
-import { baseURL } from "../../const";
+import { baseURL, dyna_api } from "../../const";
 import { useNavigate } from "react-router-dom";
 import {
   postGeneratorOptions,
@@ -19,8 +19,8 @@ const EmployeeStudio = () => {
   const [readUrlEnabled, setReadUrlEnabled] = useState(false);
   const [environmentOptions, setEnvironmentOptions] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [selectedToggle, setSelectedToggle] = useState(null);
-  const [selectedAgent, setSelectedAgent] = useState(null);
+  const [selectedToggle, setSelectedToggle] = useState("");
+  const [selectedAgent, setSelectedAgent] = useState("");
   // Keeps track of the selected agent's ID
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -35,9 +35,8 @@ const EmployeeStudio = () => {
   const [formData, setFormData] = useState({
     name: "",
     system_prompt: "",
-
     agent_description: "",
-    tools: "",
+  
     modelEmployee: "",
   });
 
@@ -61,6 +60,7 @@ const EmployeeStudio = () => {
   }, [uploadFileEnabled, readUrlEnabled]);
 
   const handleChange = (key, value) => {
+    // alert(selectedAgent);
     setFormData({ ...formData, [key]: value });
   };
 
@@ -69,7 +69,7 @@ const EmployeeStudio = () => {
   useEffect(() => {
     const storedTools = JSON.parse(localStorage.getItem("enabledAgents")) || [];
     setTools(storedTools);
-    console.log(storedTools);
+    // console.log(storedTools);
   }, []);
 
   useEffect(() => {
@@ -95,63 +95,74 @@ const EmployeeStudio = () => {
     setTimeout(() => setToast({ ...toast, visible: false }), 3000);
   };
 
+
+  // console.log("at parent extra props checking", selectedAgent);
   // Modify the handleSubmit function
-  const handleSubmit = async (e) => {
-    
+  // console.log("true checking", selectedAgent.customagent);
+ const handleSubmit = async (e) => {
+   e.preventDefault();
 
-    e.preventDefault();
+   setLoading(true);
 
-    setLoading(true);
+   let systemPrompt = formData.system_prompt;
+   if (uploadFileEnabled && file) {
+     systemPrompt += ` File: ${file.name}`;
+   }
+   if (readUrlEnabled && url) {
+     systemPrompt += ` URL: ${url}`;
+   }
 
-    // Extract tool IDs and agent IDs
-   
+   const requestBody = {
+     ...formData,
+     system_prompt: formData.postGeneratorType,
+     tools: selectedToggle?.id,
+     agents: selectedAgent?.id,
+     env_id: formData.modelEmployee,
+     upload_attachment: uploadFileEnabled,
+   };
 
-    let systemPrompt = formData.system_prompt;
-    if (uploadFileEnabled && file) {
-      systemPrompt += `File: ${file.name}`;
-    }
-    if (readUrlEnabled && url) {
-      systemPrompt += ` URL: ${url}`;
-    }
+   if (selectedAgent?.customagent) {
+     requestBody.dynamic_agent_id = selectedAgent?.id;
+   }
 
-    const requestBody = {
-      ...formData,
-      system_prompt: formData.postGeneratorType,
-      tools: selectedToggle,
-      agents:selectedAgent,// Pass the tools as a comma-separated string
-      // Pass the agents as a comma-separated string
-      env_id: formData.modelEmployee,
-      upload_attachment: uploadFileEnabled,
-    };
+   try {
+     const apiUrl = selectedAgent?.customagent
+       ? `${baseURL}/agent/create`
+       : `${baseURL}/agent/create`;
 
-    try {
-      const response = await fetch(`${baseURL}/agent/create`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(requestBody),
-      });
+     const response = await fetch(apiUrl, {
+       method: "POST",
+       headers: { "Content-Type": "application/json" },
+       body: JSON.stringify(requestBody),
+     });
 
-      if (!response.ok) throw new Error("Failed to create employee");
-      showToast("Employee created successfully", "success");
-      setFormData({
-        name: "",
-        agent_description: "",
-        modelEmployee: "",
-        system_prompt: "",
-      });
-      setUploadFileEnabled(false);
-      setReadUrlEnabled(false);
-      setFile(null);
-      setUrl("");
-      navigate("/market-place");
-    } catch (error) {
-      showToast("Failed to create employee: " + error.message, "error");
-      console.error("Error creating employee:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+     if (!response.ok) throw new Error("Failed to create employee");
 
+     showToast("Employee created successfully", "success");
+
+     setFormData({
+       name: "",
+       agent_description: "",
+       modelEmployee: "",
+       system_prompt: "",
+     });
+     setUploadFileEnabled(false);
+     setReadUrlEnabled(false);
+     setFile(null);
+     setUrl("");
+     navigate("/market-place");
+   } catch (error) {
+     showToast("Failed to create employee: " + error.message, "error");
+     console.error("Error creating employee:", error.message);
+   } finally {
+     setLoading(false);
+   }
+ };
+
+
+
+
+  //  console.log("from both  check",selectedAgent,selectedToggle)
   const renderInput = (type, key, label, placeholder = "", options = []) => {
     switch (type) {
       case "text":
@@ -200,8 +211,8 @@ const EmployeeStudio = () => {
     }
   };
 
-  console.log("form data", formData);
   return (
+
     <div className="flex bg-gray-100 font-sans font-custom justify-center">
       <div className="w-full md:w-1/2 p-6">
         <div className="border-2 bg-white rounded-lg shadow-lg p-8">

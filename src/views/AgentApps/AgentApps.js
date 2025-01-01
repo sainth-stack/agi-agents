@@ -34,14 +34,23 @@ const AgentApps = () => {
         agent.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
-    const handleCardClick = (id) => {
-        navigate(`/ai-environment/${id}`);
+    const handleCardClick = (agent) => {
+      navigate(`/ai-environment/${agent.id}`, {
+        state: agent.dynamic_agent_id
+          ? { dynamicAgentId: agent.dynamic_agent_id }
+          : null,
+      });
     };
+
+
+
 
     if (loading) {
         return <p>Loading agents...</p>;
     }
 
+
+    console.log("all agents", agents);
     return (
         <div className="flex flex-col items-start w-full p-4">
             <div className="flex flex-col items-start mb-4 w-[500px]">
@@ -59,7 +68,7 @@ const AgentApps = () => {
                 {filteredAgents.map((agent) => (
                     <div
                         key={agent.id}
-                        onClick={() => handleCardClick(agent.id)}
+                        onClick={() => handleCardClick(agent)}
                         className="w-full transition cursor-pointer"
                     >
                         <MarketPlaceCard

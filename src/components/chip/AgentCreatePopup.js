@@ -30,16 +30,16 @@ export const CreateAgentPopup = ({
   }, [searchQuery]);
 
   const handleToggleChange = (agent) => {
-    console.log("selected agent",agent)
+    // console.log("selected agent",agent)
     if (selectedToggle === agent.id) {
       setSelectedToggle(null);
       handleToolChange(""); 
     } else {
-      setSelectedToggle(agent.id);
+      setSelectedToggle(agent);
       handleToolChange(agent.title); 
     }
   };
-  console.log("selected toggke", selectedToggle);
+  // console.log("selected toggke", selectedToggle);
 
   const resetConfiguration = () => {
     setEnabledAgents([]);
@@ -108,7 +108,7 @@ export const CreateAgentPopup = ({
                     icon={agent.icon}
                     toggle={
                       <Toggle
-                        isChecked={selectedToggle === agent.id} // Check if agent is selected
+                        isChecked={selectedToggle?.id === agent.id} // Check if agent is selected
                         onToggleChange={() => handleToggleChange(agent)}
                       />
                     }

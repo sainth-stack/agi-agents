@@ -3,22 +3,23 @@ import Card from "../Card/Card";
 import { Tools } from "../../data/DataJson";
 import Toast from "../toast";
 import { baseURL } from "../../const";
-import axios from 'axios'
+import axios from "axios";
 import { FaChartLine } from "react-icons/fa";
+
 export const ConfigureAgents2 = ({
   selectedTools = [],
   handleToolChange,
   setIsModalOpen,
+  selectedAgent,
+  setSelectedAgent,
 }) => {
   const [enabledAgents, setEnabledAgents] = useState([]);
   const [toast, setToast] = useState({ message: "", type: "" });
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredAgents, setFilteredAgents] = useState(Tools);
-  const [data, setData] = useState(Tools)
-  const [selectedAgent, setSelectedAgent] = useState(null);
+  const [data, setData] = useState(Tools);
 
-  const [error, setError] = useState("")
-
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchAgents = async () => {
@@ -29,21 +30,20 @@ export const ConfigureAgents2 = ({
             id: item?.id,
             title: item?.agent_name,
             heading: item?.agent_description,
-            category: "Custom Agetns",
+            category: "Custom Agents",
             icon: <FaChartLine />,
             href: "/graph-to-sql",
-            customagent: true
-          }
-        })
-        setData([...data, ...findata,]);
+            customagent: true, // Flag indicating custom agent
+          };
+        });
+        setData([...data, ...findata]);
       } catch (error) {
-      } finally {
+        console.error(error);
       }
     };
 
     fetchAgents();
   }, []);
-
 
   useEffect(() => {
     const storedAgents =
@@ -59,17 +59,14 @@ export const ConfigureAgents2 = ({
   }, [searchQuery]);
 
   const handleToggleChange = (agent) => {
-
     if (selectedAgent === agent.id) {
-      setSelectedAgent(null); 
-      handleToolChange(""); // Pass empty string to reset
+      setSelectedAgent(null);
+      handleToolChange(""); // Reset tool
     } else {
-      setSelectedAgent(agent.id); // Select the agent
-      handleToolChange(agent.title); // Update the selected tool
+      setSelectedAgent(agent);
+      handleToolChange(agent.title); // Update selected tool
     }
   };
-  console.log("agegtn",selectedAgent);
-
 
   const resetConfiguration = () => {
     setEnabledAgents([]); // Reset all enabled agents
@@ -82,9 +79,7 @@ export const ConfigureAgents2 = ({
     localStorage.setItem("enabledAgents", JSON.stringify(enabledAgents)); // Persist enabled agents to localStorage
   };
 
-  const categories = [
-    ...new Set(data.map((agent) => agent.category)),
-  ];
+  const categories = [...new Set(data.map((agent) => agent.category))];
 
   return (
     <>
@@ -119,7 +114,7 @@ export const ConfigureAgents2 = ({
                       icon={agent.icon}
                       toggle={
                         <Toggle
-                          isChecked={selectedAgent === agent.id}
+                          isChecked={selectedAgent?.id === agent.id}
                           onToggleChange={() => handleToggleChange(agent)}
                         />
                       }
