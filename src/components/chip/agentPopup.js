@@ -3,12 +3,11 @@ import Card from "../Card/Card";
 import { Tools } from "../../data/DataJson";
 import Toast from "../toast";
 
-export const ConfigureAgents2 = ({ handleToolChange, setIsModalOpen }) => {
+export const ConfigureAgents2 = ({ handleToolChange, selectedAgent,setSelectedAgent,setIsModalOpen }) => {
   const [enabledAgents, setEnabledAgents] = useState([]);
   const [toast, setToast] = useState({ message: "", type: "" });
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredAgents, setFilteredAgents] = useState(Tools);
-  const [selectedAgent, setSelectedAgent] = useState(null);
 
   useEffect(() => {
     const storedAgents =
@@ -24,21 +23,22 @@ export const ConfigureAgents2 = ({ handleToolChange, setIsModalOpen }) => {
   }, [searchQuery]);
 
   const handleToggleChange = (agent) => {
-    console.log("selected agent", agent);
 
-    if (selectedAgent?.id === agent.id) {
+    if (selectedAgent === agent.id) {
       setSelectedAgent(null); 
-      handleToolChange(""); 
+      handleToolChange(""); // Pass empty string to reset
     } else {
-      setSelectedAgent(agent); 
-      handleToolChange(agent.title); 
+      setSelectedAgent(agent.id); // Select the agent
+      handleToolChange(agent.title); // Update the selected tool
     }
   };
+  console.log("agegtn",selectedAgent);
+
 
   const resetConfiguration = () => {
-    setEnabledAgents([]); 
-    setSelectedAgent(null);
-    localStorage.removeItem("enabledAgents");
+    setEnabledAgents([]); // Reset all enabled agents
+    setSelectedAgent(null); // Deselect all
+    localStorage.removeItem("enabledAgents"); // Clear from local storage
   };
 
   const saveAllConfigurations = () => {
@@ -83,7 +83,7 @@ export const ConfigureAgents2 = ({ handleToolChange, setIsModalOpen }) => {
                       icon={agent.icon}
                       toggle={
                         <Toggle
-                          isChecked={selectedAgent?.id === agent.id}
+                          isChecked={selectedAgent === agent.id}
                           onToggleChange={() => handleToggleChange(agent)}
                         />
                       }

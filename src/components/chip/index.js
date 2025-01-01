@@ -5,6 +5,10 @@ import { ConfigureAgents2 } from "./agentPopup";
 const ChipsInput = ({
   chip = [],
   activePopup,
+  selectedToggle,
+  selectedAgent,
+  setSelectedAgent,
+  setSelectedToggle,
   setActivePopup,
   buttonTitle,
   label,
@@ -51,7 +55,6 @@ const ChipsInput = ({
       handleToolChange(agent.title); // Pass the selected agent title
     }
   };
-
 
   return (
     <div className="flex flex-col mb-4 px-2">
@@ -108,7 +111,10 @@ const ChipsInput = ({
             <div className="flex flex-col h-[500px] overflow-y-auto pr-2">
               {activePopup === "Agents" ? (
                 <ConfigureAgents2
+                  setSelectedAgent={setSelectedAgent}
+                  selectedAgent={selectedAgent}
                   selectedTools={selectedChips}
+                  formData={formData}
                   handleToolChange={handleToolChange}
                   setIsModalOpen={(value) => {
                     setIsModalOpen(value);
@@ -117,6 +123,8 @@ const ChipsInput = ({
                 />
               ) : activePopup === "Tools" ? (
                 <CreateAgentPopup
+                  selectedToggle={selectedToggle}
+                  setSelectedToggle={setSelectedToggle}
                   selectedTools={selectedChips}
                   handleToolChange={handleToolChange}
                   setIsModalOpen={(value) => {

@@ -5,6 +5,8 @@ import { AgentTools } from "../../data/DataJson";
 
 export const CreateAgentPopup = ({
   selectedTools = [],
+  formData,
+  selectedToggle,setSelectedToggle,
   handleToolChange,
   setIsModalOpen,
 }) => {
@@ -12,7 +14,6 @@ export const CreateAgentPopup = ({
   const [toast, setToast] = useState({ message: "", type: "" });
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredAgents, setFilteredAgents] = useState(AgentTools);
-  const [selectedToggle, setSelectedToggle] = useState(null); // Keeps track of the selected agent's ID
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -38,6 +39,7 @@ export const CreateAgentPopup = ({
       handleToolChange(agent.title); 
     }
   };
+  console.log("selected toggke", selectedToggle);
 
   const resetConfiguration = () => {
     setEnabledAgents([]);

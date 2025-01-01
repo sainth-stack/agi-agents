@@ -19,6 +19,9 @@ const EmployeeStudio = () => {
   const [readUrlEnabled, setReadUrlEnabled] = useState(false);
   const [environmentOptions, setEnvironmentOptions] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [selectedToggle, setSelectedToggle] = useState(null);
+  const [selectedAgent, setSelectedAgent] = useState(null);
+  // Keeps track of the selected agent's ID
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -58,20 +61,16 @@ const EmployeeStudio = () => {
   }, [uploadFileEnabled, readUrlEnabled]);
 
   const handleChange = (key, value) => {
-
-    
     setFormData({ ...formData, [key]: value });
-
   };
 
   // Callback function to save the tools selected in the modal
- 
 
-    useEffect(() => {
-      const storedTools = JSON.parse(localStorage.getItem("enabledAgents")) || [];
- setTools(storedTools);
-      console.log(storedTools);
-    }, []);
+  useEffect(() => {
+    const storedTools = JSON.parse(localStorage.getItem("enabledAgents")) || [];
+    setTools(storedTools);
+    console.log(storedTools);
+  }, []);
 
   useEffect(() => {
     const fetchEnvironmentOptions = async () => {
@@ -98,27 +97,14 @@ const EmployeeStudio = () => {
 
   // Modify the handleSubmit function
   const handleSubmit = async (e) => {
-    console.log("checking the form data", formData);
-    console.log("tools cheking", tools)
-    console.log("Agnets cheking", agents);
-
     
+
     e.preventDefault();
 
     setLoading(true);
 
     // Extract tool IDs and agent IDs
-    const filteredToolIds = Array.from(
-      new Set(
-        tools.map((tool) => tool.id) // Assuming 'tool.id' is the ID for each tool
-      )
-    );
-
-    const filteredAgentIds = Array.from(
-      new Set(
-        agents.map((agent) => agent.id) // Assuming 'agent.id' is the ID for each agent
-      )
-    );
+   
 
     let systemPrompt = formData.system_prompt;
     if (uploadFileEnabled && file) {
@@ -131,8 +117,9 @@ const EmployeeStudio = () => {
     const requestBody = {
       ...formData,
       system_prompt: formData.postGeneratorType,
-      tools: filteredToolIds.join(", "), // Pass the tools as a comma-separated string
-      agents: filteredAgentIds.join(", "), // Pass the agents as a comma-separated string
+      tools: selectedToggle,
+      agents:selectedAgent,// Pass the tools as a comma-separated string
+      // Pass the agents as a comma-separated string
       env_id: formData.modelEmployee,
       upload_attachment: uploadFileEnabled,
     };
@@ -151,7 +138,6 @@ const EmployeeStudio = () => {
         agent_description: "",
         modelEmployee: "",
         system_prompt: "",
-        
       });
       setUploadFileEnabled(false);
       setReadUrlEnabled(false);
@@ -214,6 +200,7 @@ const EmployeeStudio = () => {
     }
   };
 
+  console.log("form data", formData);
   return (
     <div className="flex bg-gray-100 font-sans font-custom justify-center">
       <div className="w-full md:w-1/2 p-6">
@@ -243,6 +230,8 @@ const EmployeeStudio = () => {
             <ChipsInput
               label="Agents"
               chip={tools}
+              selectedAgent={selectedAgent}
+              setSelectedAgent={setSelectedAgent}
               chips={tools}
               setChips={setTools}
               activePopup={activePopup}
@@ -259,6 +248,8 @@ const EmployeeStudio = () => {
               buttonTitle="Manage Tools"
               chips={tools}
               setChips={setTools}
+              selectedToggle={selectedToggle}
+              setSelectedToggle={setSelectedToggle}
               formData={formData}
               setActivePopup={handleManagePopup} // Pass directly
               isModalOpen={activePopup === "Tools"}
