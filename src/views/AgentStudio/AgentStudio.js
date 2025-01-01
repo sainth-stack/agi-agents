@@ -66,11 +66,11 @@ const EmployeeStudio = () => {
     setTools(selectedTools);
   };
 
-  // useEffect(() => {
-  //   const storedTools = JSON.parse(localStorage.getItem("enabledAgents")) || [];
-  //   setTools(storedTools);
-  //   console.log(storedTools);
-  // }, []);
+  //  useEffect(() => {
+  //    const storedTools = JSON.parse(localStorage.getItem("enabledAgents")) || [];
+  // setTools(storedTools);
+  //    console.log(storedTools);
+  //  }, []);
 
   useEffect(() => {
     const fetchEnvironmentOptions = async () => {

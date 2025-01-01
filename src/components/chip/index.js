@@ -59,7 +59,7 @@ const ChipsInput = ({
         <button
           type="button"
           onClick={() => setActivePopup(label === "Tools" ? "Tools" : "Agents")}
-          className="ml-2 py-1 px-3 text-indigo-600 font-semibold bg-transparent border border-indigo-600 rounded hover:bg-indigo-50"
+          className="ml-2 py-1 px-3 text-indigo-600  font-semibold bg-transparent border border-indigo-600  rounded hover:bg-indigo-50 hover:shadow-md"
         >
           {buttonTitle ||
             (label === "Tools" ? "Manage Tools" : "Manage Agents")}
