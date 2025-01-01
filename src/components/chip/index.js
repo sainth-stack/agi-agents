@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Tools } from '../../data/DataJson';
-import ConfigureAgents2 from './agentPopup';
-import CreateAgentPopup from './AgentCreatePopup';
-import { useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import CreateAgentPopup from "./AgentCreatePopup";
+import { ConfigureAgents2 } from "./agentPopup";
 
 const ChipsInput = ({
   chip = [],
@@ -17,22 +15,13 @@ const ChipsInput = ({
   isModalOpen,
   setIsModalOpen,
 }) => {
-  // alert("active popup",activePopup)
-
-  // console.log("active popup",activePopup)
-  const [selectedTools, setSelectedTools] = useState([]);
-  const [defaultSelection, setDefaultSelection] = useState(null);
+  const [selectedChips, setSelectedChips] = useState([]);
 
   useEffect(() => {
+    // Initialize chips state
     setChips(chip);
-    const initialSelectedTools = chip.map((c) => c.name);
-    setSelectedTools(initialSelectedTools);
-
-    const initialDefault = chip.find((c) => c.isDefault);
-    if (initialDefault) {
-      setDefaultSelection(initialDefault.name);
-    }
-  }, [chip]);
+    setSelectedChips(chip.map((c) => c.name)); // Set initial selected chips
+  }, [chip, setChips]);
 
   const handleManageTools = () => {
     setIsModalOpen(true);
@@ -40,13 +29,10 @@ const ChipsInput = ({
   };
 
   const handleToolChange = (toolName) => {
-    if (defaultSelection) return;
-
-    const updatedSelection = selectedTools.includes(toolName)
-      ? selectedTools.filter((tool) => tool !== toolName)
-      : [...selectedTools, toolName];
-
-    setSelectedTools(updatedSelection);
+    const updatedChips = selectedChips.includes(toolName)
+      ? selectedChips.filter((tool) => tool !== toolName) // Remove chip if already selected
+      : [toolName]; // Ensure only one chip is selected
+    setSelectedChips(updatedChips);
   };
 
   const handleCancel = () => {
@@ -54,7 +40,17 @@ const ChipsInput = ({
     document.body.style.overflow = "auto";
   };
 
-  const location = useLocation();
+  const handleToggleChange = (agent) => {
+    console.log("selected agent", agent);
+    // If the agent is already selected, deselect it
+    if (selectedChips.includes(agent.title)) {
+      setSelectedChips([]); // Deselect the agent
+      handleToolChange(""); // Reset tool selection
+    } else {
+      setSelectedChips([agent.title]); // Select the new agent
+      handleToolChange(agent.title); // Pass the selected agent title
+    }
+  };
 
   return (
     <div className="flex flex-col mb-4 px-2">
@@ -70,21 +66,29 @@ const ChipsInput = ({
         </button>
       </div>
 
+      {/* Selected chips display */}
       <div className="flex flex-wrap border border-gray-300 rounded-md p-2">
-        {chips.map((chip) => (
-          <div
-            key={chip.name}
-            className="flex items-center bg-blue-500 text-white rounded-full px-2 py-1 m-1"
-          >
-            {chip.name}
-            <button
-              onClick={() => setIsModalOpen(false)}
-              className="ml-2 text-white focus:outline-none"
+        {selectedChips.length > 0 ? (
+          selectedChips.map((chipName, index) => (
+            <div
+              key={index}
+              className="flex items-center bg-blue-500 text-white rounded-full px-3 py-1 m-1"
             >
-              ✖
-            </button>
-          </div>
-        ))}
+              {chipName}
+              <button
+                onClick={() => handleToolChange(chipName)} // Allow removing chip
+                className="ml-2 text-white focus:outline-none"
+              >
+                ✖
+              </button>
+            </div>
+          ))
+        ) : (
+          <span className="text-red-600 border border-red-600 p-2 rounded">
+            No {label.toLowerCase().charAt(0).toUpperCase() + label.slice(1)}{" "}
+            selected
+          </span>
+        )}
       </div>
 
       {isModalOpen && (
@@ -97,22 +101,22 @@ const ChipsInput = ({
               ✖
             </button>
             <h1 className="text-[25px] font-semibold mb-4 text-gray-700">
-              {(PopupTitle && PopupTitle) || "Manage Agents"}
+              {PopupTitle || "Manage Agents"}
             </h1>
 
             <div className="flex flex-col h-[500px] overflow-y-auto pr-2">
               {activePopup === "Agents" ? (
                 <ConfigureAgents2
-                  selectedTools={selectedTools} // Pass selected tools as prop
-                  handleToolChange={handleToolChange} // Pass tool change handler
+                  selectedTools={selectedChips}
+                  handleToolChange={handleToolChange}
                   setIsModalOpen={(value) => {
                     setIsModalOpen(value);
-                    if (!value) setActivePopup(""); // Reset activePopup when modal is closed
+                    if (!value) setActivePopup("");
                   }}
                 />
               ) : activePopup === "Tools" ? (
                 <CreateAgentPopup
-                  selectedTools={selectedTools}
+                  selectedTools={selectedChips}
                   handleToolChange={handleToolChange}
                   setIsModalOpen={(value) => {
                     setIsModalOpen(value);

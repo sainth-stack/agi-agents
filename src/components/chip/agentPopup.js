@@ -3,18 +3,12 @@ import Card from "../Card/Card";
 import { Tools } from "../../data/DataJson";
 import Toast from "../toast";
 
-export const ConfigureAgents2 = ({
-  selectedTools = [],
-  handleToolChange,
-  setIsModalOpen,
-}) => {
+export const ConfigureAgents2 = ({ handleToolChange, setIsModalOpen }) => {
   const [enabledAgents, setEnabledAgents] = useState([]);
   const [toast, setToast] = useState({ message: "", type: "" });
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredAgents, setFilteredAgents] = useState(Tools);
-    const [selectedAgent, setSelectedAgent] = useState(null); 
-    
-    const [error,setError]=useState("")
+  const [selectedAgent, setSelectedAgent] = useState(null);
 
   useEffect(() => {
     const storedAgents =
@@ -30,33 +24,24 @@ export const ConfigureAgents2 = ({
   }, [searchQuery]);
 
   const handleToggleChange = (agent) => {
-    // If another agent is already selected, show alert and prevent the selection
-    if (selectedAgent && selectedAgent.id !== agent.id) {
-          setError("You can select at most 1 agent.");
-
-      return;
-    }
-
-    // If the agent is already selected, deselect it (uncheck the box)
-    if (selectedAgent && selectedAgent.id === agent.id) {
-        setSelectedAgent(null);
-      setError("")  // Deselect the agent
+    if (selectedAgent?.id === agent.id) {
+      setSelectedAgent(null); 
+      handleToolChange(""); 
     } else {
-      setSelectedAgent(agent); // Set the selected agent
+      setSelectedAgent(agent); // Select the agent
+      handleToolChange(agent.title); // Update the selected tool
     }
-
-    handleToolChange(agent.title); // Call the handler for enabling/disabling
   };
 
   const resetConfiguration = () => {
-    setEnabledAgents([]);
-    setSelectedAgent(null); // Reset selected agent
-    localStorage.removeItem("enabledAgents");
+    setEnabledAgents([]); // Reset all enabled agents
+    setSelectedAgent(null); // Deselect all
+    localStorage.removeItem("enabledAgents"); // Clear from local storage
   };
 
   const saveAllConfigurations = () => {
     setIsModalOpen(false);
-    localStorage.setItem("enabledAgents", JSON.stringify(enabledAgents));
+    localStorage.setItem("enabledAgents", JSON.stringify(enabledAgents)); // Persist enabled agents to localStorage
   };
 
   const categories = [
@@ -65,7 +50,7 @@ export const ConfigureAgents2 = ({
 
   return (
     <>
-      <div className=" w-full flex flex-col items-start bg-white p-4">
+      <div className="w-full flex flex-col items-start bg-white p-4">
         <div className="w-full max-w-md mb-6 shadow-md rounded-md p-2">
           <input
             type="text"
@@ -76,34 +61,7 @@ export const ConfigureAgents2 = ({
           />
         </div>
 
-        <div className="">
-          {error && error ? (
-            <>
-              <div class="max-w-md mx-auto mt-2 bg-red-100 border-l-4 border-red-500 text-red-700  rounded-lg p-2 shadow-lg">
-                <div class="flex items-center justify-center">
-                  <svg
-                    class="w-6 h-6 mr-3"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M12 9v2m0 4h.01m9 3H3a2 2 0 01-2-2V4a2 2 0 012-2h18a2 2 0 012 2v14a2 2 0 01-2 2z"
-                    />
-                  </svg>
-                  <div>
-                    <p class="font-bold flex items-center mt-2">{error}.</p>
-                  </div>
-                </div>
-              </div>
-            </>
-          ) : (
-            <></>
-          )}
+        <div>
           {categories.map((category) => (
             <div key={category} className="category-section mt-5">
               <h2 className="category-title font-bold text-lg mb-2">
@@ -123,7 +81,7 @@ export const ConfigureAgents2 = ({
                       icon={agent.icon}
                       toggle={
                         <Toggle
-                          isChecked={selectedAgent?.id === agent.id} // Check if this agent is selected
+                          isChecked={selectedAgent?.id === agent.id}
                           onToggleChange={() => handleToggleChange(agent)}
                         />
                       }
@@ -143,8 +101,6 @@ export const ConfigureAgents2 = ({
             Close
           </button>
         </div>
-
-        
       </div>
 
       {toast.message && (

@@ -29,51 +29,33 @@ export const CreateAgentPopup = ({
   }, [searchQuery]);
 
   const handleToggleChange = (agent) => {
-    if (selectedToggle && selectedToggle !== agent.id) {
-      setError("You can select at most 1 agent.");
-      return;
-    }
-
+    console.log("selected agent",agent)
     if (selectedToggle === agent.id) {
       setSelectedToggle(null);
-      setError(""); // Clear error if the same agent is unselected
+      handleToolChange(""); 
     } else {
-      setSelectedToggle(agent.id); // Select the new agent
-      setError(""); // Clear error on successful selection
+      setSelectedToggle(agent.id);
+      handleToolChange(agent.title); 
     }
-
-    setEnabledAgents((prev) => {
-      const updatedAgents =
-        selectedToggle === agent.id
-          ? prev.filter((a) => a.id !== agent.id)
-          : [...prev, agent];
-
-      handleToolChange(agent.title);
-      return updatedAgents;
-    });
   };
 
   const resetConfiguration = () => {
     setEnabledAgents([]);
     localStorage.removeItem("enabledAgents");
-    // setToast({ message: 'All agents have been reset', type: 'error' });
   };
 
   const saveAllConfigurations = () => {
     setIsModalOpen(false);
     localStorage.setItem("enabledAgents", JSON.stringify(enabledAgents));
-    // setToast({ message: 'All configurations saved', type: 'success' });
   };
 
   const categories = [
     ...new Set(filteredAgents.map((agent) => agent.category)),
   ];
 
-
-  console.log("error checking",error)
   return (
     <>
-      <div className="w-full   items-start bg-white p-4">
+      <div className="w-full items-start bg-white p-4">
         <div className="w-full max-w-md mb-6 shadow-md rounded-md p-2">
           <input
             type="text"
@@ -107,7 +89,7 @@ export const CreateAgentPopup = ({
         )}
 
         {categories.map((category) => (
-          <div key={category} className="mt-5  f">
+          <div key={category} className="mt-5">
             <h2 className="category-title font-bold text-lg mb-2">
               {category}
             </h2>
@@ -126,7 +108,6 @@ export const CreateAgentPopup = ({
                       <Toggle
                         isChecked={selectedToggle === agent.id} // Check if agent is selected
                         onToggleChange={() => handleToggleChange(agent)}
-                        // disabled={selectedToggle && selectedToggle !== agent.id} // Disable other toggles if one is selected
                       />
                     }
                     className="w-full sm:w-[calc(50%-1rem)] md:w-[calc(33.333%-1rem)] lg:w-[calc(25%-1rem)] flex flex-col justify-between"
@@ -157,19 +138,18 @@ export const CreateAgentPopup = ({
   );
 };
 
-const Toggle = ({ isChecked, onToggleChange, disabled }) => (
+const Toggle = ({ isChecked, onToggleChange }) => (
   <label
     className="relative inline-flex items-center cursor-pointer w-12 h-6"
     style={{
-      opacity: disabled ? 0.5 : 1,
-      cursor: disabled ? "default" : "pointer",
+      opacity: isChecked ? 1 : 0.8,
+      cursor: "pointer",
     }}
   >
     <input
       type="checkbox"
       checked={isChecked}
       onChange={onToggleChange}
-      // disabled={disabled}
       className="sr-only peer"
     />
     <div className="w-full h-full bg-gray-300 rounded-full peer peer-checked:bg-blue-500 transition-all duration-300"></div>

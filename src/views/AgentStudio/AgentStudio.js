@@ -55,6 +55,7 @@ const EmployeeStudio = () => {
   }, [uploadFileEnabled, readUrlEnabled]);
 
   const handleChange = (key, value) => {
+    console.log("on changing key",key ,"=","value",value)
     setFormData({ ...formData, [key]: value });
 
     // Handle specific tool selection based on postGeneratorType
@@ -65,11 +66,11 @@ const EmployeeStudio = () => {
     setTools(selectedTools);
   };
 
-  useEffect(() => {
-    const storedTools = JSON.parse(localStorage.getItem("enabledAgents")) || [];
-    setTools(storedTools);
-    console.log(storedTools);
-  }, []);
+  // useEffect(() => {
+  //   const storedTools = JSON.parse(localStorage.getItem("enabledAgents")) || [];
+  //   setTools(storedTools);
+  //   console.log(storedTools);
+  // }, []);
 
   useEffect(() => {
     const fetchEnvironmentOptions = async () => {
@@ -218,7 +219,7 @@ const EmployeeStudio = () => {
             )}
             {renderInput(
               "select",
-              "modelEmpAgent Nameloyee",
+              "modelEmployee",
               "Model Employee Planner",
               "",
               environmentOptions
@@ -231,7 +232,7 @@ const EmployeeStudio = () => {
               setChips={setTools}
               activePopup={activePopup}
               formData={formData}
-              setActivePopup={() => handleManagePopup("Agents")}
+              setActivePopup={handleManagePopup} // Pass directly
               isModalOpen={activePopup === "Agents"}
               setIsModalOpen={handleCancel}
             />
@@ -240,11 +241,11 @@ const EmployeeStudio = () => {
               chip={tools}
               activePopup={activePopup}
               PopupTitle="Manage Tools"
-              buttonTitle={"Manage Tools"}
+              buttonTitle="Manage Tools"
               chips={tools}
               setChips={setTools}
               formData={formData}
-              setActivePopup={() => handleManagePopup("Tools")}
+              setActivePopup={handleManagePopup} // Pass directly
               isModalOpen={activePopup === "Tools"}
               setIsModalOpen={handleCancel}
             />
