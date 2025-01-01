@@ -24,19 +24,21 @@ export const ConfigureAgents2 = ({ handleToolChange, setIsModalOpen }) => {
   }, [searchQuery]);
 
   const handleToggleChange = (agent) => {
+    console.log("selected agent", agent);
+
     if (selectedAgent?.id === agent.id) {
       setSelectedAgent(null); 
-      handleToolChange(""); // Pass empty string to reset
+      handleToolChange(""); 
     } else {
-      setSelectedAgent(agent); // Select the agent
-      handleToolChange(agent.title); // Update the selected tool
+      setSelectedAgent(agent); 
+      handleToolChange(agent.title); 
     }
   };
 
   const resetConfiguration = () => {
-    setEnabledAgents([]); // Reset all enabled agents
-    setSelectedAgent(null); // Deselect all
-    localStorage.removeItem("enabledAgents"); // Clear from local storage
+    setEnabledAgents([]); 
+    setSelectedAgent(null);
+    localStorage.removeItem("enabledAgents");
   };
 
   const saveAllConfigurations = () => {

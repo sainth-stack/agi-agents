@@ -24,15 +24,18 @@ const EmployeeStudio = () => {
 
   const [toast, setToast] = useState({ message: "", type: "", visible: false });
   const [tools, setTools] = useState([]);
+  const [agents, setAgents] = useState([]); // Define agents state
+
   const [file, setFile] = useState(null);
   const [url, setUrl] = useState("");
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
-    agent_description: "",
-    modelEmployee: "",
     system_prompt: "",
-    postGeneratorType: "",
+
+    agent_description: "",
+    tools: "",
+    modelEmployee: "",
   });
 
   const handleManagePopup = (popupType) => {
@@ -55,22 +58,20 @@ const EmployeeStudio = () => {
   }, [uploadFileEnabled, readUrlEnabled]);
 
   const handleChange = (key, value) => {
-    console.log("on changing key",key ,"=","value",value)
+
+    
     setFormData({ ...formData, [key]: value });
 
-    // Handle specific tool selection based on postGeneratorType
   };
 
   // Callback function to save the tools selected in the modal
-  const handleSaveTools = (selectedTools) => {
-    setTools(selectedTools);
-  };
+ 
 
-  //  useEffect(() => {
-  //    const storedTools = JSON.parse(localStorage.getItem("enabledAgents")) || [];
-  // setTools(storedTools);
-  //    console.log(storedTools);
-  //  }, []);
+    useEffect(() => {
+      const storedTools = JSON.parse(localStorage.getItem("enabledAgents")) || [];
+ setTools(storedTools);
+      console.log(storedTools);
+    }, []);
 
   useEffect(() => {
     const fetchEnvironmentOptions = async () => {
@@ -95,17 +96,30 @@ const EmployeeStudio = () => {
     setTimeout(() => setToast({ ...toast, visible: false }), 3000);
   };
 
+  // Modify the handleSubmit function
   const handleSubmit = async (e) => {
+    console.log("checking the form data", formData);
+    console.log("tools cheking", tools)
+    console.log("Agnets cheking", agents);
+
+    
     e.preventDefault();
 
     setLoading(true);
-    const filteredTools = Array.from(
+
+    // Extract tool IDs and agent IDs
+    const filteredToolIds = Array.from(
       new Set(
-        tools.map((tool) => {
-          return tool.id; // Return the original tool ID
-        })
+        tools.map((tool) => tool.id) // Assuming 'tool.id' is the ID for each tool
       )
     );
+
+    const filteredAgentIds = Array.from(
+      new Set(
+        agents.map((agent) => agent.id) // Assuming 'agent.id' is the ID for each agent
+      )
+    );
+
     let systemPrompt = formData.system_prompt;
     if (uploadFileEnabled && file) {
       systemPrompt += `File: ${file.name}`;
@@ -117,7 +131,8 @@ const EmployeeStudio = () => {
     const requestBody = {
       ...formData,
       system_prompt: formData.postGeneratorType,
-      tools: filteredTools.join(", "),
+      tools: filteredToolIds.join(", "), // Pass the tools as a comma-separated string
+      agents: filteredAgentIds.join(", "), // Pass the agents as a comma-separated string
       env_id: formData.modelEmployee,
       upload_attachment: uploadFileEnabled,
     };
@@ -136,7 +151,7 @@ const EmployeeStudio = () => {
         agent_description: "",
         modelEmployee: "",
         system_prompt: "",
-        postGeneratorType: "",
+        
       });
       setUploadFileEnabled(false);
       setReadUrlEnabled(false);

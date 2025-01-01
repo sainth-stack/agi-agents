@@ -52,6 +52,7 @@ const ChipsInput = ({
     }
   };
 
+
   return (
     <div className="flex flex-col mb-4 px-2">
       <div className="flex justify-between items-center mb-2">
