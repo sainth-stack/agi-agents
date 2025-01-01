@@ -2,12 +2,48 @@ import React, { useState, useEffect } from "react";
 import Card from "../Card/Card";
 import { Tools } from "../../data/DataJson";
 import Toast from "../toast";
-
-export const ConfigureAgents2 = ({ handleToolChange, selectedAgent,setSelectedAgent,setIsModalOpen }) => {
+import { baseURL } from "../../const";
+import axios from 'axios'
+import { FaChartLine } from "react-icons/fa";
+export const ConfigureAgents2 = ({
+  selectedTools = [],
+  handleToolChange,
+  setIsModalOpen,
+}) => {
   const [enabledAgents, setEnabledAgents] = useState([]);
   const [toast, setToast] = useState({ message: "", type: "" });
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredAgents, setFilteredAgents] = useState(Tools);
+  const [data, setData] = useState(Tools)
+  const [selectedAgent, setSelectedAgent] = useState(null);
+
+  const [error, setError] = useState("")
+
+
+  useEffect(() => {
+    const fetchAgents = async () => {
+      try {
+        const response = await axios.get(`${baseURL}/dyn_agents/`);
+        const findata = response?.data?.agents?.map((item) => {
+          return {
+            id: item?.id,
+            title: item?.agent_name,
+            heading: item?.agent_description,
+            category: "Custom Agetns",
+            icon: <FaChartLine />,
+            href: "/graph-to-sql",
+            customagent: true
+          }
+        })
+        setData([...data, ...findata,]);
+      } catch (error) {
+      } finally {
+      }
+    };
+
+    fetchAgents();
+  }, []);
+
 
   useEffect(() => {
     const storedAgents =
@@ -16,7 +52,7 @@ export const ConfigureAgents2 = ({ handleToolChange, selectedAgent,setSelectedAg
   }, []);
 
   useEffect(() => {
-    const results = Tools.filter((agent) =>
+    const results = data?.filter((agent) =>
       agent.title.toLowerCase().includes(searchQuery.toLowerCase())
     );
     setFilteredAgents(results);
@@ -47,7 +83,7 @@ export const ConfigureAgents2 = ({ handleToolChange, selectedAgent,setSelectedAg
   };
 
   const categories = [
-    ...new Set(filteredAgents.map((agent) => agent.category)),
+    ...new Set(data.map((agent) => agent.category)),
   ];
 
   return (
@@ -71,7 +107,7 @@ export const ConfigureAgents2 = ({ handleToolChange, selectedAgent,setSelectedAg
               </h2>
 
               <div className="w-full max-w-6xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-                {filteredAgents
+                {data
                   .filter((agent) => agent.category === category)
                   .map((agent, index) => (
                     <Card
