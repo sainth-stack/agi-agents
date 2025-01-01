@@ -26,7 +26,7 @@ export const ConfigureAgents2 = ({ handleToolChange, setIsModalOpen }) => {
   const handleToggleChange = (agent) => {
     if (selectedAgent?.id === agent.id) {
       setSelectedAgent(null); 
-      handleToolChange(""); 
+      handleToolChange(""); // Pass empty string to reset
     } else {
       setSelectedAgent(agent); // Select the agent
       handleToolChange(agent.title); // Update the selected tool

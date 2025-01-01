@@ -2,12 +2,15 @@ import React, { useState, useEffect } from 'react';
 import Card from '../../components/Card/Card';
 import { Tools } from '../../data/DataJson';
 import Toast from '../../components/toast';
-
+import { baseURL } from '../../const';
+import axios from 'axios'
+import { FaChartLine } from 'react-icons/fa';
 export const ConfigureAgents = ({ selectedTools = [], handleToolChange }) => {
     const [enabledAgents, setEnabledAgents] = useState([]);
     const [toast, setToast] = useState({ message: '', type: '' });
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredAgents, setFilteredAgents] = useState(Tools);
+    const [data, setData] = useState(Tools)
 
     useEffect(() => {
         const storedAgents = JSON.parse(localStorage.getItem('enabledAgents')) || [];
@@ -15,11 +18,35 @@ export const ConfigureAgents = ({ selectedTools = [], handleToolChange }) => {
     }, []);
 
     useEffect(() => {
-        const results = Tools.filter(agent =>
+        const results = data.filter(agent =>
             agent.title.toLowerCase().includes(searchQuery.toLowerCase())
         );
         setFilteredAgents(results);
     }, [searchQuery]);
+
+
+    useEffect(() => {
+        const fetchAgents = async () => {
+            try {
+                const response = await axios.get(`${baseURL}/dyn_agents/`);
+                const findata = response?.data?.agents?.map((item) => {
+                    return {
+                        id: item?.id,
+                        title: item?.agent_name,
+                        heading: item?.agent_description,
+                        category: "Custom Agetns",
+                        icon: <FaChartLine />,
+                        href: "/graph-to-sql"
+                    }
+                })
+                setData([...data,...findata,]);
+            } catch (error) {
+            } finally {
+            }
+        };
+
+        fetchAgents();
+    }, []);
 
     const handleToggleChange = (agent) => {
         setEnabledAgents(prev => {
@@ -43,7 +70,7 @@ export const ConfigureAgents = ({ selectedTools = [], handleToolChange }) => {
         localStorage.setItem('enabledAgents', JSON.stringify(enabledAgents));
         setToast({ message: 'All configurations saved', type: 'success' });
     };
-    const categories = [...new Set(filteredAgents.map(agent => agent.category))];
+    const categories = [...new Set(data.map(agent => agent.category))];
 
     return (
         <>
@@ -66,7 +93,7 @@ export const ConfigureAgents = ({ selectedTools = [], handleToolChange }) => {
                             <div key={category} className="category-section mt-5">
                                 <h2 className="category-title font-bold text-lg mb-2">{category}</h2>
                                 <div className="w-full max-w-6xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-                                    {filteredAgents
+                                    {data
                                         .filter(agent => agent.category === category)
                                         .map((agent, index) => (
                                             <Card
