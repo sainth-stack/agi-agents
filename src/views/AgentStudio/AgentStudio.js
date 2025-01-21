@@ -36,7 +36,7 @@ const EmployeeStudio = () => {
     name: "",
     system_prompt: "",
     agent_description: "",
-  
+
     modelEmployee: "",
   });
 
@@ -99,65 +99,65 @@ const EmployeeStudio = () => {
   // console.log("at parent extra props checking", selectedAgent);
   // Modify the handleSubmit function
   // console.log("true checking", selectedAgent.customagent);
- const handleSubmit = async (e) => {
-   e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-   setLoading(true);
+    setLoading(true);
 
-   let systemPrompt = formData.system_prompt;
-   if (uploadFileEnabled && file) {
-     systemPrompt += ` File: ${file.name}`;
-   }
-   if (readUrlEnabled && url) {
-     systemPrompt += ` URL: ${url}`;
-   }
+    let systemPrompt = formData.system_prompt;
+    if (uploadFileEnabled && file) {
+      systemPrompt += ` File: ${file.name}`;
+    }
+    if (readUrlEnabled && url) {
+      systemPrompt += ` URL: ${url}`;
+    }
 
-   const requestBody = {
-     ...formData,
-     system_prompt: formData.postGeneratorType,
-     tools: selectedToggle?.id,
-     agents: selectedAgent?.id,
-     env_id: formData.modelEmployee,
-     upload_attachment: uploadFileEnabled,
-   };
+    const requestBody = {
+      ...formData,
+      system_prompt: formData.postGeneratorType,
+      tools: selectedToggle?.id,
+      backend_id: selectedAgent?.id,
+      env_id: formData.modelEmployee,
+      upload_attachment: uploadFileEnabled,
+    };
 
-   if (selectedAgent?.customagent) {
-     requestBody.dynamic_agent_id = selectedAgent?.id;
-   }
+    if (selectedAgent?.customagent) {
+      requestBody.dynamic_agent_id = selectedAgent?.id;
+    }
 
-   try {
-     const apiUrl = selectedAgent?.customagent
-       ? `${baseURL}/agent/create`
-       : `${baseURL}/agent/create`;
+    try {
+      const apiUrl = selectedAgent?.customagent
+        ? `${baseURL}/agent/create`
+        : `${baseURL}/agent/create`;
 
-     const response = await fetch(apiUrl, {
-       method: "POST",
-       headers: { "Content-Type": "application/json" },
-       body: JSON.stringify(requestBody),
-     });
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(requestBody),
+      });
 
-     if (!response.ok) throw new Error("Failed to create employee");
+      if (!response.ok) throw new Error("Failed to create employee");
 
-     showToast("Employee created successfully", "success");
+      showToast("Employee created successfully", "success");
 
-     setFormData({
-       name: "",
-       agent_description: "",
-       modelEmployee: "",
-       system_prompt: "",
-     });
-     setUploadFileEnabled(false);
-     setReadUrlEnabled(false);
-     setFile(null);
-     setUrl("");
-     navigate("/market-place");
-   } catch (error) {
-     showToast("Failed to create employee: " + error.message, "error");
-     console.error("Error creating employee:", error.message);
-   } finally {
-     setLoading(false);
-   }
- };
+      setFormData({
+        name: "",
+        agent_description: "",
+        modelEmployee: "",
+        system_prompt: "",
+      });
+      setUploadFileEnabled(false);
+      setReadUrlEnabled(false);
+      setFile(null);
+      setUrl("");
+      navigate("/market-place");
+    } catch (error) {
+      showToast("Failed to create employee: " + error.message, "error");
+      console.error("Error creating employee:", error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
 
 
@@ -217,23 +217,23 @@ const EmployeeStudio = () => {
       <div className="w-full md:w-1/2 p-6">
         <div className="border-2 bg-white rounded-lg shadow-lg p-8">
           <form onSubmit={handleSubmit}>
-            <h2 className="text-2xl font-bold mb-6 text-gray-700">Config</h2>
+            <h2 className="text-2xl font-bold mb-6 text-gray-700">Create AI Digital Worker</h2>
             {renderInput(
               "text",
               "name",
-              "Employee Name",
-              "Enter Employee Name"
+              "Name",
+              "Enter Name"
             )}
             {renderInput(
               "textarea",
               "agent_description",
-              "Employee Description",
-              "Enter Employee Description"
+              "Description",
+              "Enter Description"
             )}
             {renderInput(
               "select",
               "modelEmployee",
-              "Model Employee Planner",
+              "Model",
               "",
               environmentOptions
             )}
@@ -269,9 +269,8 @@ const EmployeeStudio = () => {
 
             <button
               type="submit"
-              className={`mt-6 w-full py-2 px-4 text-white font-semibold rounded-lg bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-opacity-75 ${
-                loading ? "opacity-50 cursor-not-allowed" : ""
-              }`}
+              className={`mt-6 w-full py-2 px-4 text-white font-semibold rounded-lg bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-opacity-75 ${loading ? "opacity-50 cursor-not-allowed" : ""
+                }`}
               disabled={loading}
             >
               {loading ? "Loading..." : "Submit"}

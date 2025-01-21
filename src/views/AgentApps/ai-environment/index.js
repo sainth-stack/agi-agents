@@ -128,11 +128,11 @@ const AiEnvironment = () => {
        const isHTML = (str) => /<\/?[a-z][\s\S]*?>/i.test(str);
 
        // Handle response based on content type
-       const updatedResponses = [...responses];
+       const updatedResponses = [loadingResponse];
        if (isHTML(data?.content)) {
          updatedResponses[updatedResponses.length - 1] = {
            input: payload.prompt,
-           image: data?.result?.image_base64 || data?.image_base64,
+           image: data?.result?.image_base64 || data?.image_base64|| null,
            loading: false,
            output: "",
            htmlContent: data,
@@ -165,6 +165,7 @@ const AiEnvironment = () => {
      }
    };
 
+   console.log(responses)
 
 
 
@@ -200,7 +201,8 @@ const AiEnvironment = () => {
                 system_prompt: data.system_prompt,
                 description: data.agent_description,
             });
-            const finData = postGeneratorOptions.filter((item) => item?.value === data?.system_prompt)
+            console.log(postGeneratorOptions.value,data?.backend_id)
+            const finData = postGeneratorOptions.filter((item) => item?.value === data?.backend_id)
             if (finData.length > 0) {
                 setConditions(finData[0])
             }

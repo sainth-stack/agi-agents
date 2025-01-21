@@ -35,7 +35,7 @@ const Menuitems = [
         href: "/agent-create",
       },
       {
-        title: "AI Workers",
+        title: "AI Digital Worker",
         icon: AssistantIcon, // Updated icon for AI Employee
         href: "/create-agent",
       }
@@ -66,46 +66,46 @@ const Menuitems = [
       // },
     ],
   },
-  {
-    title: "MISC",
-    list: [
-      {
-        title: "Partner Network",
-        icon: AttachMoneyIcon,
-        href: "/affiliate",
-      },
-      {
-        title: "Support",
-        icon: HelpOutlineIcon,
-        href: "/support",
-      },
-    ],
-  },
-  {
-    title: "Docs",
-    list: [
-      {
-        title: "Quickstart",
-        icon: QuickstartIcon,
-        href: "/quickstart",
-      },
-      {
-        title: "Guides",
-        icon: GuideIcon,
-        href: "/guide",
-      },
-      {
-        title: "Tutorials",
-        icon: TutorialIcon,
-        href: "/tutorial",
-      },
-      {
-        title: "UI",
-        icon: UIIcon,
-        href: "/ui",
-      },
-    ],
-  },
+  // {
+  //   title: "MISC",
+  //   list: [
+  //     {
+  //       title: "Partner Network",
+  //       icon: AttachMoneyIcon,
+  //       href: "/affiliate",
+  //     },
+  //     {
+  //       title: "Support",
+  //       icon: HelpOutlineIcon,
+  //       href: "/support",
+  //     },
+  //   ],
+  // },
+  // {
+  //   title: "Docs",
+  //   list: [
+  //     {
+  //       title: "Quickstart",
+  //       icon: QuickstartIcon,
+  //       href: "/quickstart",
+  //     },
+  //     {
+  //       title: "Guides",
+  //       icon: GuideIcon,
+  //       href: "/guide",
+  //     },
+  //     {
+  //       title: "Tutorials",
+  //       icon: TutorialIcon,
+  //       href: "/tutorial",
+  //     },
+  //     {
+  //       title: "UI",
+  //       icon: UIIcon,
+  //       href: "/ui",
+  //     },
+  //   ],
+  // },
 
   {
     title: "Agents Hub",

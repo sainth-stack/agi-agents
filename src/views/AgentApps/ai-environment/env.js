@@ -65,7 +65,6 @@ const ENVT = ({
 
         pdf.save('Response2.pdf');
     };
-console.log(uploadedFile)
 
     return (
         <div className="flex w-full" style={{ height: '100%' }}>
@@ -132,8 +131,6 @@ console.log(uploadedFile)
                                     </a>
                                 </Typography>
                             )}
-
-
                             <Button
                                 type="submit"
                                 variant="contained"
