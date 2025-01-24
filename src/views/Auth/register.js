@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import "./styles.css";
 import bedroom from "../../assets/images/neolocus/bg.jpg";
 import axios from "axios";
-import { baseURL } from "../../const";
+import { apiURL, baseURL } from "../../const";
 // import "../../components/styles/resgister.css";
 
 export const Register = () => {
@@ -35,10 +35,9 @@ export const Register = () => {
     formData.append("role", "basic");
 
     try {
-      const response = await axios.post(`${baseURL}/register`, formData);
+      const response = await axios.post(`${apiURL}/register`, formData);
       setLoading(false);
-
-      if (response.data.status === "success") {
+      if (response?.data?._id) {
         navigate("/login");
       } else {
         setError("Registration failed");

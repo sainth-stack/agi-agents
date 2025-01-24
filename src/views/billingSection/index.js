@@ -3,6 +3,7 @@ import './index.css';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../context/userContext';
 import axios from 'axios';
+import { apiURL } from '../../const';
 
 const BillingSection = () => {
     const username = localStorage.getItem('username')
@@ -12,7 +13,7 @@ const userData=["free",10]
         try {
             const formData = new FormData();
             formData.append('user', username);
-            const response = await axios.post('http://3.132.248.171:4500/get_user_details', formData);
+            const response = await axios.post(`${apiURL}/get_user_details`, formData);
             // setUserData(response?.data?.paymentinfo);
         } catch (error) {
             console.error('Error fetching user info:', error);

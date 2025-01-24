@@ -112,6 +112,7 @@ const CreateAgent = () => {
       tools: filteredTools.join(", "),
       env_id: formData.modelEmployee,
       upload_attachment: uploadFileEnabled,
+      email: localStorage.getItem("email"),
     };
 
     try {

@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import LoadingIndicator from "../../components/loader";
 import "./styles.css";
 import { useGoogleLogin } from "@react-oauth/google";
-import { baseURL } from "../../const";
+import { apiURL, baseURL } from "../../const";
 import bedroom from "../../assets/images/neolocus/bg.jpg";
 // import "../../components/styles/login.css";
 import { useUser } from "../../context/userContext";
@@ -18,9 +18,9 @@ export const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const { userData, setUserData } = useUser();
+  const { setUserData } = useUser();
   const navigate = useNavigate();
-  const googleLoginURL = `${baseURL}/google_login`;
+  const googleLoginURL = `${apiURL}/google_login`;
 
   const getUserData = async (userName) => {
     if (userName) {
@@ -28,7 +28,7 @@ export const Login = () => {
         const formData = new FormData();
         formData.append("user", userName);
         const response = await axios.post(
-          `${baseURL}/get_user_details`,
+          `${apiURL}/get_user_details`,
           formData
         );
         setUserData(response?.data?.paymentinfo);
@@ -48,16 +48,14 @@ export const Login = () => {
     formData.append("password", password);
 
     try {
-      const response = await axios.post(`${baseURL}/login`, formData);
+      const response = await axios.post(`${apiURL}/login`, formData);
       setLoading(false);
-
-      if (response.data?.status === "success") {
+      if (response?.data?._id) {
         localStorage.setItem("email", email);
         localStorage.setItem("token", `${response.data}`);
-        if (email == 'admin@gmail.com') {
-          navigate('/admin/agents')
-        }
-        else {
+        if (email == "admin@gmail.com") {
+          navigate("/admin/agents");
+        } else {
           navigate("/dashboards/dashboard1");
         }
         getUserData(email);
@@ -104,10 +102,9 @@ export const Login = () => {
         localStorage.setItem("email", data?.email);
         localStorage.setItem("token", response?.data);
 
-        if (data?.email == 'admin@gmail.com') {
-          navigate('/admin/agents')
-        }
-        else {
+        if (data?.email == "admin@gmail.com") {
+          navigate("/admin/agents");
+        } else {
           navigate("/dashboards/dashboard1");
         }
       } else {
@@ -193,7 +190,7 @@ export const Login = () => {
                     borderRadius: "40px",
                     height: "40px",
                     color: "#000",
-                    outline: "none"
+                    outline: "none",
                   }}
                 />
               </div>
@@ -216,7 +213,7 @@ export const Login = () => {
                     borderRadius: "40px",
                     height: "40px",
                     color: "#000",
-                    outline: "none"
+                    outline: "none",
                   }}
                 />
                 <img

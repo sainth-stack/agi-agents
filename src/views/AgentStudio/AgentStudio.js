@@ -5,8 +5,9 @@ import SelectInput from "../../components/Select/SelectInput";
 import SwitchInput from "../../components/switch";
 import ChipsInput from "../../components/chip";
 import Toast from "../../components/toast";
-import { baseURL, dyna_api } from "../../const";
+import { apiURL, baseURL, dyna_api } from "../../const";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import {
   postGeneratorOptions,
   postGeneratorToolsMap,
@@ -36,7 +37,6 @@ const EmployeeStudio = () => {
     name: "",
     system_prompt: "",
     agent_description: "",
-
     modelEmployee: "",
   });
 
@@ -75,13 +75,21 @@ const EmployeeStudio = () => {
   useEffect(() => {
     const fetchEnvironmentOptions = async () => {
       try {
-        const response = await fetch(`${baseURL}/environments`);
-        if (!response.ok)
-          throw new Error("Failed to fetch environment options");
-        const data = await response.json();
-        setEnvironmentOptions(
-          data.map((env) => ({ value: env.id, label: env.name }))
+        const email = localStorage.getItem("email");
+        const formData = new FormData();
+        formData.append("email", email);
+        const response = await axios.post(
+          `${baseURL}/environments_by_email`,
+          formData
         );
+        if (response.status == 200) {
+          console.log('response', response);
+          const data = response?.data?.environments;
+          console.log(data);
+          setEnvironmentOptions(
+            data.map((env) => ({ value: env.id, label: env.name }))
+          );
+        }
       } catch (error) {
         // showToast(error.message, 'error');
         console.error("Error fetching environment options:", error);
@@ -94,7 +102,6 @@ const EmployeeStudio = () => {
     setToast({ message, type, visible: true });
     setTimeout(() => setToast({ ...toast, visible: false }), 3000);
   };
-
 
   // console.log("at parent extra props checking", selectedAgent);
   // Modify the handleSubmit function
@@ -119,6 +126,7 @@ const EmployeeStudio = () => {
       backend_id: selectedAgent?.id,
       env_id: formData.modelEmployee,
       upload_attachment: uploadFileEnabled,
+      email: localStorage.getItem("email"),
     };
 
     if (selectedAgent?.customagent) {
@@ -158,9 +166,6 @@ const EmployeeStudio = () => {
       setLoading(false);
     }
   };
-
-
-
 
   //  console.log("from both  check",selectedAgent,selectedToggle)
   const renderInput = (type, key, label, placeholder = "", options = []) => {
@@ -212,18 +217,14 @@ const EmployeeStudio = () => {
   };
 
   return (
-
     <div className="flex bg-gray-100 font-sans font-custom justify-center">
       <div className="w-full md:w-1/2 p-6">
         <div className="border-2 bg-white rounded-lg shadow-lg p-8">
           <form onSubmit={handleSubmit}>
-            <h2 className="text-2xl font-bold mb-6 text-gray-700">Create AI Digital Worker</h2>
-            {renderInput(
-              "text",
-              "name",
-              "Name",
-              "Enter Name"
-            )}
+            <h2 className="text-2xl font-bold mb-6 text-gray-700">
+              Create AI Digital Worker
+            </h2>
+            {renderInput("text", "name", "Name", "Enter Name")}
             {renderInput(
               "textarea",
               "agent_description",
@@ -269,8 +270,9 @@ const EmployeeStudio = () => {
 
             <button
               type="submit"
-              className={`mt-6 w-full py-2 px-4 text-white font-semibold rounded-lg bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-opacity-75 ${loading ? "opacity-50 cursor-not-allowed" : ""
-                }`}
+              className={`mt-6 w-full py-2 px-4 text-white font-semibold rounded-lg bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-opacity-75 ${
+                loading ? "opacity-50 cursor-not-allowed" : ""
+              }`}
               disabled={loading}
             >
               {loading ? "Loading..." : "Submit"}

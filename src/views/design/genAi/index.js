@@ -24,7 +24,7 @@ import axios from "axios";
 import './Main.css'
 import ImageLoader from "./imageContainer";
 import LinearWithValueLabel from "../../../components/loader/index";
-import { baseURL } from "../../../const";
+import { apiURL, baseURL } from "../../../const";
 import { useUser } from "../../../context/userContext";
 // import gemini_icon from '../../assets/svg/gemini_icon.png'
 const GenAi = () => {
@@ -101,7 +101,7 @@ const GenAi = () => {
             const formData = new FormData();
             formData.append("user", userName);
             const response = await axios.post(
-                `${baseURL}/get_user_details`,
+                `${apiURL}/get_user_details`,
                 formData
             );
             setUserData(response?.data?.paymentinfo);

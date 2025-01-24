@@ -28,7 +28,8 @@ const ConfigureLLM = () => {
             api_key: apiKey || 'your-api-key-here',
             model: model,
             temperature: temperature,
-            model_vendor:'openai'
+            model_vendor:'openai',
+            email:localStorage.getItem('email')
             // top_p: topP,
             // upload_excel: uploadExcel,
             // read_website: readWebsite

@@ -28,8 +28,16 @@ export const ConfigureAgents = ({ selectedTools = [], handleToolChange }) => {
     useEffect(() => {
         const fetchAgents = async () => {
             try {
-                const response = await axios.get(`${baseURL}/dyn_agents/`);
-                const findata = response?.data?.agents?.map((item) => {
+                const email=localStorage.getItem('email')
+                const formData = new FormData();
+                formData.append("email", email);
+                const response = await axios.post(`${baseURL}/dyn_agents_by_mail`, formData, {
+                  headers: {
+                    "Content-Type": "multipart/form-data",
+                  },
+                });
+                console.log(response)
+                const findata = response?.data?.dynamic_agents?.map((item) => {
                     return {
                         id: item?.id,
                         title: item?.agent_name,
