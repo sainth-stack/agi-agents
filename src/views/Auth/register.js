@@ -26,16 +26,14 @@ export const Register = () => {
     setError("");
     setFieldErrors({});
     event.preventDefault();
-    var formData = new FormData();
-
-    formData.append("username", userName);
-    formData.append("email", email);
-    formData.append("password1", password);
-    formData.append("password2", password2);
-    formData.append("role", "basic");
-
     try {
-      const response = await axios.post(`${apiURL}/register`, formData);
+      const response = await axios.post(`${apiURL}/register`, {
+        name: userName,
+        email: email,
+        password: password,
+        roles: ["67945a230af44462b4451f9c"],
+        app:"agents"
+      });
       setLoading(false);
       if (response?.data?._id) {
         navigate("/login");

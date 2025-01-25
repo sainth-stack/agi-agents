@@ -18,53 +18,37 @@ export const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const { setUserData } = useUser();
   const navigate = useNavigate();
   const googleLoginURL = `${apiURL}/google_login`;
 
-  const getUserData = async (userName) => {
-    if (userName) {
-      try {
-        const formData = new FormData();
-        formData.append("user", userName);
-        const response = await axios.post(
-          `${apiURL}/get_user_details`,
-          formData
-        );
-        setUserData(response?.data?.paymentinfo);
-      } catch (error) {
-        console.error("Error fetching user info:", error);
-      }
-    }
-  };
 
   const handleLogin = async (event) => {
     event.preventDefault();
     setLoading(true);
     setError("");
-
-    const formData = new FormData();
-    formData.append("email", email);
-    formData.append("password", password);
-
     try {
-      const response = await axios.post(`${apiURL}/login`, formData);
+      const response = await axios.post(`${apiURL}/login`, {
+        email,
+        password,
+        app:"agents"
+      });
       setLoading(false);
       if (response?.data?._id) {
         localStorage.setItem("email", email);
+        localStorage.setItem("_id", response?.data?._id);
         localStorage.setItem("token", `${response.data}`);
         if (email == "admin@gmail.com") {
           navigate("/admin/agents");
         } else {
           navigate("/dashboards/dashboard1");
         }
-        getUserData(email);
       } else {
         setError(response.data?.errors?.password2?.join(" ") || "Login Failed");
       }
     } catch (error) {
       setLoading(false);
-      setError("An error occurred. Please try again.");
+      console.log(error)
+      setError(error?.response?.data?.message || "An error occurred. Please try again.");
       console.error("Login error:", error);
     }
   };

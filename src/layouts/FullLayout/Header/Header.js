@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import Avatar from "@mui/material/Avatar";
+import axios from "axios";
 import {
   AppBar,
   Box,
@@ -18,6 +19,8 @@ import {
 
 // import userimg from "../../../assets/images/users/user.jpg";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useUser } from "../../../context/userContext";
+import { apiURL } from "../../../const";
 
 const Header = (props) => {
   const location = useLocation();
@@ -42,6 +45,7 @@ const Header = (props) => {
   };
 
   const [currentTab, setCurrentTab] = React.useState(0);
+  const { userData, setUserData } = useUser();
 
   const handleTabChange = (event, newValue) => {
     setCurrentTab(newValue);
@@ -52,10 +56,32 @@ const Header = (props) => {
     }
   };
 
+  const getUserData = async (userName) => {
+    if (userName) {
+      try {
+        const formData = new FormData();
+        formData.append("user", userName);
+        const response = await axios.get(`${apiURL}/user/${userName}`);
+        console.log(response)
+        setUserData(response?.data);
+      } catch (error) {
+        console.error("Error fetching user info:", error);
+      }
+    }
+  };
 
+  useEffect(() => {
+    getUserData(localStorage.getItem("_id"));
+  }, []);
+
+  console.log(userData);
   return (
     <AppBar
-      sx={{ ...props.sx, borderBottom: "1px solid rgb(0 0 0 / 5%)" ,zIndex:99}}
+      sx={{
+        ...props.sx,
+        borderBottom: "1px solid rgb(0 0 0 / 5%)",
+        zIndex: 99,
+      }}
       elevation={0}
       className={props.customClass}
     >
@@ -100,7 +126,7 @@ const Header = (props) => {
         )}
 
         <Box flexGrow={1} />
-{/* 
+        {/* 
         <Grid
           onClick={() => navigate("/start-design")}
           style={{
@@ -172,6 +198,7 @@ const Header = (props) => {
                 height: "30px",
               }}
             />
+            <Box style={{width:'fit-content',marginLeft:'10px',color:'black'}}>{userData?.name ||''}</Box>
           </Box>
         </Button>
         <Menu
@@ -179,7 +206,7 @@ const Header = (props) => {
           anchorEl={anchorEl4}
           keepMounted
           open={Boolean(anchorEl4)}
-          onClose={()=>setAnchorEl4(null)}
+          onClose={() => setAnchorEl4(null)}
           anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
           transformOrigin={{ horizontal: "right", vertical: "top" }}
           sx={{
@@ -190,13 +217,13 @@ const Header = (props) => {
             },
           }}
         >
-          <MenuItem  ml={2} sx={{ fontWeight: 500 }}>
-            Sainath Reddy
+          <MenuItem ml={2} sx={{ fontWeight: 500 }}>
+            {userData?.name || "Admin"}
           </MenuItem>
-          <MenuItem  ml={2} sx={{ fontWeight: 500 }}>
-            sainathreddy@gmail.com
+          <MenuItem ml={2} sx={{ fontWeight: 500 }}>
+            {userData?.email || "admin@gmail.com"}
           </MenuItem>
-          <MenuItem  ml={2} sx={{ fontWeight: 500 }}>
+          <MenuItem ml={2} sx={{ fontWeight: 500 }}>
             10 Credits
           </MenuItem>
           <Divider />
@@ -206,7 +233,7 @@ const Header = (props) => {
             </ListItemIcon>
             Add another account
           </MenuItem> */}
-          <MenuItem >
+          <MenuItem>
             <Avatar
               sx={{
                 width: "24px",
@@ -222,7 +249,7 @@ const Header = (props) => {
               Account & Billing
             </Box>
           </MenuItem>
-          <MenuItem >
+          <MenuItem>
             <ListItemIcon>
               <SettingsOutlinedIcon fontSize="small" />
             </ListItemIcon>
