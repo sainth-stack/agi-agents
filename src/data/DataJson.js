@@ -287,8 +287,6 @@ export const postGeneratorToolsMap = {
         }]
 };
 
-
-
 export const postGeneratorOptions = [
     { value: 'website', label: 'Website Blog Post Generator', placeholder: 'Enter URL And Prompt', attachment: false },
     { value: 'video', label: 'Video Blog Post Generator', placeholder: 'Attach Video File and Enter Prompt', attachment: true },

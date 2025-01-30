@@ -142,7 +142,7 @@ const ENVT = ({
 
                             {/* Icons positioned at the bottom right corner */}
                             <div className="absolute top-28 right-2 flex gap-2">
-                                {conditions?.attachment && <IconButton component="label">
+                                {true&& <IconButton component="label">
                                     <input type="file" multiple hidden onChange={handleFileChange} />
                                     <AttachFileIcon />
                                 </IconButton>}
