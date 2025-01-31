@@ -80,7 +80,7 @@ const AiEnvironment = () => {
      // Create payload
      const payload = {
        agent_id: id, // Pass the agent ID from URL params
-       query: prompt || undefined,
+       prompt: prompt || undefined,
        url: urlFromPrompt || undefined,
        file: uploadedFiles || undefined,
      };
