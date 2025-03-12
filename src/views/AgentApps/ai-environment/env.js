@@ -5,6 +5,7 @@ import AttachFileIcon from '@mui/icons-material/AttachFile';
 import wayg from '../../../assets/images/poser.jpg'
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import Plot from "react-plotly.js";
 const ENVT = ({
     agentDetails,
     handleSubmit,
@@ -174,6 +175,7 @@ const ENVT = ({
                         </Paper>
                     ) : (
                         responses.map((response, index) => {
+                            console.log(response)
                             return (
                                 <Paper key={index}
                                     id={`response22`} className="p-4 border border-gray-300 rounded shadow-sm bg-white mt-2">
@@ -203,7 +205,7 @@ const ENVT = ({
                                                         className="whitespace-pre-wrap font-custom text-gray-600"
 
                                                         style={{ fontSize: '16px' }}
-                                                        dangerouslySetInnerHTML={{ __html: response?.htmlContent.content }}
+                                                        dangerouslySetInnerHTML={{ __html: response?.htmlContent.content || response?.htmlContent }}
                                                     />
                                                 ) : (
                                                     <pre
@@ -215,12 +217,21 @@ const ENVT = ({
                                                 )}
                                             </>
                                             {response?.image &&
-                                                <img
-                                                    src={`data:image/jpeg;base64,${response?.image}`}
-                                                    width={700}
-                                                    height={500}
-                                                    alt=''
-                                                />}
+                                                <Plot
+                                                data={response?.image?.data}
+                                                layout={response?.image?.layout}
+                                                config={{ responsive: true }}
+                                                style={{
+                                                  width: "100%",
+                                                  height: "60vh",
+                                                  padding: "15px",
+                                                  backgroundColor: "#ffffff",
+                                                  borderRadius: "12px",
+                                                }}
+                                                className="plot-container"
+                                              />
+
+                                                }
                                         </>
                                     )}
                                 </Paper>

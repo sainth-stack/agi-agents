@@ -123,7 +123,7 @@ const AiEnvironment = () => {
        if (response.status !== 200) throw new Error("API call failed");
 
        const data = response.data;
-
+console.log(response)
        // Function to check if response is HTML
        const isHTML = (str) => /<\/?[a-z][\s\S]*?>/i.test(str);
 
@@ -135,8 +135,16 @@ const AiEnvironment = () => {
            image: data?.result?.image_base64 || data?.image_base64|| null,
            loading: false,
            output: "",
-           htmlContent: data,
+           htmlContent: data || data?.answer,
          };
+       } else if(data?.answer){
+        updatedResponses[updatedResponses.length - 1] = {
+          input: payload.prompt,
+          image: data?.result?.image_base64 || data?.image_base64|| null,
+          loading: false,
+          output: "",
+          htmlContent: `<p>${data?.answer}</p>`,
+        };
        } else if (data?.csv_file) {
          updatedResponses[updatedResponses.length - 1] = {
            input: "",
@@ -147,9 +155,9 @@ const AiEnvironment = () => {
        } else {
          updatedResponses[updatedResponses.length - 1] = {
            input: payload.prompt,
-           image: data?.result?.image_base64 || data?.image_base64,
+           image: data?.result?.chartData || data?.chartData,
            loading: false,
-           output: data?.content || data?.result?.content,
+           output: data?.content || data?.result?.content || data?.answer,
          };
        }
        setResponses(updatedResponses);
@@ -169,7 +177,6 @@ const AiEnvironment = () => {
 
 
 
-    // Fetch environment data from /api/environment/{id} when the component mounts
     const fetchEnvironmentData = async () => {
         try {
             const response = await fetch(`${baseURL}/environment/${id}`, {
