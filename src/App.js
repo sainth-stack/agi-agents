@@ -38,6 +38,10 @@ import { Register } from "./views/Auth/register";
 import FullLayout from "./layouts/FullLayout/FullLayout";
 import EmployeeStudio from "./views/AgentStudio/AgentStudio";
 import CreateAgent from "./views/create-agent/CreateAgent";
+import AdminAiWorkers from "./views/admin-aiworkers";
+import Bot2 from "./views/AgentApps/ai-environment/bot2";
+import ExistingAgents from "./views/AgentStudio/ExistingStudio";
+import SelectType from "./views/AgentStudio";
 
 const App = () => {
   const theme = baseTheme;
@@ -57,6 +61,10 @@ const App = () => {
                 path="admin/registartions"
                 element={<AdminRegistrations />}
               />
+                      <Route
+                path="admin/ai-workers"
+                element={<AdminAiWorkers />}
+              />
               <Route path="admin/patners" element={<AdminPartners />} />
               <Route path="support" element={<Support />} />
               <Route path="sponsership" element={<Sponsership />} />
@@ -70,6 +78,8 @@ const App = () => {
               <Route path="configure-llm" element={<ConfigureLLM />} />
               <Route path="configure-tools" element={<ConfigureAgents />} />
               <Route path="create-agent" element={<EmployeeStudio />} />
+              <Route path="create-existing-agent" element={<ExistingAgents />} />
+              <Route path="select-type" element={<SelectType />} />
               <Route path="agent-create" element={<CreateAgent />} />
 
               <Route path="market-place" element={<AgentApps />} />
@@ -89,7 +99,7 @@ const App = () => {
               <Route path="admin/hana-db" element={<AdminHana />} />
             </Route>
 
-            <Route path="ai-environment/:id" element={<AiEnvironment />} />
+            <Route path="ai-environment/:id" element={<Bot2 />} />
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
           </Routes>

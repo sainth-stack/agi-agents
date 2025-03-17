@@ -4,6 +4,7 @@ import {
   useMediaQuery,
   Container,
   Box,
+  Grid,
 } from "@mui/material";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Header from "./Header/Header";
@@ -77,9 +78,9 @@ const FullLayout = () => {
             marginLeft:'265px !important'
           }}
         >
-          <Box sx={{ minHeight: "calc(100vh - 170px)" }}>
+          <Grid sx={{ minHeight: "calc(100vh)" ,background:'#f3f4f6'}}>
             <Outlet />
-          </Box>
+          </Grid>
           <Footer />
         </Container>
       </PageWrapper>

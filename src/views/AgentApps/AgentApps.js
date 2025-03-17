@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { baseURL } from "../../const";
 import imag from "../../assets/images/layout/image.png";
+
 import axios from "axios";
 import MarketPlaceCard from "../../components/market-place";
 

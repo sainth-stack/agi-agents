@@ -37,7 +37,7 @@ const Menuitems = [
       {
         title: "AI Digital Worker",
         icon: AssistantIcon, // Updated icon for AI Employee
-        href: "/create-agent",
+        href: "/select-type",
       }
     ],
   },
@@ -130,6 +130,11 @@ const Menuitems = [
         title: "Hana DB",
         icon: AssistantIcon,
         href: "/admin/hana-db",
+      },
+      {
+        title: "AI Workers",
+        icon: AssistantIcon,
+        href: "/admin/ai-workers",
       },
     ],
   },

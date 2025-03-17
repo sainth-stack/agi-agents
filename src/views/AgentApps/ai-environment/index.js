@@ -2,38 +2,36 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
 import { baseURL } from '../../../const';
-import ENVT from './env';
-import axios from 'axios'
+import axios from 'axios';
 import { postGeneratorOptions } from '../../../data/DataJson';
+import Bot2 from './bot';
+
 const AiEnvironment = () => {
     const [prompt, setPrompt] = useState('');
-    const [url, setUrl] = useState(''); // New state for the URL
-    const [placeholder, setPlaceholder] = useState('enter your query');
+    const [placeholder, setPlaceholder] = useState('Enter your query');
     const [responses, setResponses] = useState([]);
     const [loading, setLoading] = useState(true);
     const [agentDetails, setAgentDetails] = useState({ name: '', system_prompt: '', description: '' });
     const { id } = useParams();
-    const responsesEndRef = useRef(null); // Reference for scrolling
-    const [conditions, setConditions] = useState(null)
-    const [uploadedFiles, setUploadedFiles] = useState(null)
-    const [uploadedFileNames, setUploadedFileNames] = useState(null)
+    const responsesEndRef = useRef(null);
+    const [conditions, setConditions] = useState(null);
+    const [uploadedFiles, setUploadedFiles] = useState(null);
+    const [uploadedFileNames, setUploadedFileNames] = useState(null);
 
-     const location = useLocation();
+    const location = useLocation();
     const dynamicAgentId = location.state?.dynamicAgentId;
-    
-    console.log("cutom agent id",dynamicAgentId)
+
     const handlePromptChange = (e) => setPrompt(e.target.value);
 
     const handleFileChange = (e) => {
-        const file = e.target.files[0]; // Get only the first file
+        const file = e.target.files[0];
         if (file) {
-            setUploadedFiles(file); // Set single file
-            setUploadedFileNames(file.name); // Set single filename
-            console.log("Uploaded file:", file);
+            setUploadedFiles(file);
+            setUploadedFileNames(file.name);
         }
     };
+
     const handleMicClick = () => {
-        // Start listening to the user's voice here (e.g., with Web Speech API)
         if (!('webkitSpeechRecognition' in window)) {
             alert("Your browser does not support speech recognition.");
             return;
@@ -45,7 +43,7 @@ const AiEnvironment = () => {
 
         recognition.onresult = (event) => {
             const speechToText = event.results[0][0].transcript;
-            setPrompt(speechToText); // Set the recognized text to prompt
+            setPrompt(speechToText);
         };
 
         recognition.onerror = (event) => {
@@ -56,126 +54,109 @@ const AiEnvironment = () => {
     };
 
     const downloadCSV = (csvData) => {
-        // Convert the CSV data into a blob
         const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
-
         const link = document.createElement('a');
         const url = URL.createObjectURL(blob);
         link.href = url;
-        link.setAttribute('download', 'synthetic_data.csv'); // Set the file name
+        link.setAttribute('download', 'synthetic_data.csv');
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
     };
 
-   const handleSubmit = async (e) => {
-     e.preventDefault();
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
-     // Extract URL from the prompt if it exists
-     const urlRegex = /(https?:\/\/[^\s]+)/g;
-     const foundUrls = prompt.match(urlRegex);
-     const urlFromPrompt = foundUrls ? foundUrls[0] : undefined; // Take the first URL if it exists
+        const urlRegex = /(https?:\/\/[^\s]+)/g;
+        const foundUrls = prompt.match(urlRegex);
+        const urlFromPrompt = foundUrls ? foundUrls[0] : undefined;
 
-     // Create payload
-     const payload = {
-       agent_id: id, // Pass the agent ID from URL params
-       prompt: prompt || undefined,
-       url: urlFromPrompt || undefined,
-       file: uploadedFiles || undefined,
-     };
-
-     // Remove undefined keys from the payload
-     Object.keys(payload).forEach(
-       (key) => payload[key] === undefined && delete payload[key]
-     );
-
-     // Add loading response
-     const loadingResponse = {
-       input: payload.prompt,
-       loading: true,
-       output: "",
-     };
-     setResponses(() => [loadingResponse]);
-
-     try {
-       const formData = new FormData();
-
-       // Append only defined values to FormData
-       Object.entries(payload).forEach(([key, value]) => {
-         if (value !== undefined) {
-           formData.append(key, value);
-         }
-       });
-
-       // Determine the API endpoint dynamically
-       const apiEndpoint = `${baseURL}/${
-         dynamicAgentId ? "run-agent-environment" : "openai/run"
-       }`;
-
-       // Call the API
-       const response = await axios.post(apiEndpoint, formData, {
-         headers: {
-           "Content-Type": "multipart/form-data",
-         },
-       });
-
-       if (response.status !== 200) throw new Error("API call failed");
-
-       const data = response.data;
-console.log(response)
-       // Function to check if response is HTML
-       const isHTML = (str) => /<\/?[a-z][\s\S]*?>/i.test(str);
-
-       // Handle response based on content type
-       const updatedResponses = [loadingResponse];
-       if (isHTML(data?.content)) {
-         updatedResponses[updatedResponses.length - 1] = {
-           input: payload.prompt,
-           image: data?.result?.image_base64 || data?.image_base64|| null,
-           loading: false,
-           output: "",
-           htmlContent: data || data?.answer,
-         };
-       } else if(data?.answer){
-        updatedResponses[updatedResponses.length - 1] = {
-          input: payload.prompt,
-          image: data?.result?.image_base64 || data?.image_base64|| null,
-          loading: false,
-          output: "",
-          htmlContent: `<p>${data?.answer}</p>`,
+        const payload = {
+            agent_id: id,
+            prompt: prompt || undefined,
+            url: urlFromPrompt || undefined,
+            file: uploadedFiles || undefined,
         };
-       } else if (data?.csv_file) {
-         updatedResponses[updatedResponses.length - 1] = {
-           input: "",
-           loading: false,
-           output: "Downloaded",
-         };
-         downloadCSV(data?.csv_file?.data);
-       } else {
-         updatedResponses[updatedResponses.length - 1] = {
-           input: payload.prompt,
-           image: data?.result?.chartData || data?.chartData,
-           loading: false,
-           output: data?.content || data?.result?.content || data?.answer,
-         };
-       }
-       setResponses(updatedResponses);
-     } catch (error) {
-       console.error("Error during API call:", error);
-       const updatedResponses = [...responses];
-       updatedResponses[updatedResponses.length - 1] = {
-         input: payload.prompt,
-         loading: false,
-         output: "Error: " + error.message,
-       };
-       setResponses(updatedResponses);
-     }
-   };
 
-   console.log(responses)
+        Object.keys(payload).forEach(
+            (key) => payload[key] === undefined && delete payload[key]
+        );
 
+        const loadingResponse = {
+            input: payload.prompt,
+            loading: true,
+            output: "",
+        };
+        setResponses(() => [loadingResponse]);
 
+        try {
+            const formData = new FormData();
+            Object.entries(payload).forEach(([key, value]) => {
+                if (value !== undefined) {
+                    formData.append(key, value);
+                }
+            });
+
+            const apiEndpoint = `${baseURL}/${
+                dynamicAgentId ? "run-agent-environment" : "openai/run"
+            }`;
+
+            const response = await axios.post(apiEndpoint, formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
+
+            if (response.status !== 200) throw new Error("API call failed");
+
+            const data = response.data;
+            const isHTML = (str) => /<\/?[a-z][\s\S]*?>/i.test(str);
+
+            const updatedResponses = [loadingResponse];
+            if (isHTML(data?.content)) {
+                updatedResponses[updatedResponses.length - 1] = {
+                    input: payload.prompt,
+                    image: data?.result?.image_base64 || data?.image_base64 || null,
+                    loading: false,
+                    output: "",
+                    htmlContent: data || data?.answer,
+                };
+            } else if (data?.answer) {
+                updatedResponses[updatedResponses.length - 1] = {
+                    input: payload.prompt,
+                    image: data?.result?.image_base64 || data?.image_base64 || null,
+                    loading: false,
+                    output: "",
+                    htmlContent: `<p>${data?.answer}</p>`,
+                };
+            } else if (data?.csv_file) {
+                updatedResponses[updatedResponses.length - 1] = {
+                    input: "",
+                    loading: false,
+                    output: "Downloaded",
+                };
+                downloadCSV(data?.csv_file);
+            } else {
+                updatedResponses[updatedResponses.length - 1] = {
+                    input: payload.prompt,
+                    image: data?.result?.chartData || data?.chartData,
+                    loading: false,
+                    output: data?.content || data?.result?.content || data?.answer,
+                };
+            }
+            setResponses(updatedResponses);
+        } catch (error) {
+            console.error("Error during API call:", error);
+            const updatedResponses = [...responses];
+            updatedResponses[updatedResponses.length - 1] = {
+                input: payload.prompt,
+                loading: false,
+                output: "Error: " + error.message,
+            };
+            setResponses(updatedResponses);
+        }
+    };
 
     const fetchEnvironmentData = async () => {
         try {
@@ -208,15 +189,14 @@ console.log(response)
                 system_prompt: data.system_prompt,
                 description: data.agent_description,
             });
-            console.log(postGeneratorOptions.value,data?.backend_id)
-            const finData = postGeneratorOptions.filter((item) => item?.value === data?.backend_id)
+            const finData = postGeneratorOptions.filter((item) => item?.value === data?.backend_id);
             if (finData.length > 0) {
-                setConditions(finData[0])
+                setConditions(finData[0]);
             }
         } catch (error) {
             console.error('Error fetching agent data:', error);
         } finally {
-            setLoading(false); // Stop loading
+            setLoading(false);
         }
     };
 
@@ -225,7 +205,6 @@ console.log(response)
         fetchAgentData();
     }, [id]);
 
-    // Scroll to the bottom whenever responses change
     useEffect(() => {
         if (responsesEndRef.current) {
             responsesEndRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -235,24 +214,24 @@ console.log(response)
     if (loading) {
         return (
             <div className="flex items-center justify-center h-screen">
-                <CircularProgress /> {/* Show MUI loader */}
+                <CircularProgress />
             </div>
         );
     }
 
     return (
-        <ENVT {...{
+        <Bot2 {...{
             agentDetails,
             handleSubmit,
             handlePromptChange,
             placeholder,
-            uploadedFileName:uploadedFileNames,
+            uploadedFileName: uploadedFileNames,
             handleFileChange,
             handleMicClick,
             responses,
             responsesEndRef,
             prompt,
-            uploadedFile:uploadedFiles,
+            uploadedFile: uploadedFiles,
             conditions
         }} />
     );

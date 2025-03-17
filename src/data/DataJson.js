@@ -1,6 +1,7 @@
 
 import { FaBlog, FaLinkedin, FaCode, FaChartLine, FaDatabase, FaEnvelope, FaGlobe, FaYoutube, FaMicrophone, FaVideo, FaEnvelopeOpenText, FaGoogleDrive } from 'react-icons/fa';
 import PostAddIcon from '@mui/icons-material/PostAdd';
+import { FaSuitcase, FaStethoscope, FaImage, FaClipboardList } from "react-icons/fa";
 
 
 
@@ -99,7 +100,7 @@ export const ToolMapping = {
 export const Tools = [
     {
         id: 'text_to_sql',
-        title: 'Text to SQL',
+        title: 'Text to SQL Agent',
         heading: 'Convert Text to SQL',
         category: "Data Intelligence",
         icon: <FaCode />,
@@ -107,106 +108,62 @@ export const Tools = [
     },
     {
         id: 'synthetic_data_generation',
-        title: 'Synthetic Data',
+        title: 'Synthetic Data Agent',
         heading: 'Handle synthetic data',
         category: "Data Intelligence",
         icon: <FaDatabase />,
         href: "/synthetic-data-missing"
     },
-    // {
-    //     id: 'blog_post',
-    //     title: 'Blog',
-    //     heading: 'Ability to post via website',
-    //     category: "Content",
-    //     icon: <FaBlog />,
-    //     href: "/blog-manager"
-    // },
-   
-    // {
-    //     id: 'linkedin_post',
-    //     title: 'LinkedIn Post',
-    //     heading: 'Post on LinkedIn',
-    //     category: "Content",
-    //     icon: <FaLinkedin />,
-    //     href: "/linkedin-manager"
-    // },
+    {
+        id: 'ats_tracker',
+        title: 'ATS Tracker Agent',
+        heading: 'ATS Tracker',
+        category: "Data Intelligence",
+        icon: <FaClipboardList />,
+        href: "/text-to-sql"
+    },
+    {
+        id: 'travel_planner',
+        title: 'Travel Planner Agent',
+        heading: 'Travel Planner',
+        category: "Data Intelligence",
+        icon: <FaSuitcase />,
+        href: "/synthetic-data-new"
+    },
+    {
+        id: 'medical_diagnosis',
+        title: 'Medical Diagnosis Agent',
+        heading: 'Analyse Medical Diagnosis',
+        category: "Data Intelligence",
+        icon: <FaStethoscope />,
+        href: "/synthetic-data-missing"
+    },
+    {
+        id: 'image_processing',
+        title: 'Medical Image Processing Agent',
+        heading: 'Medical Image Processing',
+        category: "Data Intelligence",
+        icon: <FaImage />,
+        href: "/synthetic-data-new"
+    },
+    {
+        id: 'image_answering',
+        title: 'Medical Image Answering Agent',
+        heading: 'Medical Image Answering',
+        category: "Data Intelligence",
+        icon: <FaImage />,
+        href: "/synthetic-data-missing"
+    },
+    {
+        id: 'chat_to_doc_within_page_range',
+        title: 'Chat to Doc Agent',
+        heading: 'Chat to Doc',
+        category: "Data Intelligence",
+        icon: <FaCode />,
+        href: "/synthetic-data-missing"
+    }
+];
 
-    // {
-    //     id: 'graph_to_sql',
-    //     title: 'Graph to SQL',
-    //     heading: 'Convert Graphs to SQL',
-    //     category: "Data Intelligence",
-    //     icon: <FaChartLine />,
-    //     href: "/graph-to-sql"
-    // },
-    // {
-    //     id: 'forecast_to_sql',
-    //     title: 'Forecasting to SQL',
-    //     heading: 'Convert Forecasting Data to SQL',
-    //     category: "Data Intelligence",
-    //     icon: <FaChartLine />,
-    //     href: "/forecasting-to-sql"
-    // },
-    // {
-    //     id: 'synthetic_data_generation',
-    //     title: 'Missing Synthetic Data',
-    //     heading: 'Handle missing synthetic data',
-    //     category: "Synthetic Data",
-    //     icon: <FaDatabase />,
-    //     href: "/synthetic-data-missing"
-    // },
-    // {
-    //     id: 'synthetic_data_extended_data',
-    //     title: 'Extend Synthetic Data',
-    //     heading: 'Extend synthetic data',
-    //     category: "Synthetic Data",
-    //     icon: <FaDatabase />,
-    //     href: "/synthetic-data-extend"
-    // },
-    // {
-    //     id: 'synthetic_data_new_data',
-    //     title: 'Create New Synthetic Data',
-    //     heading: 'Create new synthetic data',
-    //     category: "Synthetic Data",
-    //     icon: <FaDatabase />,
-    //     href: "/synthetic-data-new"
-    // },
-    // {
-    //     id: 'chat_to_pdf',
-    //     title: 'Chat to PDF',
-    //     heading: 'Chat to PDF',
-    //     category: "Content",
-    //     icon: <FaDatabase />,
-    //     href: "/synthetic-data-new"
-    // },
-    // {
-    //     id: 'chat_app_text',
-    //     title: 'Chat App',
-    //     heading: 'Chat App',
-    //     category: "Content",
-    //     icon: <FaDatabase />,
-    //     href: "/synthetic-data-new"
-    // },
-    // {
-    //     id: 'travel_planner',
-    //     title: 'Travel Planner',
-    //     heading: 'Travel Planner',
-    //     category: "Content",
-    //     icon: <FaDatabase />,
-    //     href: "/synthetic-data-new"
-    // },
-    // {
-    //     id: 'mcq_generator',
-    //     title: 'MCQ Generator',
-    //     heading: 'MCQ Generator',
-    //     category: "Content",
-    //     icon: <FaDatabase />,
-    //     href: "/synthetic-data-new"
-    // }
-].map(tool => ({
-    ...tool,
-    title: tool.title + ' Agent'
-}));
 
 
 export const postGeneratorToolsMap = {

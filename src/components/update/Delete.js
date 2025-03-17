@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import PrepLoader from "../prep-loader/loader";
+import { baseURL } from "../../const";
 const Delete = ({ agentId }) => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [error, setError] = useState(null);
@@ -20,7 +21,7 @@ const Delete = ({ agentId }) => {
       }
 
       const response = await fetch(
-        `http://13.215.228.42:4001/api/agent/${agentId}/delete/`,
+        `${baseURL}/api/agent/${agentId}/delete/`,
         {
           method: "get",
         }
